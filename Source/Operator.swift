@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+protocol Operator {
+    var id: String { get }
+    
+    func match()
+}
