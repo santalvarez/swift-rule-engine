@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		095114D2294CAA9600C65AA7 /* SwiftRuleEngine.docc in Sources */ = {isa = PBXBuildFile; fileRef = 095114D1294CAA9600C65AA7 /* SwiftRuleEngine.docc */; };
 		095114D8294CAA9600C65AA7 /* SwiftRuleEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */; };
 		095114DD294CAA9600C65AA7 /* SwiftRuleEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114DC294CAA9600C65AA7 /* SwiftRuleEngineTests.swift */; };
-		095114DE294CAA9600C65AA7 /* SwiftRuleEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 095114D0294CAA9600C65AA7 /* SwiftRuleEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E72953BA5D00C65AA7 /* RuleEngine.swift */; };
+		095114EA2953BB3B00C65AA7 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E92953BB3B00C65AA7 /* Operator.swift */; };
+		095114ED2953BD4A00C65AA7 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114EC2953BD4A00C65AA7 /* Condition.swift */; };
+		095114EF2953BE2400C65AA7 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114EE2953BE2400C65AA7 /* Rule.swift */; };
+		095114F32953F77500C65AA7 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114F22953F77500C65AA7 /* AnyCodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,10 +28,13 @@
 
 /* Begin PBXFileReference section */
 		095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftRuleEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		095114D0294CAA9600C65AA7 /* SwiftRuleEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftRuleEngine.h; sourceTree = "<group>"; };
-		095114D1294CAA9600C65AA7 /* SwiftRuleEngine.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = SwiftRuleEngine.docc; sourceTree = "<group>"; };
 		095114D7294CAA9600C65AA7 /* SwiftRuleEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftRuleEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114DC294CAA9600C65AA7 /* SwiftRuleEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftRuleEngineTests.swift; sourceTree = "<group>"; };
+		095114E72953BA5D00C65AA7 /* RuleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEngine.swift; sourceTree = "<group>"; };
+		095114E92953BB3B00C65AA7 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
+		095114EC2953BD4A00C65AA7 /* Condition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
+		095114EE2953BE2400C65AA7 /* Rule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
+		095114F22953F77500C65AA7 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +77,11 @@
 		095114CF294CAA9600C65AA7 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				095114D0294CAA9600C65AA7 /* SwiftRuleEngine.h */,
-				095114D1294CAA9600C65AA7 /* SwiftRuleEngine.docc */,
+				095114E72953BA5D00C65AA7 /* RuleEngine.swift */,
+				095114E92953BB3B00C65AA7 /* Operator.swift */,
+				095114EC2953BD4A00C65AA7 /* Condition.swift */,
+				095114EE2953BE2400C65AA7 /* Rule.swift */,
+				095114F22953F77500C65AA7 /* AnyCodable.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -92,7 +101,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				095114DE294CAA9600C65AA7 /* SwiftRuleEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +155,7 @@
 				TargetAttributes = {
 					095114CC294CAA9600C65AA7 = {
 						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 					095114D6294CAA9600C65AA7 = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -194,7 +203,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				095114D2294CAA9600C65AA7 /* SwiftRuleEngine.docc in Sources */,
+				095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */,
+				095114EF2953BE2400C65AA7 /* Rule.swift in Sources */,
+				095114ED2953BD4A00C65AA7 /* Condition.swift in Sources */,
+				095114EA2953BB3B00C65AA7 /* Operator.swift in Sources */,
+				095114F32953F77500C65AA7 /* AnyCodable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +352,7 @@
 		095114E2294CAA9600C65AA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -359,6 +373,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -366,6 +381,7 @@
 		095114E3294CAA9600C65AA7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -393,6 +409,7 @@
 		095114E5294CAA9600C65AA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -407,6 +424,7 @@
 		095114E6294CAA9600C65AA7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
