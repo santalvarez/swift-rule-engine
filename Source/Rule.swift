@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+
+struct Rule {
+    let name: String
+    let conditions: MultiCondition
+    
+}
