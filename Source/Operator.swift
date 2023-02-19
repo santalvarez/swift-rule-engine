@@ -7,8 +7,18 @@
 
 import Foundation
 
+
 protocol Operator {
     var id: String { get }
     
-    func match()
+    func match(condition: SimpleCondition, objValue: AnyCodable) -> Bool
+}
+
+
+struct Equal: Operator {
+    var id = "equal"
+    
+    func match(condition: SimpleCondition, objValue: AnyCodable) -> Bool {
+        return true
+    }
 }
