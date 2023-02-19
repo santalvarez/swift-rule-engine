@@ -7,13 +7,15 @@
 
 import Foundation
 
-protocol Condition {
-    var match: Bool { get }
+enum Condition: Decodable {
+    case simple(SimpleCondition)
+    case multi(MultiCondition)
 }
 
-struct SimpleCondition: Condition {
+
+struct SimpleCondition {
     var match: Bool = false
-    var op: String
+    var op: String  // operator is reserved
     var value: AnyCodable
     var params: [String: Any] = [:]
     var path: String? = nil
@@ -30,17 +32,24 @@ extension SimpleCondition: Decodable {
     }
     
     private enum CodingKeys: String, CodingKey {
-        case op = "operator", value, params, path}
+        case op = "operator", value, params, path
+    }
 }
 
-struct MultiCondition: Condition {
+struct MultiCondition {
     var match: Bool = false
     var all: [Condition] = []
     var any: [Condition] = []
-    
-    init(condition: [String: Any]) {
-        
-        
+}
+
+extension MultiCondition: Decodable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.any = try container.decode([Condition].self, forKey: .any)
+        self.all = try container.decode([Condition].self, forKey: .all)
     }
     
+    private enum CodingKeys: String, CodingKey {
+        case all, any
+    }
 }
