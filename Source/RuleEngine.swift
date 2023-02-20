@@ -7,34 +7,49 @@
 
 import Foundation
 
+
+enum RuleEngineError: Error {
+    case operatorNotFound
+    case duplicateOperator
+    case invalidRule
+}
+
 final class RuleEngine {
     private var operators: [String: Operator]
     private var rules: [Rule]
+    private let pathParser: PathParser
     
-    
-    init(rules: [[String: Any]], customOperators: [Operator] = []) {
+
+    init(rules: [[String: Any]], customOperators: [Operator] = []) throws {
+        // TODO: add flag to ignore error if rule cannot de decoded
         // Set up operators
         let defaultOperators: [Operator] = [Equal()]
         let operators: [Operator] = defaultOperators + customOperators
         
+        self.operators = [:]
         for op in operators {
+            if self.operators[op.id] != nil {
+                throw RuleEngineError.duplicateOperator
+            }
             self.operators[op.id] = op
         }
 
         // Load rules
-        self.rules = self.loadRules(rules: rules)
+        self.rules = Self.decodeRules(rules: rules)
+        
+        self.pathParser = PathParser()
     }
 
-
-    private func loadRules(rules: [[String: Any]]) -> [Rule] {
+    private static func decodeRules(rules: [[String: Any]]) -> [Rule] {
         var decodedRules:  [Rule] = []
         for rule in rules {
             guard let ruleData = try? JSONSerialization.data(withJSONObject: rule, options: []) else {
+                // throw RuleEngineError.invalidRule
                 continue
             }
 
             guard let decodedRule = try? JSONDecoder().decode(Rule.self, from: ruleData) else {
-                // TODO: log failure
+                // throw RuleEngineError.invalidRule
                 continue
             }
             
@@ -42,43 +57,27 @@ final class RuleEngine {
         }
         return decodedRules
     }
-    
-    private func getValueFromJSONPath(path: String, obj: Any) -> AnyCodable {
-        // path is like $.person.name
-        // should return the value of name
-        var path = path.replacingOccurrences(of: "$.", with: "")
-        let pathComponents = path.components(separatedBy: ".")
-        
-        var currentObj: [String: AnyCodable] = obj
-        for component in pathComponents {
-            if currentObj[component].valueType == .dictionary {
-                // keep looping
-            } else {
-                return currentObj
-            }
-            
-        }
-        
-    }
-    
-    
-    private func runCondition(_ condition: SimpleCondition, _ obj: Any) -> SimpleCondition {
-        // TODO: consider using inout args
 
+
+    private func runCondition(_ condition: SimpleCondition, _ obj: Any) throws -> SimpleCondition {
         var condition = condition
         let pathObj: Any
         if condition.path != nil {
-            pathObj = self.getValueFromJSONPath(path: condition.path!, obj: obj)
+            pathObj = try self.pathParser.getValue(condition.path!, obj)
         } else {
             pathObj = obj
         }
         
-        condition.match = self.operators[condition.op]?.match(condition, pathObj) ?? false
+        guard let op = self.operators[condition.op] else {
+            throw RuleEngineError.operatorNotFound
+        }
+        
+        condition.match = op.match(condition, pathObj)
         
         return condition
     }
 
-    private func runMultiCondition(_ multiCondition: MultiCondition, _ obj: Any) -> MultiCondition {
+    private func runMultiCondition(_ multiCondition: MultiCondition, _ obj: Any) throws -> MultiCondition {
         var multiCondition = multiCondition
         
         var conditions = multiCondition.getConditions()
@@ -90,10 +89,10 @@ final class RuleEngine {
             
             switch condition {
             case .multi(let cond):
-                result = Condition(self.runMultiCondition(cond, obj))
+                result = Condition(try self.runMultiCondition(cond, obj))
 
             case .simple(let cond):
-                result = Condition(self.runCondition(cond, obj))
+                result = Condition(try self.runCondition(cond, obj))
             }
             
             conditions[idx] = result
@@ -119,11 +118,14 @@ final class RuleEngine {
         
         return multiCondition
     }
-    
+
     func evaluate(obj: [String: Any]) -> Rule? {
         for rule in self.rules {
             var rule = rule
-            let result = self.runMultiCondition(rule.conditions, obj)
+            guard let result = try? self.runMultiCondition(rule.conditions, obj) else {
+                continue
+            }
+
             if result.match {
                 rule.conditions = result
                 return rule
