@@ -18,8 +18,8 @@ enum Type: Int {
 }
 
 struct AnyCodable: Decodable {
-    var value: Any
-    var valueType: Type
+    let value: Any
+    let valueType: Type
 
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
