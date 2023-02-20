@@ -11,14 +11,14 @@ import Foundation
 protocol Operator {
     var id: String { get }
     
-    func match(condition: SimpleCondition, objValue: AnyCodable) -> Bool
+    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool
 }
 
 
 struct Equal: Operator {
     var id = "equal"
     
-    func match(condition: SimpleCondition, objValue: AnyCodable) -> Bool {
+    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         return true
     }
 }
