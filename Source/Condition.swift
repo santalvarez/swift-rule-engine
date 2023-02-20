@@ -10,6 +10,23 @@ import Foundation
 enum Condition: Decodable {
     case simple(SimpleCondition)
     case multi(MultiCondition)
+
+    init(_ value: Any) {
+        if value is SimpleCondition{
+            self = .simple(value as! SimpleCondition)
+        } else {
+            self = .multi(value as! MultiCondition)
+        }
+    }
+    
+    func getMatch() -> Bool {
+        switch self {
+        case .simple(let cond):
+            return cond.match
+        case .multi(let cond):
+            return cond.match
+        }
+    }
 }
 
 
@@ -17,7 +34,7 @@ struct SimpleCondition {
     var match: Bool = false
     var op: String  // operator is reserved
     var value: AnyCodable
-    var params: [String: Any] = [:]
+    var params: [String: Any]? = nil
     var path: String? = nil
 }
 
@@ -27,7 +44,7 @@ extension SimpleCondition: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.op = try container.decode(String.self, forKey: .op)
         self.value = try container.decode(AnyCodable.self, forKey: .value)
-        self.params = try container.decode([String: AnyCodable].self, forKey: .params)
+        self.params = try container.decodeIfPresent([String: AnyCodable].self, forKey: .params)
         self.path = try container.decodeIfPresent(String.self, forKey: .path)
     }
     
@@ -38,15 +55,31 @@ extension SimpleCondition: Decodable {
 
 struct MultiCondition {
     var match: Bool = false
-    var all: [Condition] = []
-    var any: [Condition] = []
+    private(set) var all: [Condition]?
+    private(set) var any: [Condition]?
+
+    func getConditions() -> [Condition] {
+        if self.any != nil {
+            return self.any!
+        } else {
+            return self.all!
+        }
+    }
+
+    mutating func replaceConditions(_ conditions: [Condition]) {
+        if self.any != nil {
+            self.any = conditions
+        } else {
+            self.all = conditions
+        }
+    }
 }
 
 extension MultiCondition: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.any = try container.decode([Condition].self, forKey: .any)
-        self.all = try container.decode([Condition].self, forKey: .all)
+        self.any = try container.decodeIfPresent([Condition].self, forKey: .any)
+        self.all = try container.decodeIfPresent([Condition].self, forKey: .all)
     }
     
     private enum CodingKeys: String, CodingKey {
