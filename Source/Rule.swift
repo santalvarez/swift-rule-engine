@@ -12,7 +12,7 @@ struct Rule: Decodable {
     let name: String
     let description: String?
     let extra: [String: Any]?
-    let conditions: MultiCondition
+    var conditions: MultiCondition
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
