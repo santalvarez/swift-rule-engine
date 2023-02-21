@@ -17,12 +17,11 @@ struct Rule: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
-        self.description = try container.decode(String?.self, forKey: .description)
-        // TODO: maybe make this any??
-        self.extra = try container.decode([String: AnyCodable]?.self, forKey: .extra)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.extra = try container.decodeIfPresent([String: AnyCodable].self, forKey: .extra)
         self.conditions = try container.decode(MultiCondition.self, forKey: .conditions)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case name, description, extra, conditions
     }
