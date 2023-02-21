@@ -119,7 +119,7 @@ final class RuleEngine {
         return multiCondition
     }
 
-    func evaluate(obj: [String: Any]) -> Rule? {
+    func evaluate(_ obj: [String: Any]) -> Rule? {
         for rule in self.rules {
             var rule = rule
             guard let result = try? self.runMultiCondition(rule.conditions, obj) else {
