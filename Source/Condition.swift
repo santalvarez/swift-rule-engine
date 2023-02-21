@@ -10,7 +10,17 @@ import Foundation
 enum Condition: Decodable {
     case simple(SimpleCondition)
     case multi(MultiCondition)
-
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let simpleCondition = try? container.decode(SimpleCondition.self) {
+            self = .simple(simpleCondition)
+        } else {
+            let multiCondition = try container.decode(MultiCondition.self)
+            self = .multi(multiCondition)
+        }
+    }
+    
     init(_ value: Any) {
         if value is SimpleCondition{
             self = .simple(value as! SimpleCondition)
@@ -55,8 +65,8 @@ extension SimpleCondition: Decodable {
 
 struct MultiCondition {
     var match: Bool = false
-    private(set) var all: [Condition]?
-    private(set) var any: [Condition]?
+    var all: [Condition]?
+    var any: [Condition]?
 
     func getConditions() -> [Condition] {
         if self.any != nil {
