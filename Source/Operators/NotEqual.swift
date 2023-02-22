@@ -19,14 +19,14 @@ struct NotEqual: Operator {
                 return false
             }
         
-            return lhs == rhs
+            return lhs != rhs
             
         case .dictionary:
             guard let rhs = objValue as? NSDictionary,
                   let lhs = condition.value.value as? NSDictionary else {
                 return false
             }
-            return lhs == rhs
+            return lhs != rhs
         
         case .array:
             guard let rhs = objValue as? NSArray,
@@ -34,10 +34,10 @@ struct NotEqual: Operator {
                 return false
             }
             
-            return lhs == rhs
+            return lhs != rhs
 
         case .null:
-            return objValue is NSNull
+            return !(objValue is NSNull)
         
         case .unknown:
             return false

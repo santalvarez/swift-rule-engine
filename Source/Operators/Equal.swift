@@ -36,6 +36,8 @@ struct Equal: Operator {
                 return false
             }
             
+            // NOTE: This matches is arrays have the same elements in
+            // the same order
             return lhs == rhs
 
         case .null:

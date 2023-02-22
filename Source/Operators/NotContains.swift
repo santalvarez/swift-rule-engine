@@ -12,15 +12,15 @@ struct NotContains: Operator {
     let id = "not_contains"
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        switch condition.value.valueType {
-        case .string:
-            return true
-
-        case .array:
-            return true
-
-        case .bool, .dictionary, .number, .null, .unknown:
-            return false
+        if let rhs = objValue as? NSArray {
+            return !rhs.contains(condition.value.value)
         }
+        
+        if let rhs = objValue as? String,
+           let lhs = condition.value.value as? String {
+            return !rhs.contains(lhs)
+        }
+
+        return false
     }
 }
