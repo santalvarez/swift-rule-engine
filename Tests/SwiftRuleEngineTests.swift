@@ -24,26 +24,31 @@ class SwiftRuleEngineTests: XCTestCase {
             "name": "test-rule",
             "description": "Test rule",
             "conditions": [
-                "any": [
+                "all": [
                     [
-                        "path": "$.person.name",
-                        "value": "Santiago",
+                        "path": "$.player.first_name",
+                        "value": "Lionel",
+                        "operator": "equal"
+                    ],
+                    [
+                        "path": "$.player.last_name",
+                        "value": "Messi",
                         "operator": "equal"
                     ]
                 ]
             ]
         ]
-        
+
         let obj = [
-            "person": [
-                "name": "Santiago"
+            "player": [
+                "first_name": "Lionel",
+                "last_name": "Messi"
             ]
         ]
-        
+
         let engine = try RuleEngine(rules: [rule])
 
-        let r = engine.evaluate(obj)
-        let result = try XCTUnwrap(r)
+        let result = try XCTUnwrap(engine.evaluate(obj))
         
         XCTAssertTrue(result.conditions.match)
     }
