@@ -49,7 +49,6 @@ struct AnyCodable: Decodable {
             self.valueType = .array
             
         } else if let dictionary = try? container.decode([String: AnyCodable].self) {
-            // TODO: also watch out for this
             self.value = dictionary
             self.valueType = .dictionary
 
