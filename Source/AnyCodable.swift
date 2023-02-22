@@ -20,6 +20,11 @@ enum Type: Int {
 struct AnyCodable: Decodable {
     let value: Any
     let valueType: Type
+    
+    init(value: Any, valueType: Type) {
+        self.value = value
+        self.valueType = valueType
+    }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
