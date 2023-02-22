@@ -9,10 +9,31 @@ import Foundation
 
 
 struct GreaterThanInclusive: Operator {
-    var id = "greater_than_inclusive"
+    let id = "greater_than_inclusive"
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        return true
+        switch condition.value.valueType {
+        case .number:
+            guard let lhs = condition.value.value as? Double,
+                  let rhs = objValue as? Double else {
+                return false
+            }
+            
+            return lhs <= rhs
+            
+        case .string:
+            guard let lhs = condition.value.value as? Double,
+                  let rhs = objValue as? Double else {
+                return false
+            }
+            
+            return lhs <= rhs
+
+        case .array:
+            return true
+
+        case .bool, .dictionary, .null, .unknown:
+            return false
+        }
     }
 }
-

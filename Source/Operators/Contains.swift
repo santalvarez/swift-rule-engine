@@ -9,10 +9,26 @@ import Foundation
 
 
 struct Contains: Operator {
-    var id = "contains"
+    let id = "contains"
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        return true
+        // NOTE: I think i can't use valueType here i need to make
+        // a decision based on objValue instead
+        switch condition.value.valueType {
+        case .string:
+            guard let lhs = condition.value.value as? String,
+                  let rhs = objValue as? String else {
+                return false
+            }
+
+            return rhs.contains(lhs)
+
+        case .array:
+            return true
+
+        case .bool, .dictionary, .number, .null, .unknown:
+            return false
+        }
     }
 }
 

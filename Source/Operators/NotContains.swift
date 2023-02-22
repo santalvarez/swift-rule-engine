@@ -9,9 +9,18 @@ import Foundation
 
 
 struct NotContains: Operator {
-    var id = "not_contains"
+    let id = "not_contains"
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        return true
+        switch condition.value.valueType {
+        case .string:
+            return true
+
+        case .array:
+            return true
+
+        case .bool, .dictionary, .number, .null, .unknown:
+            return false
+        }
     }
 }

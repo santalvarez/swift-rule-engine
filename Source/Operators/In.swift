@@ -9,10 +9,28 @@ import Foundation
 
 
 struct In: Operator {
-    var id = "in"
+    let id = "in"
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        return true
+        switch condition.value.valueType {
+        case .string:
+            guard let rhs = objValue as? String,
+                  let lhs = condition.value.value as? String else {
+                return false
+            }
+            
+            return lhs.contains(rhs)
+            
+        case .array:
+            guard let lhs = condition.value.value as? NSArray else {
+                return false
+            }
+            
+            return lhs.contains(objValue)
+
+        case .number, .bool, .dictionary, .null, .unknown:
+            return false
+        }
     }
 }
 
