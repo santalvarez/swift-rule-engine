@@ -40,7 +40,7 @@ enum Condition: Decodable {
 }
 
 
-struct SimpleCondition {
+public struct SimpleCondition {
     var match: Bool = false
     var op: String  // operator is reserved
     var value: AnyCodable
@@ -50,7 +50,7 @@ struct SimpleCondition {
 
 extension SimpleCondition: Decodable {
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.op = try container.decode(String.self, forKey: .op)
         self.value = try container.decode(AnyCodable.self, forKey: .value)

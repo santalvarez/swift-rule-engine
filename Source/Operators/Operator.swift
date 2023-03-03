@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol Operator {
+public protocol Operator {
     var id: String { get }
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool

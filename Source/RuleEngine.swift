@@ -14,7 +14,7 @@ enum RuleEngineError: Error {
     case invalidRule(String)
 }
 
-final class RuleEngine {
+final public class RuleEngine {
     private var operators: [String: Operator]
     private var rules: [Rule] = []
     private let pathParser: PathParser = PathParser()
