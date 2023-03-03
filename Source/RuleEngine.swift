@@ -21,14 +21,14 @@ final public class RuleEngine {
     
     
     // Init for rules that come in string format
-    init(rules: [String], customOperators: [Operator]) throws {
+    public init(rules: [String], customOperators: [Operator]) throws {
         self.operators = try Self.generateOperatorsDict(customOperators)
         self.rules = rules.compactMap{ dictRule in
             try? Self.decodeRule(rule: dictRule)
         }
     }
 
-    init(rules: [[String: Any]], customOperators: [Operator] = []) throws {
+    public init(rules: [[String: Any]], customOperators: [Operator] = []) throws {
         self.operators = try Self.generateOperatorsDict(customOperators)
         self.rules = rules.compactMap{ dictRule in
             try? Self.decodeRule(rule: dictRule)
