@@ -11,53 +11,63 @@ import Foundation
 enum RuleEngineError: Error {
     case operatorNotFound
     case duplicateOperator
-    case invalidRule
+    case invalidRule(String)
 }
 
 final class RuleEngine {
     private var operators: [String: Operator]
-    private var rules: [Rule]
-    private let pathParser: PathParser
+    private var rules: [Rule] = []
+    private let pathParser: PathParser = PathParser()
     
+    
+    // Init for rules that come in string format
+    init(rules: [String], customOperators: [Operator]) throws {
+        self.operators = try Self.generateOperatorsDict(customOperators)
+        self.rules = rules.compactMap{ dictRule in
+            try? Self.decodeRule(rule: dictRule)
+        }
+    }
 
     init(rules: [[String: Any]], customOperators: [Operator] = []) throws {
-        // TODO: add flag to ignore error if rule cannot de decoded
-        // Set up operators
+        self.operators = try Self.generateOperatorsDict(customOperators)
+        self.rules = rules.compactMap{ dictRule in
+            try? Self.decodeRule(rule: dictRule)
+        }
+    }
+    
+    private static func generateOperatorsDict(_ customOperators: [Operator]) throws -> [String:Operator]{
         let defaultOperators: [Operator] = [Equal()]
-        let operators: [Operator] = defaultOperators + customOperators
-        
-        self.operators = [:]
-        for op in operators {
-            if self.operators[op.id] != nil {
+        let operators = defaultOperators + customOperators
+
+        return try operators.reduce(into: [:]) { result, op in
+            guard result[op.id] == nil else {
                 throw RuleEngineError.duplicateOperator
             }
-            self.operators[op.id] = op
+            result[op.id] = op
+        }
+    }
+    
+    private static func decodeRule(rule: [String: Any]) throws -> Rule {
+        guard let ruleData = try? JSONSerialization.data(withJSONObject: rule, options: []) else {
+            throw RuleEngineError.invalidRule("Error converting dict to data")
         }
 
-        // Load rules
-        self.rules = Self.decodeRules(rules: rules)
+        guard let rule = try? JSONDecoder().decode(Rule.self, from: ruleData) else {
+            throw RuleEngineError.invalidRule("Error decoding rule")
+        }
+        return rule
+    }
+    
+    private static func decodeRule(rule: String) throws -> Rule {
+        guard let ruleData = rule.data(using: .utf8) else {
+            throw RuleEngineError.invalidRule("Rule not in utf8 format")
+        }
         
-        self.pathParser = PathParser()
-    }
-
-    private static func decodeRules(rules: [[String: Any]]) -> [Rule] {
-        var decodedRules:  [Rule] = []
-        for rule in rules {
-            guard let ruleData = try? JSONSerialization.data(withJSONObject: rule, options: []) else {
-                // throw RuleEngineError.invalidRule
-                continue
-            }
-
-            guard let decodedRule = try? JSONDecoder().decode(Rule.self, from: ruleData) else {
-                // throw RuleEngineError.invalidRule
-                continue
-            }
-            
-            decodedRules.append(decodedRule)
+        guard let rule = try? JSONDecoder().decode(Rule.self, from: ruleData) else {
+            throw RuleEngineError.invalidRule("Error decoding rule")
         }
-        return decodedRules
+        return rule
     }
-
 
     private func runCondition(_ condition: SimpleCondition, _ obj: Any) throws -> SimpleCondition {
         var condition = condition
