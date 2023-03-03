@@ -36,7 +36,9 @@ final class RuleEngine {
     }
     
     private static func generateOperatorsDict(_ customOperators: [Operator]) throws -> [String:Operator]{
-        let defaultOperators: [Operator] = [Equal()]
+        let defaultOperators: [Operator] = [Equal(), NotEqual(), LessThan(), LessThanInclusive(),
+                                            GreaterThan(), GreaterThanInclusive(), In(), NotIn(),
+                                            Contains(), NotContains(), Regex()]
         let operators = defaultOperators + customOperators
 
         return try operators.reduce(into: [:]) { result, op in
