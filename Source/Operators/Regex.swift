@@ -8,11 +8,11 @@
 import Foundation
 
 
-struct RegexOperator: Operator {
+struct Regex: Operator {
     let id = "regex"
     private var cache = NSCache<NSString, NSRegularExpression>()
 
-    private func regularExpression(for pattern: String) throws -> NSRegularExpression {
+    private func getRegexFromCache(_ pattern: String) throws -> NSRegularExpression {
         if let regex = cache.object(forKey: pattern as NSString) {
             return regex
         }
@@ -32,7 +32,7 @@ struct RegexOperator: Operator {
         }
         
         do {
-            let regex = try self.regularExpression(for: regexString)
+            let regex = try self.getRegexFromCache(regexString)
             let range = NSRange(location: 0, length: rhsString.utf16.count)
             let matches = regex.matches(in: rhsString, range: range)
             return matches.count > 0
