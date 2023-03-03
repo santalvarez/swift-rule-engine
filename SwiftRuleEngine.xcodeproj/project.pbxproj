@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0914696C29B2256B0064DA04 /* docs in Resources */ = {isa = PBXBuildFile; fileRef = 0914696B29B2256B0064DA04 /* docs */; };
 		095114D8294CAA9600C65AA7 /* SwiftRuleEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */; };
 		095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E72953BA5D00C65AA7 /* RuleEngine.swift */; };
 		095114EA2953BB3B00C65AA7 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E92953BB3B00C65AA7 /* Operator.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0914696B29B2256B0064DA04 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftRuleEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114D7294CAA9600C65AA7 /* SwiftRuleEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftRuleEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114E72953BA5D00C65AA7 /* RuleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEngine.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 		095114C3294CAA9600C65AA7 = {
 			isa = PBXGroup;
 			children = (
+				0914696B29B2256B0064DA04 /* docs */,
 				09ADCD2A29A44CC500D6F26E /* README.md */,
 				095114CF294CAA9600C65AA7 /* Source */,
 				095114DB294CAA9600C65AA7 /* Tests */,
@@ -275,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09ADCD2B29A44CC500D6F26E /* README.md in Resources */,
+				0914696C29B2256B0064DA04 /* docs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
