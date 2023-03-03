@@ -13,6 +13,8 @@
 		095114ED2953BD4A00C65AA7 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114EC2953BD4A00C65AA7 /* Condition.swift */; };
 		095114EF2953BE2400C65AA7 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114EE2953BE2400C65AA7 /* Rule.swift */; };
 		095114F32953F77500C65AA7 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114F22953F77500C65AA7 /* AnyCodable.swift */; };
+		096D386929B182A6006008DF /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096D386829B182A6006008DF /* Regex.swift */; };
+		096D386B29B182D0006008DF /* RegexOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096D386A29B182D0006008DF /* RegexOperatorTests.swift */; };
 		09ADCD2729A3CC2E00D6F26E /* PathParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2629A3CC2E00D6F26E /* PathParser.swift */; };
 		09ADCD2B29A44CC500D6F26E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 09ADCD2A29A44CC500D6F26E /* README.md */; };
 		09ADCD2E29A5551100D6F26E /* Equal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2D29A5551100D6F26E /* Equal.swift */; };
@@ -56,6 +58,8 @@
 		095114EC2953BD4A00C65AA7 /* Condition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		095114EE2953BE2400C65AA7 /* Rule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
 		095114F22953F77500C65AA7 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
+		096D386829B182A6006008DF /* Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		096D386A29B182D0006008DF /* RegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexOperatorTests.swift; sourceTree = "<group>"; };
 		09ADCD2629A3CC2E00D6F26E /* PathParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathParser.swift; sourceTree = "<group>"; };
 		09ADCD2A29A44CC500D6F26E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		09ADCD2D29A5551100D6F26E /* Equal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equal.swift; sourceTree = "<group>"; };
@@ -155,6 +159,7 @@
 				09ADCD3B29A5A59900D6F26E /* NotIn.swift */,
 				09ADCD3D29A5A5A900D6F26E /* Contains.swift */,
 				09ADCD3F29A5A5C700D6F26E /* NotContains.swift */,
+				096D386829B182A6006008DF /* Regex.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -172,6 +177,7 @@
 				09ADCD5629A69FBB00D6F26E /* NotInOperatorTests.swift */,
 				09ADCD5829A6A28400D6F26E /* ContainsOperatorTests.swift */,
 				09ADCD5A29A6A29400D6F26E /* NotContainsOperatorTests.swift */,
+				096D386A29B182D0006008DF /* RegexOperatorTests.swift */,
 			);
 			path = OperatorTests;
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 				095114ED2953BD4A00C65AA7 /* Condition.swift in Sources */,
 				09ADCD2E29A5551100D6F26E /* Equal.swift in Sources */,
 				09ADCD3A29A5A58200D6F26E /* In.swift in Sources */,
+				096D386929B182A6006008DF /* Regex.swift in Sources */,
 				095114EA2953BB3B00C65AA7 /* Operator.swift in Sources */,
 				095114F32953F77500C65AA7 /* AnyCodable.swift in Sources */,
 				09ADCD3229A5A50B00D6F26E /* LessThan.swift in Sources */,
@@ -310,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09ADCD4629A65C8400D6F26E /* EqualOperatorTests.swift in Sources */,
+				096D386B29B182D0006008DF /* RegexOperatorTests.swift in Sources */,
 				09ADCD4829A6633000D6F26E /* RuleEngineTests.swift in Sources */,
 				09ADCD4B29A66CC400D6F26E /* NotEqualOperatorTests.swift in Sources */,
 				09ADCD5B29A6A29400D6F26E /* NotContainsOperatorTests.swift in Sources */,
