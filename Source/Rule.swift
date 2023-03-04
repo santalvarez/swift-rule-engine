@@ -8,13 +8,13 @@
 import Foundation
 
 
-struct Rule: Decodable {
+public struct Rule: Decodable {
     let name: String
     let description: String?
     let extra: [String: Any]?
     var conditions: MultiCondition
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
