@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum Condition: Decodable {
+public enum Condition: Decodable {
     case simple(SimpleCondition)
     case multi(MultiCondition)
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let simpleCondition = try? container.decode(SimpleCondition.self) {
             self = .simple(simpleCondition)
@@ -41,11 +41,11 @@ enum Condition: Decodable {
 
 
 public struct SimpleCondition {
-    var match: Bool = false
-    var op: String  // operator is reserved
-    var value: AnyCodable
-    var params: [String: Any]? = nil
-    var path: String? = nil
+    public var match: Bool = false
+    public var op: String  // operator is reserved
+    public var value: AnyCodable
+    public var params: [String: Any]? = nil
+    public var path: String? = nil
 }
 
 extension SimpleCondition: Decodable {
@@ -63,10 +63,10 @@ extension SimpleCondition: Decodable {
     }
 }
 
-struct MultiCondition {
-    var match: Bool = false
-    var all: [Condition]?
-    var any: [Condition]?
+public struct MultiCondition {
+    public var match: Bool = false
+    public var all: [Condition]?
+    public var any: [Condition]?
 
     func getConditions() -> [Condition] {
         if self.any != nil {
@@ -86,7 +86,7 @@ struct MultiCondition {
 }
 
 extension MultiCondition: Decodable {
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.any = try container.decodeIfPresent([Condition].self, forKey: .any)
         self.all = try container.decodeIfPresent([Condition].self, forKey: .all)

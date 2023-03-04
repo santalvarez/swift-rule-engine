@@ -9,10 +9,10 @@ import Foundation
 
 
 public struct Rule: Decodable {
-    let name: String
-    let description: String?
-    let extra: [String: Any]?
-    var conditions: MultiCondition
+    public let name: String
+    public let description: String?
+    public let extra: [String: Any]?
+    public var conditions: MultiCondition
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

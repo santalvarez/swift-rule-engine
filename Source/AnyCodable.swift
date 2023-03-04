@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Type: Int {
+public enum VType: Int {
     case number
     case string
     case bool
@@ -17,16 +17,16 @@ enum Type: Int {
     case unknown
 }
 
-struct AnyCodable: Decodable {
-    let value: Any
-    let valueType: Type
+public struct AnyCodable: Decodable {
+    public let value: Any
+    public let valueType: VType
     
-    init(value: Any, valueType: Type) {
+    init(value: Any, valueType: VType) {
         self.value = value
         self.valueType = valueType
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {
             self.value = NSNull()
