@@ -42,7 +42,7 @@ public enum Condition: Decodable {
 
 public struct SimpleCondition {
     public var match: Bool = false
-    public var op: String  // operator is reserved
+    public var op: OperatorID  // operator is reserved
     public var value: AnyCodable
     public var params: [String: Any]? = nil
     public var path: String? = nil
@@ -52,8 +52,8 @@ extension SimpleCondition: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.op = try container.decode(String.self, forKey: .op)
-        self.value = try container.decode(AnyCodable.self, forKey: .value)
+        self.op = try container.decode(OperatorID.self, forKey: .op)
+        self.value = try container.decodeConditionValue(forKey: .value, forOperator: self.op)
         self.params = try container.decodeIfPresent([String: AnyCodable].self, forKey: .params)
         self.path = try container.decodeIfPresent(String.self, forKey: .path)
     }
