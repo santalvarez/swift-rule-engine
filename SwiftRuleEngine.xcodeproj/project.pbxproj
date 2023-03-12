@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0910744E29BD154C0044B4B4 /* InSetOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910744D29BD154C0044B4B4 /* InSetOperatorTests.swift */; };
+		0910745029BD2CC00044B4B4 /* InSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910744F29BD2CC00044B4B4 /* InSet.swift */; };
 		0914696C29B2256B0064DA04 /* docs in Resources */ = {isa = PBXBuildFile; fileRef = 0914696B29B2256B0064DA04 /* docs */; };
 		095114D8294CAA9600C65AA7 /* SwiftRuleEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */; };
 		095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E72953BA5D00C65AA7 /* RuleEngine.swift */; };
@@ -52,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0910744D29BD154C0044B4B4 /* InSetOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InSetOperatorTests.swift; sourceTree = "<group>"; };
+		0910744F29BD2CC00044B4B4 /* InSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InSet.swift; sourceTree = "<group>"; };
 		0914696B29B2256B0064DA04 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftRuleEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114D7294CAA9600C65AA7 /* SwiftRuleEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftRuleEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +167,7 @@
 				09ADCD3D29A5A5A900D6F26E /* Contains.swift */,
 				09ADCD3F29A5A5C700D6F26E /* NotContains.swift */,
 				096D386829B182A6006008DF /* Regex.swift */,
+				0910744F29BD2CC00044B4B4 /* InSet.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				09ADCD5829A6A28400D6F26E /* ContainsOperatorTests.swift */,
 				09ADCD5A29A6A29400D6F26E /* NotContainsOperatorTests.swift */,
 				096D386A29B182D0006008DF /* RegexOperatorTests.swift */,
+				0910744D29BD154C0044B4B4 /* InSetOperatorTests.swift */,
 			);
 			path = OperatorTests;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 				095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */,
 				095114EF2953BE2400C65AA7 /* Rule.swift in Sources */,
 				09ADCD3029A5601000D6F26E /* NotEqual.swift in Sources */,
+				0910745029BD2CC00044B4B4 /* InSet.swift in Sources */,
 				095114ED2953BD4A00C65AA7 /* Condition.swift in Sources */,
 				09ADCD2E29A5551100D6F26E /* Equal.swift in Sources */,
 				09ADCD3A29A5A58200D6F26E /* In.swift in Sources */,
@@ -326,6 +333,7 @@
 				09ADCD4B29A66CC400D6F26E /* NotEqualOperatorTests.swift in Sources */,
 				09ADCD5B29A6A29400D6F26E /* NotContainsOperatorTests.swift in Sources */,
 				09ADCD5329A69A8A00D6F26E /* GreaterThanInclusiveOperatorTests.swift in Sources */,
+				0910744E29BD154C0044B4B4 /* InSetOperatorTests.swift in Sources */,
 				09ADCD4D29A675F500D6F26E /* LessThanOperatorTests.swift in Sources */,
 				09ADCD4F29A6762300D6F26E /* LessThanInclusiveOperatorTests.swift in Sources */,
 				09ADCD5929A6A28400D6F26E /* ContainsOperatorTests.swift in Sources */,
