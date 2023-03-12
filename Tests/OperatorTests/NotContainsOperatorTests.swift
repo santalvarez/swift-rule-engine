@@ -11,7 +11,7 @@ import XCTest
 class NotContainsOperatorTests: XCTestCase {
     func testStringArrayMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = ["foo", "bar"]
 
         let op = NotContains()
@@ -21,7 +21,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testStringArrayNotMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = ["test"]
 
         let op = NotContains()
@@ -31,7 +31,7 @@ class NotContainsOperatorTests: XCTestCase {
 
     func testIntArrayMatch() {
         let lhs = AnyCodable(value: 4, valueType: .number)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [1, 2, 3]
         
         let op = NotContains()
@@ -41,7 +41,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testIntArrayNotMatch() {
         let lhs = AnyCodable(value: 2, valueType: .number)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [1, 2, 3]
         
         let op = NotContains()
@@ -51,7 +51,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testDoubleArrayMatch() {
         let lhs = AnyCodable(value: 4.4, valueType: .number)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [1.1, 2.2, 3.3]
         
         let op = NotContains()
@@ -61,7 +61,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testDoubleArrayNotMatch() {
         let lhs = AnyCodable(value: 2.2, valueType: .number)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [1.1, 2.2, 3.3]
         
         let op = NotContains()
@@ -71,7 +71,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testDictionaryArrayMatch() {
         let lhs = AnyCodable(value: ["foo": "bar"], valueType: .dictionary)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [["foo": 123]]
         
         let op = NotContains()
@@ -81,7 +81,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testDictionaryArrayNotMatch() {
         let lhs = AnyCodable(value: ["foo": "bar"], valueType: .dictionary)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [["foo": "bar"]]
         
         let op = NotContains()
@@ -91,7 +91,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testArrayOfArraysMatch() {
         let lhs = AnyCodable(value: [1, 2, 3], valueType: .array)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [[1, 2, 3, 4]]
         
         let op = NotContains()
@@ -101,7 +101,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testArrayOfArraysNotMatch() {
         let lhs = AnyCodable(value: [1, 2, 3], valueType: .array)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = [[1, 2, 3]]
         
         let op = NotContains()
@@ -111,7 +111,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testStringsMatch() {
         let lhs = AnyCodable(value: "foo", valueType: .string)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = "xxxx-test-xxxx"
         
         let op = NotContains()
@@ -121,7 +121,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testStringsNotMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = "xxxx-test-xxxx"
         
         let op = NotContains()
@@ -131,7 +131,7 @@ class NotContainsOperatorTests: XCTestCase {
     
     func testInvalidType() {
         let lhs = AnyCodable(value: 123123, valueType: .number)
-        let condition = SimpleCondition(op: "not_contains", value: lhs)
+        let condition = SimpleCondition(op: .not_contains, value: lhs)
         let rhs: Any = 1233
         
         let op = NotContains()

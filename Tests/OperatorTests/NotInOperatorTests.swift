@@ -13,7 +13,7 @@ class NotInOperatorTests: XCTestCase {
 
     func testStringArrayMatch() {
         let lhs = AnyCodable(value: ["foo", "bar"], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = "test"
         
         let op = NotIn()
@@ -23,7 +23,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testStringArrayNotMatch() {
         let lhs = AnyCodable(value: ["test"], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = "test"
         
         let op = NotIn()
@@ -33,7 +33,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testIntArrayMatch() {
         let lhs = AnyCodable(value: [1, 2, 3], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = 4
         
         let op = NotIn()
@@ -43,7 +43,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testIntArrayNotMatch() {
         let lhs = AnyCodable(value: [1, 2, 3], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = 2
         
         let op = NotIn()
@@ -53,7 +53,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testDoubleArrayMatch() {
         let lhs = AnyCodable(value: [1.1, 2.2, 3.3], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = 4.4
         
         let op = NotIn()
@@ -63,7 +63,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testDoubleArrayNotMatch() {
         let lhs = AnyCodable(value: [1.1, 2.2, 3.3], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = 2.2
         
         let op = NotIn()
@@ -73,7 +73,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testDictionaryArrayMatch() {
         let lhs = AnyCodable(value: [["foo": "bar"]], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = ["foo": 123]
         
         let op = NotIn()
@@ -83,7 +83,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testDictionaryArrayNotMatch() {
         let lhs = AnyCodable(value: [["foo": "bar"]], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = ["foo": "bar"]
         
         let op = NotIn()
@@ -93,7 +93,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testArrayOfArraysMatch() {
         let lhs = AnyCodable(value: [[1, 2, 3]], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = [1, 2, 3, 4]
         
         let op = NotIn()
@@ -103,7 +103,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testArrayOfArraysNotMatch() {
         let lhs = AnyCodable(value: [[1, 2, 3]], valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = [1, 2, 3]
         
         let op = NotIn()
@@ -113,7 +113,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testStringsMatch() {
         let lhs = AnyCodable(value: "xxxx-test-xxxx", valueType: .string)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = "foo"
         
         let op = NotIn()
@@ -123,7 +123,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testStringsNotMatch() {
         let lhs = AnyCodable(value: "xxxx-test-xxxx", valueType: .string)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = "test"
         
         let op = NotIn()
@@ -133,7 +133,7 @@ class NotInOperatorTests: XCTestCase {
     
     func testInvalidType() {
         let lhs = AnyCodable(value: 123123, valueType: .array)
-        let condition = SimpleCondition(op: "not_in", value: lhs)
+        let condition = SimpleCondition(op: .not_in, value: lhs)
         let rhs: Any = "test"
         
         let op = NotIn()

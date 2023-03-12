@@ -13,7 +13,7 @@ class EqualOperatorTests: XCTestCase {
 
     func testStringsMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = "test"
         
         let op = Equal()
@@ -23,7 +23,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testStringsNotMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = "not-test"
         
         let op = Equal()
@@ -33,7 +33,7 @@ class EqualOperatorTests: XCTestCase {
 
     func testBoolsMatch() {
         let lhs = AnyCodable(value: true, valueType: .bool)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = true
         
         let op = Equal()
@@ -43,7 +43,7 @@ class EqualOperatorTests: XCTestCase {
 
      func testBoolsNotMatch() {
         let lhs = AnyCodable(value: true, valueType: .bool)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = false
         
         let op = Equal()
@@ -53,7 +53,7 @@ class EqualOperatorTests: XCTestCase {
 
     func testIntsMatch() {
         let lhs = AnyCodable(value: 123, valueType: .number)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = 123
         
         let op = Equal()
@@ -63,7 +63,7 @@ class EqualOperatorTests: XCTestCase {
    
     func testIntsNotMatch() {
         let lhs = AnyCodable(value: 123, valueType: .number)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = 321
         
         let op = Equal()
@@ -73,7 +73,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testDoublesMatch() {
         let lhs = AnyCodable(value: 123.123, valueType: .number)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = 123.123
         
         let op = Equal()
@@ -83,7 +83,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testDoublesNotMatch() {
         let lhs = AnyCodable(value: 123.123, valueType: .number)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = 321.321
         
         let op = Equal()
@@ -93,7 +93,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testDictionariesMatch() {
         let lhs = AnyCodable(value: ["foo": "test", "bar": 123], valueType: .dictionary)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = ["foo": "test", "bar": 123]
         
         let op = Equal()
@@ -103,7 +103,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testDictionariesNotMatch() {
         let lhs = AnyCodable(value: ["foo": "test", "bar": 123], valueType: .dictionary)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = ["foo": "test", "bar": 321]
         
         let op = Equal()
@@ -113,7 +113,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testArraysMatch() {
         let lhs = AnyCodable(value: ["foo", "bar"], valueType: .array)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = ["foo", "bar"]
         
         let op = Equal()
@@ -123,7 +123,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testArraysNotMatch() {
         let lhs = AnyCodable(value: ["foo", "bar"], valueType: .array)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = ["foo"]
         
         let op = Equal()
@@ -133,7 +133,7 @@ class EqualOperatorTests: XCTestCase {
     
      func testMultiTypeArraysMatch() {
         let lhs = AnyCodable(value: ["foo", 123], valueType: .array)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = ["foo", 123]
         
         let op = Equal()
@@ -143,7 +143,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testMultiTypeArraysNotMatch() {
         let lhs = AnyCodable(value: ["foo", 123], valueType: .array)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = ["foo", 321]
         
         let op = Equal()
@@ -153,7 +153,7 @@ class EqualOperatorTests: XCTestCase {
 
     func testNullsMatch() {
         let lhs = AnyCodable(value: NSNull(), valueType: .null)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = NSNull()
         
         let op = Equal()
@@ -163,7 +163,7 @@ class EqualOperatorTests: XCTestCase {
     
     func testNullsNotMatch() {
         let lhs = AnyCodable(value: NSNull(), valueType: .null)
-        let condition = SimpleCondition(op: "equal", value: lhs)
+        let condition = SimpleCondition(op: .equal, value: lhs)
         let rhs: Any = "test"
         
         let op = Equal()

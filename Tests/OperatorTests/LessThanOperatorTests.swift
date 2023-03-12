@@ -13,7 +13,7 @@ class LessThanOperatorTests: XCTestCase {
 
     func testIntsMatch() {
         let lhs = AnyCodable(value: 100, valueType: .number)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = 99
 
         let equalOperator = LessThan()
@@ -23,7 +23,7 @@ class LessThanOperatorTests: XCTestCase {
 
     func testIntsNotMatch() {
         let lhs = AnyCodable(value: 100, valueType: .number)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = 101
         
         let equalOperator = LessThan()
@@ -33,7 +33,7 @@ class LessThanOperatorTests: XCTestCase {
     
     func testDoublesMatch() {
         let lhs = AnyCodable(value: 100.11, valueType: .number)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = 100.09
 
         let equalOperator = LessThan()
@@ -43,7 +43,7 @@ class LessThanOperatorTests: XCTestCase {
     
     func testDoublesNotMatch() {
         let lhs = AnyCodable(value: 100.11, valueType: .number)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = 100.13
         
         let equalOperator = LessThan()
@@ -53,7 +53,7 @@ class LessThanOperatorTests: XCTestCase {
     
     func testStringsMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = "t"
 
         let equalOperator = LessThan()
@@ -63,7 +63,7 @@ class LessThanOperatorTests: XCTestCase {
     
     func testStringsNotMatch() {
         let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = "test_test"
 
         let equalOperator = LessThan()
@@ -73,7 +73,7 @@ class LessThanOperatorTests: XCTestCase {
     
     func testInvalidType() {
         let lhs = AnyCodable(value: true, valueType: .bool)
-        let condition = SimpleCondition(op: "less_than", value: lhs)
+        let condition = SimpleCondition(op: .less_than, value: lhs)
         let rhs: Any = false
         
         let equalOperator = LessThan()
