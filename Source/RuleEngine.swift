@@ -15,13 +15,13 @@ enum RuleEngineError: Error {
 }
 
 final public class RuleEngine {
-    private var operators: [String: Operator]
+    private var operators: [OperatorID: Operator]
     private var rules: [Rule] = []
     private let pathParser: PathParser = PathParser()
     
-    
+
     // Init for rules that come in string format
-    public init(rules: [String], customOperators: [Operator]) throws {
+    public init(rules: [String], customOperators: [Operator] = []) throws {
         self.operators = try Self.generateOperatorsDict(customOperators)
         self.rules = rules.compactMap{ dictRule in
             try? Self.decodeRule(rule: dictRule)
@@ -35,7 +35,7 @@ final public class RuleEngine {
         }
     }
     
-    private static func generateOperatorsDict(_ customOperators: [Operator]) throws -> [String:Operator]{
+    private static func generateOperatorsDict(_ customOperators: [Operator]) throws -> [OperatorID:Operator]{
         let defaultOperators: [Operator] = [Equal(), NotEqual(), LessThan(), LessThanInclusive(),
                                             GreaterThan(), GreaterThanInclusive(), In(), NotIn(),
                                             Contains(), NotContains(), Regex()]
