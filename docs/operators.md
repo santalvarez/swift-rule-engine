@@ -86,8 +86,12 @@ To create your own operator you need to implement the `Operator` class.
 ```swift
 import SwiftRuleEngine
 
+extension OperatorID {
+    static let equal_lowercase = OperatorID(rawValue: "equal_lowercase")
+}
+
 struct EqualLowercase(Operator):
-    let id = "equal_lowercase"
+    let id = OperatorID.equal_lowercase
 
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         guard condition.value.valueType == .string,
