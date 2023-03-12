@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NotEqual: Operator {
-    let id = "not_equal"
+    let id = OperatorID.not_equal
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         switch condition.value.valueType {
@@ -39,7 +39,7 @@ struct NotEqual: Operator {
         case .null:
             return !(objValue is NSNull)
         
-        case .unknown:
+        default:
             return false
         }
     }

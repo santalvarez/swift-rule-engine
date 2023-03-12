@@ -9,7 +9,7 @@ import Foundation
 
 
 struct GreaterThan: Operator {
-    let id = "greater_than"
+    let id = OperatorID.greater_than
 
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         switch condition.value.valueType {
@@ -29,7 +29,7 @@ struct GreaterThan: Operator {
             
             return lhs < rhs
 
-        case .bool, .array, .dictionary, .null, .unknown:
+        default:
             return false
         }
     }

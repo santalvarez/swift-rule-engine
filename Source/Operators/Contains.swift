@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Contains: Operator {
-    let id = "contains"
+    let id = OperatorID.contains
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         if let rhs = objValue as? NSArray {

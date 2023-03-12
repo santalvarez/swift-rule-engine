@@ -10,7 +10,7 @@ import Foundation
 
 
 struct Equal: Operator {
-    let id = "equal"
+    let id = OperatorID.equal
 
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
 
@@ -43,7 +43,7 @@ struct Equal: Operator {
         case .null:
             return objValue is NSNull
         
-        case .unknown:
+        default:
             return false
         }
     }

@@ -9,8 +9,8 @@ import Foundation
 
 
 struct In: Operator {
-    let id = "in"
-    
+    let id = OperatorID.in_
+
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         switch condition.value.valueType {
         case .string:
@@ -18,17 +18,17 @@ struct In: Operator {
                   let lhs = condition.value.value as? String else {
                 return false
             }
-            
+
             return lhs.contains(rhs)
-            
+
         case .array:
             guard let lhs = condition.value.value as? NSArray else {
                 return false
             }
-            
+
             return lhs.contains(objValue)
 
-        case .number, .bool, .dictionary, .null, .unknown:
+        default:
             return false
         }
     }

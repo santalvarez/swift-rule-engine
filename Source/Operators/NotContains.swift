@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NotContains: Operator {
-    let id = "not_contains"
+    let id = OperatorID.not_contains
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         if let rhs = objValue as? NSArray {

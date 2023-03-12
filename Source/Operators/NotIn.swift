@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NotIn: Operator {
-    let id = "not_in"
+    let id = OperatorID.not_in
 
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         switch condition.value.valueType {
@@ -28,7 +28,7 @@ struct NotIn: Operator {
 
             return !lhs.contains(objValue)
 
-        case .number, .bool, .dictionary, .null, .unknown:
+        default:
             return false
         }
     }

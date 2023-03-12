@@ -9,7 +9,7 @@ import Foundation
 
 
 struct LessThanInclusive: Operator {
-    let id = "less_than_inclusive"
+    let id = OperatorID.less_than_inclusive
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         switch condition.value.valueType {
@@ -29,7 +29,7 @@ struct LessThanInclusive: Operator {
             
             return lhs >= rhs
 
-        case .bool, .array, .dictionary, .null, .unknown:
+        default:
             return false
         }
     }

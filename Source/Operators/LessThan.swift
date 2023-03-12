@@ -9,7 +9,7 @@ import Foundation
 
 
 struct LessThan: Operator {
-    let id = "less_than"
+    let id = OperatorID.less_than
     
     func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
         switch condition.value.valueType {
@@ -29,7 +29,7 @@ struct LessThan: Operator {
             
             return lhs > rhs
 
-        case .bool, .array, .dictionary, .null, .unknown:
+        default:
             return false
         }
     }
