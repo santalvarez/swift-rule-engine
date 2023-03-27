@@ -10,7 +10,7 @@ import XCTest
 
 
 class InSetOperatorTests: XCTestCase {
-    func testStringSetMatch() {
+    func testStringInSetMatch() {
         let lhs = AnyCodable(value: Set(["test"]), valueType: .set)
         let condition = SimpleCondition(op: .in_set, value: lhs)
         let rhs: Any = "test"
@@ -20,7 +20,7 @@ class InSetOperatorTests: XCTestCase {
         XCTAssertTrue(op.match(condition, rhs))
     }
 
-    func testStringSetNotMatch() {
+    func testStringInSetNotMatch() {
         let lhs = AnyCodable(value: Set(["foo", "bar"]), valueType: .set)
         let condition = SimpleCondition(op: .in_set, value: lhs)
         let rhs: Any = "test"
@@ -30,7 +30,7 @@ class InSetOperatorTests: XCTestCase {
         XCTAssertFalse(op.match(condition, rhs))
     }
 
-    func testIntSetMatch() {
+    func testIntInSetMatch() {
         let lhs = AnyCodable(value: Set([1, 2, 3]), valueType: .set)
         let condition = SimpleCondition(op: .in_set, value: lhs)
         let rhs: Any = 2
@@ -40,7 +40,7 @@ class InSetOperatorTests: XCTestCase {
         XCTAssertTrue(op.match(condition, rhs))
     }
 
-    func testIntSetNotMatch() {
+    func testIntInSetNotMatch() {
         let lhs = AnyCodable(value: Set([1, 2, 3]), valueType: .set)
         let condition = SimpleCondition(op: .in_set, value: lhs)
         let rhs: Any = 4
@@ -50,7 +50,7 @@ class InSetOperatorTests: XCTestCase {
         XCTAssertFalse(op.match(condition, rhs))
     }
 
-    func testDoubleSetMatch() {
+    func testDoubleInSetMatch() {
         let lhs = AnyCodable(value: Set([1.1, 2.2, 3.3]), valueType: .set)
         let condition = SimpleCondition(op: .in_set, value: lhs)
         let rhs: Any = 2.2
@@ -60,7 +60,7 @@ class InSetOperatorTests: XCTestCase {
         XCTAssertTrue(op.match(condition, rhs))
     }
 
-    func testDoubleSetNotMatch() {
+    func testDoubleInSetNotMatch() {
         let lhs = AnyCodable(value: Set([1.1, 2.2, 3.3]), valueType: .set)
         let condition = SimpleCondition(op: .in_set, value: lhs)
         let rhs: Any = 4.4

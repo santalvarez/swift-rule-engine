@@ -6,30 +6,77 @@
 //
 
 import XCTest
+@testable import SwiftRuleEngine
 
 final class NotInSetOperatorTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testStringNotInSetMatch() {
+        let lhs = AnyCodable(value: Set(["test"]), valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = "foo"
+
+        let op = NotInSet()
+
+        XCTAssertTrue(op.match(condition, rhs))
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testStringNotInSetNotMatch() {
+        let lhs = AnyCodable(value: Set(["test"]), valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = "test"
+
+        let op = NotInSet()
+
+        XCTAssertFalse(op.match(condition, rhs))
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testIntNotInSetMatch() {
+        let lhs = AnyCodable(value: Set([1, 2, 3]), valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = 4
+
+        let op = NotInSet()
+
+        XCTAssertTrue(op.match(condition, rhs))
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testIntNotInSetNotMatch() {
+        let lhs = AnyCodable(value: Set([1, 2, 3]), valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = 2
+
+        let op = NotInSet()
+
+        XCTAssertFalse(op.match(condition, rhs))
     }
 
+    func testDoubleNotInSetMatch() {
+        let lhs = AnyCodable(value: Set([1.0, 2.0, 3.0]), valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = 4.0
+
+        let op = NotInSet()
+
+        XCTAssertTrue(op.match(condition, rhs))
+    }
+
+    func testDoubleNotInSetNotMatch() {
+        let lhs = AnyCodable(value: Set([1.0, 2.0, 3.0]), valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = 2.0
+
+        let op = NotInSet()
+
+        XCTAssertFalse(op.match(condition, rhs))
+    }
+
+    func testInvalidType() {
+        let lhs = AnyCodable(value: 123123, valueType: .set)
+        let condition = SimpleCondition(op: .in_set, value: lhs)
+        let rhs: Any = "test"
+
+        let op = InSet()
+
+        XCTAssertFalse(op.match(condition, rhs))
+    }
 }
