@@ -15,17 +15,31 @@ extension KeyedDecodingContainer {
 
         switch op {
         case .regex:
-            // NOTE: how can i obtain the pattern
             guard let pattern = try self.decodeIfPresent(String.self, forKey: key) else {
-                throw DecodingError.typeMismatch(String.self, DecodingError.Context(codingPath: codingPath, debugDescription: "Missing pattern for regex operator"))
+                throw DecodingError.typeMismatch(String.self,
+                      DecodingError.Context(codingPath: codingPath,
+                                            debugDescription: "Missing pattern for regex operator"))
             }
 
             return AnyCodable(value: try NSRegularExpression(pattern: pattern), valueType: .regex)
-        default:
-            break
-        }
 
-        return try self.decode(AnyCodable.self, forKey: key)
+        case .in_set, .not_in_set:
+            if let set = try self.decodeIfPresent(Set<String>.self, forKey: key) {
+                return AnyCodable(value: set, valueType: .set)
+
+            } else if let set = try self.decodeIfPresent(Set<Int>.self, forKey: key) {
+                return AnyCodable(value: set, valueType: .set)
+
+            } else if let set = try self.decodeIfPresent(Set<Double>.self, forKey: key) {
+                return AnyCodable(value: set, valueType: .set)
+            } else {
+                throw DecodingError.typeMismatch(Set<Double>.self,
+                      DecodingError.Context(codingPath: codingPath,
+                                            debugDescription: "Missing set for set operator"))
+            }
+        default:
+            return try self.decode(AnyCodable.self, forKey: key)
+        }
     }
 }
 
@@ -52,38 +66,52 @@ public struct AnyCodable: Decodable {
     }
 
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if container.decodeNil() {
-            self.value = NSNull()
-            self.valueType = .null
-
-        } else if let string = try? container.decode(String.self) {
-            self.value = string
-            self.valueType = .string
-
-        } else if let bool = try? container.decode(Bool.self) {
-            self.value = bool
-            self.valueType = .bool
-
-        } else if let int = try? container.decode(Int.self) {
-            self.value = int
-            self.valueType = .number
-
-        } else if let double = try? container.decode(Double.self) {
-            self.value = double
-            self.valueType = .number
-
-        } else if let array = try? container.decode([AnyCodable].self) {
-            // TODO: watch out for this
-            self.value = array
-            self.valueType = .array
-
-        } else if let dictionary = try? container.decode([String: AnyCodable].self) {
-            self.value = dictionary
-            self.valueType = .dictionary
-
-        } else {
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "AnyCodable value cannot be decoded")
+        if let container = try? decoder.container(keyedBy: JSONCodingKeys.self) {
+            if let dictionary = try? container.decode([String: Any].self) {
+                self.value = dictionary
+                self.valueType = .dictionary
+            } else {
+                throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: container.codingPath, debugDescription: "AnyCodable value cannot be decoded"))
+            }
+            return
         }
+
+        if var container = try? decoder.unkeyedContainer() {
+            if let array = try? container.decode([Any].self) {
+                self.value = array
+                self.valueType = .array
+            } else {
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "AnyCodable value cannot be decoded")
+            }
+            return
+        }
+
+        if let container = try? decoder.singleValueContainer(){
+            if container.decodeNil() {
+                self.value = NSNull()
+                self.valueType = .null
+
+            } else if let string = try? container.decode(String.self) {
+                self.value = string
+                self.valueType = .string
+
+            } else if let bool = try? container.decode(Bool.self) {
+                self.value = bool
+                self.valueType = .bool
+
+            } else if let int = try? container.decode(Int.self) {
+                self.value = int
+                self.valueType = .number
+
+            } else if let double = try? container.decode(Double.self) {
+                self.value = double
+                self.valueType = .number
+            } else {
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "AnyCodable value cannot be decoded")
+            }
+            return
+        }
+
+        throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Could not initialize container"))
     }
 }
