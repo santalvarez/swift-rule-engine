@@ -10,9 +10,10 @@ import Foundation
 public enum Condition: Decodable {
     case simple(SimpleCondition)
     case multi(MultiCondition)
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
+
         if let simpleCondition = try? container.decode(SimpleCondition.self) {
             self = .simple(simpleCondition)
         } else {
@@ -20,7 +21,7 @@ public enum Condition: Decodable {
             self = .multi(multiCondition)
         }
     }
-    
+
     init(_ value: Any) {
         if value is SimpleCondition{
             self = .simple(value as! SimpleCondition)
@@ -28,7 +29,7 @@ public enum Condition: Decodable {
             self = .multi(value as! MultiCondition)
         }
     }
-    
+
     func getMatch() -> Bool {
         switch self {
         case .simple(let cond):
@@ -49,15 +50,15 @@ public struct SimpleCondition {
 }
 
 extension SimpleCondition: Decodable {
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.op = try container.decode(OperatorID.self, forKey: .op)
         self.value = try container.decodeConditionValue(forKey: .value, forOperator: self.op)
-        self.params = try container.decodeIfPresent([String: AnyCodable].self, forKey: .params)
+        self.params = try? container.decode([String: Any].self, forKey: .params)
         self.path = try container.decodeIfPresent(String.self, forKey: .path)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case op = "operator", value, params, path
     }
@@ -90,8 +91,13 @@ extension MultiCondition: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.any = try container.decodeIfPresent([Condition].self, forKey: .any)
         self.all = try container.decodeIfPresent([Condition].self, forKey: .all)
+        if self.any == nil && self.all == nil {
+            throw DecodingError.typeMismatch(MultiCondition.self,
+                  DecodingError.Context(codingPath: decoder.codingPath,
+                                        debugDescription: "Missing conditions for multi condition"))
+        }
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case all, any
     }
