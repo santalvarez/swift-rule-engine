@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0910744E29BD154C0044B4B4 /* InSetOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910744D29BD154C0044B4B4 /* InSetOperatorTests.swift */; };
 		0910745029BD2CC00044B4B4 /* InSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910744F29BD2CC00044B4B4 /* InSet.swift */; };
+		0910745229BE65470044B4B4 /* NotInSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910745129BE65470044B4B4 /* NotInSet.swift */; };
+		0910745429BE81F90044B4B4 /* CodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910745329BE81F90044B4B4 /* CodableExtension.swift */; };
 		0914696C29B2256B0064DA04 /* docs in Resources */ = {isa = PBXBuildFile; fileRef = 0914696B29B2256B0064DA04 /* docs */; };
 		095114D8294CAA9600C65AA7 /* SwiftRuleEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */; };
 		095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E72953BA5D00C65AA7 /* RuleEngine.swift */; };
@@ -56,6 +58,8 @@
 /* Begin PBXFileReference section */
 		0910744D29BD154C0044B4B4 /* InSetOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InSetOperatorTests.swift; sourceTree = "<group>"; };
 		0910744F29BD2CC00044B4B4 /* InSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InSet.swift; sourceTree = "<group>"; };
+		0910745129BE65470044B4B4 /* NotInSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotInSet.swift; sourceTree = "<group>"; };
+		0910745329BE81F90044B4B4 /* CodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtension.swift; sourceTree = "<group>"; };
 		0914696B29B2256B0064DA04 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftRuleEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114D7294CAA9600C65AA7 /* SwiftRuleEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftRuleEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +143,7 @@
 				095114EE2953BE2400C65AA7 /* Rule.swift */,
 				095114F22953F77500C65AA7 /* AnyCodable.swift */,
 				09ADCD2629A3CC2E00D6F26E /* PathParser.swift */,
+				0910745329BE81F90044B4B4 /* CodableExtension.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 				09ADCD3F29A5A5C700D6F26E /* NotContains.swift */,
 				096D386829B182A6006008DF /* Regex.swift */,
 				0910744F29BD2CC00044B4B4 /* InSet.swift */,
+				0910745129BE65470044B4B4 /* NotInSet.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -306,6 +312,7 @@
 				095114EF2953BE2400C65AA7 /* Rule.swift in Sources */,
 				09ADCD3029A5601000D6F26E /* NotEqual.swift in Sources */,
 				0910745029BD2CC00044B4B4 /* InSet.swift in Sources */,
+				0910745429BE81F90044B4B4 /* CodableExtension.swift in Sources */,
 				095114ED2953BD4A00C65AA7 /* Condition.swift in Sources */,
 				09ADCD2E29A5551100D6F26E /* Equal.swift in Sources */,
 				09ADCD3A29A5A58200D6F26E /* In.swift in Sources */,
@@ -319,6 +326,7 @@
 				09ADCD4029A5A5C700D6F26E /* NotContains.swift in Sources */,
 				09ADCD2729A3CC2E00D6F26E /* PathParser.swift in Sources */,
 				09ADCD3C29A5A59900D6F26E /* NotIn.swift in Sources */,
+				0910745229BE65470044B4B4 /* NotInSet.swift in Sources */,
 				09ADCD3629A5A54000D6F26E /* GreaterThan.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
