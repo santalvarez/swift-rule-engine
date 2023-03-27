@@ -18,7 +18,7 @@ public struct Rule: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.extra = try container.decodeIfPresent([String: AnyCodable].self, forKey: .extra)
+        self.extra = try? container.decode([String: Any].self, forKey: .extra)
         self.conditions = try container.decode(MultiCondition.self, forKey: .conditions)
     }
 
