@@ -122,10 +122,12 @@ final public class RuleEngine {
 
             switch condition {
             case .multi(var cond):
-                result = Condition(try self.runMultiCondition(&cond, obj))
+                try self.runMultiCondition(&cond, obj)
+                result = Condition(cond)
 
             case .simple(var cond):
-                result = Condition(try self.runCondition(&cond, obj))
+                try self.runCondition(&cond, obj)
+                result = Condition(cond)
             }
 
             multiCondition.any![idx] = result
