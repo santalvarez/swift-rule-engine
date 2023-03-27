@@ -20,6 +20,7 @@
 		095114F32953F77500C65AA7 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114F22953F77500C65AA7 /* AnyCodable.swift */; };
 		096D386929B182A6006008DF /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096D386829B182A6006008DF /* Regex.swift */; };
 		096D386B29B182D0006008DF /* RegexOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096D386A29B182D0006008DF /* RegexOperatorTests.swift */; };
+		097F3FCF29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097F3FCE29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift */; };
 		09ADCD2729A3CC2E00D6F26E /* PathParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2629A3CC2E00D6F26E /* PathParser.swift */; };
 		09ADCD2B29A44CC500D6F26E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 09ADCD2A29A44CC500D6F26E /* README.md */; };
 		09ADCD2E29A5551100D6F26E /* Equal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2D29A5551100D6F26E /* Equal.swift */; };
@@ -70,6 +71,7 @@
 		095114F22953F77500C65AA7 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 		096D386829B182A6006008DF /* Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		096D386A29B182D0006008DF /* RegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexOperatorTests.swift; sourceTree = "<group>"; };
+		097F3FCE29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotInSetOperatorTests.swift; sourceTree = "<group>"; };
 		09ADCD2629A3CC2E00D6F26E /* PathParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathParser.swift; sourceTree = "<group>"; };
 		09ADCD2A29A44CC500D6F26E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		09ADCD2D29A5551100D6F26E /* Equal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equal.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				09ADCD5A29A6A29400D6F26E /* NotContainsOperatorTests.swift */,
 				096D386A29B182D0006008DF /* RegexOperatorTests.swift */,
 				0910744D29BD154C0044B4B4 /* InSetOperatorTests.swift */,
+				097F3FCE29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift */,
 			);
 			path = OperatorTests;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				09ADCD4829A6633000D6F26E /* RuleEngineTests.swift in Sources */,
 				09ADCD4B29A66CC400D6F26E /* NotEqualOperatorTests.swift in Sources */,
 				09ADCD5B29A6A29400D6F26E /* NotContainsOperatorTests.swift in Sources */,
+				097F3FCF29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift in Sources */,
 				09ADCD5329A69A8A00D6F26E /* GreaterThanInclusiveOperatorTests.swift in Sources */,
 				0910744E29BD154C0044B4B4 /* InSetOperatorTests.swift in Sources */,
 				09ADCD4D29A675F500D6F26E /* LessThanOperatorTests.swift in Sources */,
