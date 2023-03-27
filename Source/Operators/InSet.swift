@@ -16,11 +16,18 @@ struct InSet: Operator {
             return false
         }
 
-        guard let lhs = condition.value.value as? Set<AnyHashable>,
-              let rhs = objValue as? AnyHashable else {
-            return false
+        if let lhs = condition.value.value as? Set<String>,
+           let rhs = objValue as? String {
+            return lhs.contains(rhs)
         }
-
-        return lhs.contains(rhs)
+        if let lhs = condition.value.value as? Set<Int>,
+           let rhs = objValue as? Int {
+            return lhs.contains(rhs)
+        }
+        if let lhs = condition.value.value as? Set<Double>,
+           let rhs = objValue as? Double {
+            return lhs.contains(rhs)
+        }
+        return false
     }
 }
