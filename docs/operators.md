@@ -76,7 +76,7 @@
 - **id**: "regex"
 
 - **description**: Checks if the object value matches the regex in the condition. The regex is compiled 
-and cached to improve performance.
+only when the rule is first loaded.
 
 
 ## Custom Operator
