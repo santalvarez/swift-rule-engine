@@ -215,5 +215,67 @@ class RuleEngineTests: XCTestCase {
 
         XCTAssertTrue(result.conditions.match)
     }
+
+    func testLoadStringRules() throws {
+        let rule = """
+            {
+                "name": "test-rule",
+                "description": "Test rule",
+                "conditions": {
+                    "all": [
+                        {
+                            "path": "$.player.first_name",
+                            "value": ["Marcos", "Tomas", "Lionel", "Tony"],
+                            "operator": "in"
+                        }
+                    ]
+                }
+            }
+        """
+
+        XCTAssertNoThrow(try RuleEngine(rules: [rule]))
+    }
+
+    func testAllConditionWithStringRule() throws {
+        let rule = """
+            {
+                "name": "test-rule",
+                "description": "Test rule",
+                "conditions": {
+                    "all": [
+                        {
+                            "path": "$.player.first_name",
+                            "value": ["Marcos", "Tomas", "Lionel", "Tony"],
+                            "operator": "in"
+                        },
+                        {
+                            "path": "$.player.age",
+                            "value": 30,
+                            "operator": "greater_than"
+                        },
+                        {
+                            "path": "$.player.age",
+                            "value": 40,
+                            "operator": "less_than"
+                        }
+                    ]
+                }
+            }
+        """
+
+        let obj = [
+            "player": [
+                "first_name": "Lionel",
+                "last_name": "Messi",
+                "age": 34
+            ]
+        ]
+
+        let engine = try RuleEngine(rules: [rule])
+
+        let result = try XCTUnwrap(engine.evaluate(obj))
+
+        XCTAssertTrue(result.conditions.match)
+    }
 }
 
