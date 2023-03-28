@@ -43,7 +43,7 @@ final public class RuleEngine {
     private static func generateOperatorsDict(_ customOperators: [Operator]) throws -> [OperatorID:Operator]{
         let defaultOperators: [Operator] = [Equal(), NotEqual(), LessThan(), LessThanInclusive(),
                                             GreaterThan(), GreaterThanInclusive(), In(), NotIn(),
-                                            Contains(), NotContains(), Regex()]
+                                            Contains(), NotContains(), Regex(), InSet(), NotInSet()]
         let operators = defaultOperators + customOperators
 
         return try operators.reduce(into: [:]) { result, op in
