@@ -79,6 +79,22 @@
 only when the rule is first loaded.
 
 
+### In Set
+
+- **id**: "in_set"
+
+- **description**: Compares if the value of the object is in the value of the condition. When the rule
+is loaded the array is converted to a set. Performance is O(1).
+
+
+### Not In Set
+
+- **id**: "not_in_set"
+
+- **description**: Compares if the value of the object does not contain the value of the condition. When the rule
+is loaded the array is converted to a set. Performance is O(1).
+
+
 ## Custom Operator
 
 To create your own operator you need to implement the `Operator` class.
