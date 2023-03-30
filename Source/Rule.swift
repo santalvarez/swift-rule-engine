@@ -22,7 +22,7 @@ public struct Rule: Decodable {
         self.conditions = try container.decode(MultiCondition.self, forKey: .conditions)
     }
 
-    private enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case name, description, extra, conditions
     }
     
