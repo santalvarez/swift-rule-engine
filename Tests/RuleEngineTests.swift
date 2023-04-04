@@ -263,7 +263,7 @@ class RuleEngineTests: XCTestCase {
             }
         """
 
-        let obj = [
+        let obj: [String: Any] = [
             "player": [
                 "first_name": "Lionel",
                 "last_name": "Messi",
