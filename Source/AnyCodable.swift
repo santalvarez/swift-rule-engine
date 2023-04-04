@@ -14,7 +14,7 @@ extension KeyedDecodingContainer {
     func decodeConditionValue(forKey key: KeyedDecodingContainer<K>.Key, forOperator op: OperatorID) throws -> AnyCodable {
 
         switch op {
-        case .regex:
+        case .regex, .contains_regex, .not_contains_regex:
             guard let pattern = try self.decodeIfPresent(String.self, forKey: key) else {
                 throw DecodingError.typeMismatch(String.self,
                       DecodingError.Context(codingPath: codingPath,
