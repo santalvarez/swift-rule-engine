@@ -31,6 +31,8 @@ public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable {
     public static let regex = OperatorID(rawValue: "regex")
     public static let in_set = OperatorID(rawValue: "in_set")
     public static let not_in_set = OperatorID(rawValue: "not_in_set")
+    public static let contains_regex = OperatorID(rawValue: "contains_regex")
+    public static let not_contains_regex = OperatorID(rawValue: "not_contains_regex")
 
     public init(rawValue: String) {
         self.rawValue = rawValue
