@@ -95,6 +95,20 @@ is loaded the array is converted to a set. Performance is O(1).
 is loaded the array is converted to a set. Performance is O(1).
 
 
+### Contains Regex
+
+- **id**: "contains_regex"
+
+- **description**: Compares if the string array of the object contains the value of the condition using regex.
+
+
+### Not Contains Regex
+
+- **id**: "not_contains_regex"
+
+- **description**: Compares if the string array of the object does not contain the value of the condition using regex.
+
+
 ## Custom Operator
 
 To create your own operator you need to implement the `Operator` class.
