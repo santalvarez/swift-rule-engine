@@ -13,6 +13,8 @@
 		0910745429BE81F90044B4B4 /* CodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0910745329BE81F90044B4B4 /* CodableExtension.swift */; };
 		0914696C29B2256B0064DA04 /* docs in Resources */ = {isa = PBXBuildFile; fileRef = 0914696B29B2256B0064DA04 /* docs */; };
 		091D7D8F29DCAE5C007480E1 /* ContainsRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091D7D8E29DCAE5C007480E1 /* ContainsRegex.swift */; };
+		09372B4729E5DCF6004FAC5E /* NotRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09372B4629E5DCF6004FAC5E /* NotRegex.swift */; };
+		09372B4929E5DD60004FAC5E /* NotRegexOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09372B4829E5DD60004FAC5E /* NotRegexOperatorTests.swift */; };
 		095114D8294CAA9600C65AA7 /* SwiftRuleEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */; };
 		095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E72953BA5D00C65AA7 /* RuleEngine.swift */; };
 		095114EA2953BB3B00C65AA7 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095114E92953BB3B00C65AA7 /* Operator.swift */; };
@@ -67,6 +69,8 @@
 		0910745329BE81F90044B4B4 /* CodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtension.swift; sourceTree = "<group>"; };
 		0914696B29B2256B0064DA04 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		091D7D8E29DCAE5C007480E1 /* ContainsRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainsRegex.swift; sourceTree = "<group>"; };
+		09372B4629E5DCF6004FAC5E /* NotRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRegex.swift; sourceTree = "<group>"; };
+		09372B4829E5DD60004FAC5E /* NotRegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRegexOperatorTests.swift; sourceTree = "<group>"; };
 		095114CD294CAA9600C65AA7 /* SwiftRuleEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftRuleEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114D7294CAA9600C65AA7 /* SwiftRuleEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftRuleEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		095114E72953BA5D00C65AA7 /* RuleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEngine.swift; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 				09ADCD3D29A5A5A900D6F26E /* Contains.swift */,
 				09ADCD3F29A5A5C700D6F26E /* NotContains.swift */,
 				096D386829B182A6006008DF /* Regex.swift */,
+				09372B4629E5DCF6004FAC5E /* NotRegex.swift */,
 				0910744F29BD2CC00044B4B4 /* InSet.swift */,
 				0910745129BE65470044B4B4 /* NotInSet.swift */,
 				091D7D8E29DCAE5C007480E1 /* ContainsRegex.swift */,
@@ -208,6 +213,7 @@
 				097F3FCE29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift */,
 				09B3C87529DCB65E00BF6195 /* ContainsRegexOperatorTests.swift */,
 				09B3C87929DCC5D600BF6195 /* NotContainsRegexOperatorTests.swift */,
+				09372B4829E5DD60004FAC5E /* NotRegexOperatorTests.swift */,
 			);
 			path = OperatorTests;
 			sourceTree = "<group>";
@@ -325,6 +331,7 @@
 			files = (
 				095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */,
 				095114EF2953BE2400C65AA7 /* Rule.swift in Sources */,
+				09372B4729E5DCF6004FAC5E /* NotRegex.swift in Sources */,
 				09ADCD3029A5601000D6F26E /* NotEqual.swift in Sources */,
 				0910745029BD2CC00044B4B4 /* InSet.swift in Sources */,
 				0910745429BE81F90044B4B4 /* CodableExtension.swift in Sources */,
@@ -367,6 +374,7 @@
 				09ADCD5929A6A28400D6F26E /* ContainsOperatorTests.swift in Sources */,
 				09ADCD5729A69FBB00D6F26E /* NotInOperatorTests.swift in Sources */,
 				09ADCD5529A69C0A00D6F26E /* InOperatorTests.swift in Sources */,
+				09372B4929E5DD60004FAC5E /* NotRegexOperatorTests.swift in Sources */,
 				09ADCD5129A6995900D6F26E /* GreaterThanOperatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,7 +423,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -479,7 +487,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
