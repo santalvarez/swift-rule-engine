@@ -107,6 +107,7 @@
 		09B3C87529DCB65E00BF6195 /* ContainsRegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainsRegexOperatorTests.swift; sourceTree = "<group>"; };
 		09B3C87729DCC52400BF6195 /* NotContainsRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotContainsRegex.swift; sourceTree = "<group>"; };
 		09B3C87929DCC5D600BF6195 /* NotContainsRegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotContainsRegexOperatorTests.swift; sourceTree = "<group>"; };
+		09EE15B82A2FF44200A4E8E1 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +132,7 @@
 		095114C3294CAA9600C65AA7 = {
 			isa = PBXGroup;
 			children = (
+				09EE15B82A2FF44200A4E8E1 /* Package.swift */,
 				0914696B29B2256B0064DA04 /* docs */,
 				09ADCD2A29A44CC500D6F26E /* README.md */,
 				095114CF294CAA9600C65AA7 /* Source */,
