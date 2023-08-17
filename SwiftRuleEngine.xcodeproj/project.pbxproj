@@ -24,7 +24,7 @@
 		096D386929B182A6006008DF /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096D386829B182A6006008DF /* Regex.swift */; };
 		096D386B29B182D0006008DF /* RegexOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096D386A29B182D0006008DF /* RegexOperatorTests.swift */; };
 		097F3FCF29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097F3FCE29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift */; };
-		09ADCD2729A3CC2E00D6F26E /* PathParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2629A3CC2E00D6F26E /* PathParser.swift */; };
+		09ADCD2729A3CC2E00D6F26E /* JSONPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2629A3CC2E00D6F26E /* JSONPath.swift */; };
 		09ADCD2B29A44CC500D6F26E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 09ADCD2A29A44CC500D6F26E /* README.md */; };
 		09ADCD2E29A5551100D6F26E /* Equal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2D29A5551100D6F26E /* Equal.swift */; };
 		09ADCD3029A5601000D6F26E /* NotEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADCD2F29A5601000D6F26E /* NotEqual.swift */; };
@@ -81,7 +81,7 @@
 		096D386829B182A6006008DF /* Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		096D386A29B182D0006008DF /* RegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexOperatorTests.swift; sourceTree = "<group>"; };
 		097F3FCE29D1C1CB006C7EB7 /* NotInSetOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotInSetOperatorTests.swift; sourceTree = "<group>"; };
-		09ADCD2629A3CC2E00D6F26E /* PathParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathParser.swift; sourceTree = "<group>"; };
+		09ADCD2629A3CC2E00D6F26E /* JSONPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONPath.swift; sourceTree = "<group>"; };
 		09ADCD2A29A44CC500D6F26E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		09ADCD2D29A5551100D6F26E /* Equal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equal.swift; sourceTree = "<group>"; };
 		09ADCD2F29A5601000D6F26E /* NotEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotEqual.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 				095114EC2953BD4A00C65AA7 /* Condition.swift */,
 				095114EE2953BE2400C65AA7 /* Rule.swift */,
 				095114F22953F77500C65AA7 /* AnyCodable.swift */,
-				09ADCD2629A3CC2E00D6F26E /* PathParser.swift */,
+				09ADCD2629A3CC2E00D6F26E /* JSONPath.swift */,
 				0910745329BE81F90044B4B4 /* CodableExtension.swift */,
 			);
 			path = Source;
@@ -350,7 +350,7 @@
 				09ADCD3429A5A52500D6F26E /* LessThanInclusive.swift in Sources */,
 				09ADCD3E29A5A5A900D6F26E /* Contains.swift in Sources */,
 				09ADCD4029A5A5C700D6F26E /* NotContains.swift in Sources */,
-				09ADCD2729A3CC2E00D6F26E /* PathParser.swift in Sources */,
+				09ADCD2729A3CC2E00D6F26E /* JSONPath.swift in Sources */,
 				09ADCD3C29A5A59900D6F26E /* NotIn.swift in Sources */,
 				0910745229BE65470044B4B4 /* NotInSet.swift in Sources */,
 				09ADCD3629A5A54000D6F26E /* GreaterThan.swift in Sources */,
@@ -425,7 +425,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.3;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -489,7 +489,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.3;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;

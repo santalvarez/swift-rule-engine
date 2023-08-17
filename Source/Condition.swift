@@ -46,7 +46,7 @@ public struct SimpleCondition {
     public var op: OperatorID  // operator is reserved
     public var value: AnyCodable
     public var params: [String: Any]? = nil
-    public var path: String? = nil
+    public var path: JSONPath? = nil
 }
 
 extension SimpleCondition: Decodable {
@@ -56,7 +56,9 @@ extension SimpleCondition: Decodable {
         self.op = try container.decode(OperatorID.self, forKey: .op)
         self.value = try container.decodeConditionValue(forKey: .value, forOperator: self.op)
         self.params = try? container.decode([String: Any].self, forKey: .params)
-        self.path = try container.decodeIfPresent(String.self, forKey: .path)
+        if let pathStr = try container.decodeIfPresent(String.self, forKey: .path) {
+            self.path = try JSONPath(pathStr)
+        }
     }
 
     private enum CodingKeys: String, CodingKey {
