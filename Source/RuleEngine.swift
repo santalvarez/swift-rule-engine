@@ -17,7 +17,6 @@ enum RuleEngineError: Error {
 final public class RuleEngine {
     private var operators: [OperatorID: Operator]
     private var rules: [Rule] = []
-    private let pathParser: PathParser = PathParser()
 
 
     // Init for rules that come in string format
@@ -80,7 +79,7 @@ final public class RuleEngine {
     private func runCondition(_ condition: inout SimpleCondition, _ obj: Any) throws {
         let pathObj: Any
         if condition.path != nil {
-            pathObj = try self.pathParser.getValue(condition.path!, obj)
+            pathObj = try condition.path!.getValue(for: obj)
         } else {
             pathObj = obj
         }

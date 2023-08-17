@@ -1,5 +1,5 @@
 //
-//  PathParser.swift
+//  JSONPath.swift
 //  SwiftRuleEngine
 //
 //  Created by Santiago Alvarez on 20/02/2023.
@@ -8,14 +8,23 @@
 import Foundation
 
 
-enum PathParserError: Error {
+enum JSONPathError: Error {
     case valueNotFound
     case invalidPath
     case expectingDictionary
 }
 
 
-struct PathParser {
+public struct JSONPath {
+    let components: [String]
+
+    init(_ path: String) throws {
+        if !path.starts(with: "$.") {
+            throw JSONPathError.invalidPath
+        }
+
+        self.components = path.dropFirst(2).components(separatedBy: ".")
+    }
     
     private func accessDict(_ key: String, _ dict: [String: Any]) throws -> Any {
         if let value = dict[key] {
@@ -23,23 +32,16 @@ struct PathParser {
         } else if dict[key] == nil {
             return NSNull()
         } else {
-            throw PathParserError.valueNotFound
+            throw JSONPathError.valueNotFound
         }
     }
 
-    func getValue(_ path: String, _ obj: Any) throws -> Any {
-        if !path.starts(with: "$.") {
-            throw PathParserError.invalidPath
-        }
-
-        let path = path.replacingOccurrences(of: "$.", with: "")
-        let pathComponents = path.components(separatedBy: ".")
-
+    func getValue(for obj: Any) throws -> Any {
         var currentObj: Any = obj
 
-        for component in pathComponents {
+        for component in self.components {
             guard let dict = currentObj as? [String: Any] else {
-                throw PathParserError.expectingDictionary
+                throw JSONPathError.expectingDictionary
             }
             currentObj = try self.accessDict(component, dict)
         }
