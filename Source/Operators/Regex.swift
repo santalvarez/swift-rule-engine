@@ -9,15 +9,22 @@ import Foundation
 
 
 struct Regex: Operator {
-    let id = OperatorID.regex
+    static let id = OperatorID.regex
+    let regex: NSRegularExpression
 
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        if condition.value.valueType != .regex {
-            return false
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        guard let pattern = value.value as? String else {
+            throw OperatorError.invalidValueType
         }
 
-        guard let regex = condition.value.value as? NSRegularExpression,
-              let rhs = objValue as? String else {
+        guard let reg = try? NSRegularExpression(pattern: pattern) else {
+            throw OperatorError.invalidValue
+        }
+        self.regex = reg
+    }
+
+    func match(_ objValue: Any) -> Bool {
+        guard let rhs = objValue as? String else {
             return false
         }
 

@@ -9,24 +9,29 @@ import Foundation
 
 
 struct LessThan: Operator {
-    let id = OperatorID.less_than
-    
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        switch condition.value.valueType {
+    static let id = OperatorID.less_than
+    private let value: AnyCodable
+
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        self.value = value
+    }
+
+    func match(_ objValue: Any) -> Bool {
+        switch self.value.valueType {
         case .number:
-            guard let lhs = condition.value.value as? NSNumber,
+            guard let lhs = self.value.value as? NSNumber,
                   let rhs = objValue as? NSNumber else {
                 return false
             }
-            
+
             return lhs.doubleValue > rhs.doubleValue
-            
+
         case .string:
-            guard let lhs = condition.value.value as? String,
+            guard let lhs = self.value.value as? String,
                   let rhs = objValue as? String else {
                 return false
             }
-            
+
             return lhs > rhs
 
         default:

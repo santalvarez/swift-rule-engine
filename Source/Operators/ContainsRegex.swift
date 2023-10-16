@@ -9,21 +9,28 @@ import Foundation
 
 
 struct ContainsRegex: Operator {
-    let id = OperatorID.contains_regex
+    static let id = OperatorID.contains_regex
+    private let regex: NSRegularExpression
 
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        if condition.value.valueType != .regex {
-            return false
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        guard let pattern = value.value as? String else {
+            throw OperatorError.invalidValueType
         }
 
-        guard let lhs = condition.value.value as? NSRegularExpression,
-              let rhs = objValue as? [String] else {
+        guard let reg = try? NSRegularExpression(pattern: pattern) else {
+            throw OperatorError.invalidValue
+        }
+        self.regex = reg
+    }
+
+    func match(_ objValue: Any) -> Bool {
+        guard let rhs = objValue as? [String] else {
             return false
         }
 
         return rhs.contains { string in
             let range = NSRange(location: 0, length: string.utf16.count)
-            return (lhs.firstMatch(in: string, range: range) != nil)
+            return (regex.firstMatch(in: string, range: range) != nil)
         }
     }
 }

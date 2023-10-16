@@ -15,62 +15,46 @@ enum RuleEngineError: Error {
 }
 
 final public class RuleEngine {
-    private var operators: [OperatorID: Operator]
     private var rules: [Rule] = []
+    private let ruleDecoder: RuleDecoder
 
 
-    // Init for rules that come in string format
-    public init(rules: [String], customOperators: [Operator] = []) throws {
-        self.operators = try Self.generateOperatorsDict(customOperators)
+    public init(rules: [String], customOperators: [Operator.Type] = []) throws {
+        self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules.compactMap{ dictRule in
-            try? Self.decodeRule(rule: dictRule)
+            try? decodeRule(rule: dictRule)
         }
     }
 
-    public init(rules: [[String: Any]], customOperators: [Operator] = []) throws {
-        self.operators = try Self.generateOperatorsDict(customOperators)
+    public init(rules: [[String: Any]], customOperators: [Operator.Type] = []) throws {
+        self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules.compactMap{ dictRule in
-            try? Self.decodeRule(rule: dictRule)
+            try? decodeRule(rule: dictRule)
         }
     }
 
-    public init(rules: [Rule], customOperators: [Operator] = []) throws {
+    public init(rules: [Rule], customOperators: [Operator.Type] = []) throws {
+        self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules
-        self.operators = try Self.generateOperatorsDict(customOperators)
     }
 
-    private static func generateOperatorsDict(_ customOperators: [Operator]) throws -> [OperatorID:Operator]{
-        let defaultOperators: [Operator] = [Equal(), NotEqual(), LessThan(), LessThanInclusive(),
-                                            GreaterThan(), GreaterThanInclusive(), In(), NotIn(),
-                                            Contains(), NotContains(), Regex(), InSet(), NotInSet(),
-                                            ContainsRegex(), NotContainsRegex()]
-        let operators = defaultOperators + customOperators
-
-        return try operators.reduce(into: [:]) { result, op in
-            guard result[op.id] == nil else {
-                throw RuleEngineError.duplicateOperator
-            }
-            result[op.id] = op
-        }
-    }
-
-    private static func decodeRule(rule: [String: Any]) throws -> Rule {
+    private func decodeRule(rule: [String: Any]) throws -> Rule {
         guard let ruleData = try? JSONSerialization.data(withJSONObject: rule, options: []) else {
             throw RuleEngineError.invalidRule("Error converting dict to data")
         }
 
-        guard let rule = try? JSONDecoder().decode(Rule.self, from: ruleData) else {
+        guard let rule = try? ruleDecoder.decode(Rule.self, from: ruleData) else {
             throw RuleEngineError.invalidRule("Error decoding rule")
         }
         return rule
     }
 
-    private static func decodeRule(rule: String) throws -> Rule {
+    private func decodeRule(rule: String) throws -> Rule {
         guard let ruleData = rule.data(using: .utf8) else {
             throw RuleEngineError.invalidRule("Rule not in utf8 format")
         }
 
-        guard let rule = try? JSONDecoder().decode(Rule.self, from: ruleData) else {
+        guard let rule = try? ruleDecoder.decode(Rule.self, from: ruleData) else {
             throw RuleEngineError.invalidRule("Error decoding rule")
         }
         return rule
@@ -84,11 +68,7 @@ final public class RuleEngine {
             pathObj = obj
         }
 
-        guard let op = self.operators[condition.op] else {
-            throw RuleEngineError.operatorNotFound
-        }
-
-        condition.match = op.match(condition, pathObj)
+        condition.match = condition.op.match(pathObj)
     }
 
     private func runMultiConditionAll(_ multiCondition: inout MultiCondition, _ obj: Any) throws {

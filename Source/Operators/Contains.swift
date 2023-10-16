@@ -9,15 +9,20 @@ import Foundation
 
 
 struct Contains: Operator {
-    let id = OperatorID.contains
-    
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
+    static let id = OperatorID.contains
+    private let value: AnyCodable
+
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        self.value = value
+    }
+
+    func match(_ objValue: Any) -> Bool {
         if let rhs = objValue as? NSArray {
-            return rhs.contains(condition.value.value)
+            return rhs.contains(self.value.value)
         }
-        
+
         if let rhs = objValue as? String,
-           let lhs = condition.value.value as? String {
+           let lhs = self.value.value as? String {
             return rhs.contains(lhs)
         }
 

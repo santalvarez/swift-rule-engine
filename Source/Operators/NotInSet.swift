@@ -8,22 +8,27 @@
 import Foundation
 
 struct NotInSet: Operator {
-    let id = OperatorID.not_in_set
+    static let id = OperatorID.not_in_set
+    private let value: AnyCodable
 
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        if condition.value.valueType != .set {
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        self.value = value
+    }
+
+    func match(_ objValue: Any) -> Bool {
+        if self.value.valueType != .array {
             return false
         }
 
-        if let lhs = condition.value.value as? Set<String>,
+        if let lhs = self.value.value as? Set<String>,
            let rhs = objValue as? String {
             return !lhs.contains(rhs)
         }
-        if let lhs = condition.value.value as? Set<Int>,
+        if let lhs = self.value.value as? Set<Int>,
            let rhs = objValue as? Int {
             return !lhs.contains(rhs)
         }
-        if let lhs = condition.value.value as? Set<Double>,
+        if let lhs = self.value.value as? Set<Double>,
            let rhs = objValue as? Double {
             return !lhs.contains(rhs)
         }

@@ -9,9 +9,11 @@ import Foundation
 
 
 public protocol Operator {
-    var id: OperatorID { get }
+    static var id: OperatorID { get }
 
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool
+    init(value: AnyCodable, params: [String : Any]?) throws
+
+    func match(_ objValue: Any) -> Bool
 }
 
 
@@ -37,5 +39,20 @@ public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable {
 
     public init(rawValue: String) {
         self.rawValue = rawValue
+    }
+}
+
+
+enum OperatorError: Error, CustomStringConvertible {
+    case invalidValueType
+    case invalidValue
+
+    var description: String {
+        switch self {
+        case .invalidValueType:
+            return "Invalid value type"
+        case .invalidValue:
+            return "Invalid value"
+        }
     }
 }
