@@ -12,163 +12,116 @@ import XCTest
 class EqualOperatorTests: XCTestCase {
 
     func testStringsMatch() {
-        let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: "test", valueType: .string), params: nil)
         let rhs: Any = "test"
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testStringsNotMatch() {
-        let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: "test", valueType: .string), params: nil)
         let rhs: Any = "not-test"
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
 
     func testBoolsMatch() {
-        let lhs = AnyCodable(value: true, valueType: .bool)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: true, valueType: .bool), params: nil)
         let rhs: Any = true
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
 
      func testBoolsNotMatch() {
-        let lhs = AnyCodable(value: true, valueType: .bool)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: true, valueType: .bool), params: nil)
         let rhs: Any = false
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
 
     func testIntsMatch() {
-        let lhs = AnyCodable(value: 123, valueType: .number)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: 123, valueType: .number), params: nil)
         let rhs: Any = 123
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-   
+
     func testIntsNotMatch() {
-        let lhs = AnyCodable(value: 123, valueType: .number)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: 123, valueType: .number), params: nil)
         let rhs: Any = 321
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testDoublesMatch() {
-        let lhs = AnyCodable(value: 123.123, valueType: .number)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: 123.123, valueType: .number), params: nil)
         let rhs: Any = 123.123
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testDoublesNotMatch() {
-        let lhs = AnyCodable(value: 123.123, valueType: .number)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: 123.123, valueType: .number), params: nil)
         let rhs: Any = 321.321
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testDictionariesMatch() {
-        let lhs = AnyCodable(value: ["foo": "test", "bar": 123], valueType: .dictionary)
-        let condition = SimpleCondition(op: .equal, value: lhs)
-        let rhs: Any = ["foo": "test", "bar": 123]
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+        let op = try! Equal(value: AnyCodable(value: ["foo": "test", "bar": 123] as [String : Any], valueType: .dictionary), params: nil)
+        let rhs: Any = ["foo": "test", "bar": 123] as [String : Any]
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testDictionariesNotMatch() {
-        let lhs = AnyCodable(value: ["foo": "test", "bar": 123], valueType: .dictionary)
-        let condition = SimpleCondition(op: .equal, value: lhs)
-        let rhs: Any = ["foo": "test", "bar": 321]
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+        let op = try! Equal(value: AnyCodable(value: ["foo": "test", "bar": 123] as [String : Any], valueType: .dictionary), params: nil)
+        let rhs: Any = ["foo": "test", "bar": 321] as [String : Any]
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testArraysMatch() {
-        let lhs = AnyCodable(value: ["foo", "bar"], valueType: .array)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: ["foo", "bar"], valueType: .array), params: nil)
         let rhs: Any = ["foo", "bar"]
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testArraysNotMatch() {
-        let lhs = AnyCodable(value: ["foo", "bar"], valueType: .array)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: ["foo", "bar"], valueType: .array), params: nil)
         let rhs: Any = ["foo"]
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
      func testMultiTypeArraysMatch() {
-        let lhs = AnyCodable(value: ["foo", 123], valueType: .array)
-        let condition = SimpleCondition(op: .equal, value: lhs)
-        let rhs: Any = ["foo", 123]
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+         let op = try! Equal(value: AnyCodable(value: ["foo", 123] as [Any], valueType: .array), params: nil)
+         let rhs: Any = ["foo", 123] as [Any]
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testMultiTypeArraysNotMatch() {
-        let lhs = AnyCodable(value: ["foo", 123], valueType: .array)
-        let condition = SimpleCondition(op: .equal, value: lhs)
-        let rhs: Any = ["foo", 321]
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+        let op = try! Equal(value: AnyCodable(value: ["foo", 123] as [Any], valueType: .array), params: nil)
+        let rhs: Any = ["foo", 321] as [Any]
+
+        XCTAssertFalse(op.match(rhs))
     }
 
     func testNullsMatch() {
-        let lhs = AnyCodable(value: NSNull(), valueType: .null)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: NSNull(), valueType: .null), params: nil)
         let rhs: Any = NSNull()
-        
-        let op = Equal()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testNullsNotMatch() {
-        let lhs = AnyCodable(value: NSNull(), valueType: .null)
-        let condition = SimpleCondition(op: .equal, value: lhs)
+        let op = try! Equal(value: AnyCodable(value: NSNull(), valueType: .null), params: nil)
         let rhs: Any = "test"
-        
-        let op = Equal()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
 
 }

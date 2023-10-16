@@ -10,133 +10,94 @@ import XCTest
 
 class NotContainsOperatorTests: XCTestCase {
     func testStringArrayMatch() {
-        let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: "test", valueType: .string), params: nil)
         let rhs: Any = ["foo", "bar"]
 
-        let op = NotContains()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testStringArrayNotMatch() {
-        let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: "test", valueType: .string), params: nil)
         let rhs: Any = ["test"]
 
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+        XCTAssertFalse(op.match(rhs))
     }
 
     func testIntArrayMatch() {
-        let lhs = AnyCodable(value: 4, valueType: .number)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: 4, valueType: .number), params: nil)
         let rhs: Any = [1, 2, 3]
-        
-        let op = NotContains()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testIntArrayNotMatch() {
-        let lhs = AnyCodable(value: 2, valueType: .number)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: 2, valueType: .number), params: nil)
         let rhs: Any = [1, 2, 3]
-        
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testDoubleArrayMatch() {
-        let lhs = AnyCodable(value: 4.4, valueType: .number)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: 4.4, valueType: .number), params: nil)
         let rhs: Any = [1.1, 2.2, 3.3]
-        
-        let op = NotContains()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testDoubleArrayNotMatch() {
-        let lhs = AnyCodable(value: 2.2, valueType: .number)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: 2.2, valueType: .number), params: nil)
         let rhs: Any = [1.1, 2.2, 3.3]
-        
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testDictionaryArrayMatch() {
-        let lhs = AnyCodable(value: ["foo": "bar"], valueType: .dictionary)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: ["foo": "bar"], valueType: .dictionary), params: nil)
         let rhs: Any = [["foo": 123]]
-        
-        let op = NotContains()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testDictionaryArrayNotMatch() {
-        let lhs = AnyCodable(value: ["foo": "bar"], valueType: .dictionary)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: ["foo": "bar"], valueType: .dictionary), params: nil)
         let rhs: Any = [["foo": "bar"]]
-        
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testArrayOfArraysMatch() {
-        let lhs = AnyCodable(value: [1, 2, 3], valueType: .array)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: [1, 2, 3], valueType: .array), params: nil)
         let rhs: Any = [[1, 2, 3, 4]]
-        
-        let op = NotContains()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testArrayOfArraysNotMatch() {
-        let lhs = AnyCodable(value: [1, 2, 3], valueType: .array)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: [1, 2, 3], valueType: .array), params: nil)
         let rhs: Any = [[1, 2, 3]]
-        
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testStringsMatch() {
-        let lhs = AnyCodable(value: "foo", valueType: .string)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: "foo", valueType: .string), params: nil)
         let rhs: Any = "xxxx-test-xxxx"
-        
-        let op = NotContains()
-        
-        XCTAssertTrue(op.match(condition, rhs))
+
+        XCTAssertTrue(op.match(rhs))
     }
-    
+
     func testStringsNotMatch() {
-        let lhs = AnyCodable(value: "test", valueType: .string)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: "test", valueType: .string), params: nil)
         let rhs: Any = "xxxx-test-xxxx"
-        
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-    
+
     func testInvalidType() {
-        let lhs = AnyCodable(value: 123123, valueType: .number)
-        let condition = SimpleCondition(op: .not_contains, value: lhs)
+        let op = try! NotContains(value: AnyCodable(value: 123123, valueType: .number), params: nil)
         let rhs: Any = 1233
-        
-        let op = NotContains()
-        
-        XCTAssertFalse(op.match(condition, rhs))
+
+        XCTAssertFalse(op.match(rhs))
     }
-   
+
 }
