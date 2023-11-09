@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum JSONPathError: Error {
     case valueNotFound
     case invalidPath
@@ -25,7 +24,7 @@ public struct JSONPath {
 
         self.components = path.dropFirst(2).components(separatedBy: ".")
     }
-    
+
     private func accessDict(_ key: String, _ dict: [String: Any]) throws -> Any {
         if let value = dict[key] {
             return value
@@ -47,6 +46,26 @@ public struct JSONPath {
         }
 
         return currentObj
-    }
 
+    }
 }
+
+//public struct JSONPath {
+//    let path: JsonPath
+//
+//    init(_ path: String) throws {
+//        guard let jp = JsonPath(path) else {
+//            throw JSONPathError.invalidPath
+//        }
+//        self.path = jp
+//    }
+//
+//    func getValue(for obj: Any) throws -> Any {
+//        do {
+//            return try self.path.evaluate(with: obj) as Any
+//        } catch {
+//            throw JSONPathError.valueNotFound
+//        }
+//    }
+//}
+

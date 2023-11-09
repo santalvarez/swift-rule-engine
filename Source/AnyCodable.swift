@@ -63,12 +63,13 @@ public struct AnyCodable: Decodable {
                 self.valueType = .bool
 
             } else if let int = try? container.decode(Int.self) {
-                self.value = int
+                self.value = int as NSNumber
                 self.valueType = .number
 
             } else if let double = try? container.decode(Double.self) {
-                self.value = double
+                self.value = double as NSNumber
                 self.valueType = .number
+
             } else {
                 throw DecodingError.dataCorruptedError(in: container,
                                                        debugDescription: "AnyCodable value cannot be decoded")

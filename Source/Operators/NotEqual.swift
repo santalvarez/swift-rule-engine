@@ -16,33 +16,40 @@ struct NotEqual: Operator {
         self.value = value
     }
 
-    func match(_ objValue: Any) -> Bool {
-        switch self.value.valueType {
-        case .bool, .string, .number:
-            guard let rhs = objValue as? AnyHashable,
-                  let lhs = self.value.value as? AnyHashable else {
-                return false
-            }
+    private func castAndCompare<T: Equatable>(_ lhs: Any, _ rhs: Any, type: T.Type) -> Bool {
+        guard let rhs = rhs as? T,
+              let lhs = lhs as? T else {
+            return false
+        }
 
-            return lhs != rhs
+        return lhs != rhs
+    }
+
+    func match(_ objValue: Any) -> Bool {
+
+        switch self.value.valueType {
+        case .string:
+            return castAndCompare(self.value.value, objValue, type: String.self)
+
+        case .number:
+            return castAndCompare(self.value.value, objValue, type: NSNumber.self)
+
+        case .bool:
+            return castAndCompare(self.value.value, objValue, type: Bool.self)
 
         case .dictionary:
-            guard let rhs = objValue as? NSDictionary,
-                  let lhs = self.value.value as? NSDictionary else {
-                return false
-            }
-            return lhs != rhs
+            return castAndCompare(self.value.value, objValue, type: NSDictionary.self)
 
         case .array:
-            guard let rhs = objValue as? NSArray,
-                  let lhs = self.value.value as? NSArray else {
-                return false
-            }
-
-            return lhs != rhs
+            return castAndCompare(self.value.value, objValue, type: NSArray.self)
 
         case .null:
-            return !(objValue is NSNull)
+            if case Optional<Any>.none = objValue  {
+                return false
+            } else if objValue is NSNull {
+                return false
+            }
+            return true
 
         default:
             return false
