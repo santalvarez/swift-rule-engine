@@ -16,7 +16,7 @@ public class RuleDecoder {
                                                      GreaterThan.self, GreaterThanInclusive.self, In.self, NotIn.self,
                                                      Contains.self, NotContains.self, Regex.self]
 
-    init(_ operators: [Operator.Type]) throws {
+    public init(_ operators: [Operator.Type] = []) throws {
         self.decoder.userInfo[operatorsUserInfoKey] = try generateOperatorsDict(operators)
     }
 
