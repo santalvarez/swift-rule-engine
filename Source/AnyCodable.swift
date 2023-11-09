@@ -15,8 +15,6 @@ public enum VType: Int {
     case array
     case dictionary
     case null
-    case regex
-    case set
     case unknown
 }
 
@@ -35,7 +33,8 @@ public struct AnyCodable: Decodable {
                 self.value = dictionary
                 self.valueType = .dictionary
             } else {
-                throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: container.codingPath, debugDescription: "AnyCodable value cannot be decoded"))
+                throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: container.codingPath,
+                                                                        debugDescription: "AnyCodable value cannot be decoded"))
             }
             return
         }
@@ -64,14 +63,16 @@ public struct AnyCodable: Decodable {
                 self.valueType = .bool
 
             } else if let int = try? container.decode(Int.self) {
-                self.value = int
+                self.value = int as NSNumber
                 self.valueType = .number
 
             } else if let double = try? container.decode(Double.self) {
-                self.value = double
+                self.value = double as NSNumber
                 self.valueType = .number
+
             } else {
-                throw DecodingError.dataCorruptedError(in: container, debugDescription: "AnyCodable value cannot be decoded")
+                throw DecodingError.dataCorruptedError(in: container,
+                                                       debugDescription: "AnyCodable value cannot be decoded")
             }
             return
         }

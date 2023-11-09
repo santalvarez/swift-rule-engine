@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
     ],
     targets: [
-        .target(name: "SwiftRuleEngine", dependencies: []),
-        .testTarget(name: "SwiftRuleEngineTests", dependencies: ["SwiftRuleEngine"])
+        .target(name: "SwiftRuleEngine", dependencies: [], path: "Source"),
+        .testTarget(name: "SwiftRuleEngineTests", dependencies: ["SwiftRuleEngine"], path: "Tests")
     ]
 )

@@ -9,24 +9,40 @@ import Foundation
 
 
 struct In: Operator {
-    let id = OperatorID.in_
+    static let id = OperatorID.in_
+    private let value: AnyCodable
 
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        switch condition.value.valueType {
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        guard [VType.string, VType.array].contains(value.valueType) else {
+            throw OperatorError.invalidValueType
+        }
+        // if array try to convert it to a Set
+        if value.valueType == .array,
+           let array = value.value as? [AnyHashable] {
+            self.value = AnyCodable(value: Set(array), valueType: .array)
+            return
+        }
+        self.value = value
+    }
+
+    func match(_ objValue: Any) -> Bool {
+        switch self.value.valueType {
         case .string:
             guard let rhs = objValue as? String,
-                  let lhs = condition.value.value as? String else {
+                  let lhs = self.value.value as? String else {
                 return false
             }
 
             return lhs.contains(rhs)
 
         case .array:
-            guard let lhs = condition.value.value as? NSArray else {
-                return false
+            if let lhs = self.value.value as? Set<AnyHashable>,
+               let rhs = objValue as? AnyHashable {
+                return lhs.contains(rhs)
+            } else if let lhs = self.value.value as? NSArray {
+                return lhs.contains(objValue)
             }
-
-            return lhs.contains(objValue)
+            return false
 
         default:
             return false

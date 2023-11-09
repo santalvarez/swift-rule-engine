@@ -47,14 +47,16 @@
 
 - **id**: "in"
 
-- **description**: Compares if the value of the object is in the value of the condition.
+- **description**: Compares if the value of the object is in the value of the condition. If possible the value
+                   will be converted to a set for O(1) performance but only if the provided array is [AnyHashable].
 
 
 ### Not In
 
 - **id**: "not_in"
 
-- **description**: Compares if the value of the object is not in the value of the condition.
+- **description**: Compares if the value of the object is not in the value of the condition. If possible the value
+                   will be converted to a set for O(1) performance but only if the provided array is [AnyHashable].
 
 
 ### Contains
@@ -75,24 +77,8 @@
 
 - **id**: "regex"
 
-- **description**: Checks if the object value matches the regex in the condition. The regex is compiled 
+- **description**: Checks if the object value matches the regex in the condition. The regex is compiled
 only when the rule is first loaded.
-
-
-### In Set
-
-- **id**: "in_set"
-
-- **description**: Compares if the value of the object is in the value of the condition. When the rule
-is loaded the array is converted to a set. Performance is O(1).
-
-
-### Not In Set
-
-- **id**: "not_in_set"
-
-- **description**: Compares if the value of the object does not contain the value of the condition. When the rule
-is loaded the array is converted to a set. Performance is O(1).
 
 
 ### Contains Regex
@@ -121,11 +107,11 @@ extension OperatorID {
 }
 
 struct EqualLowercase(Operator):
-    let id = OperatorID.equal_lowercase
+    static let id = OperatorID.equal_lowercase
 
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        guard condition.value.valueType == .string,
-              let lhs = condition.value.value as? String,
+    func match(_ objValue: Any) -> Bool {
+        guard self.value.valueType == .string,
+              let lhs = self.value.value as? String,
               let rhs = objValue as? String else {
             return false
         }

@@ -9,36 +9,48 @@ import Foundation
 
 
 struct NotEqual: Operator {
-    let id = OperatorID.not_equal
-    
-    func match(_ condition: SimpleCondition, _ objValue: Any) -> Bool {
-        switch condition.value.valueType {
-        case .bool, .string, .number:
-            guard let rhs = objValue as? AnyHashable,
-                  let lhs = condition.value.value as? AnyHashable else {
-                return false
-            }
-        
-            return lhs != rhs
-            
+    static let id = OperatorID.not_equal
+    private let value: AnyCodable
+
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        self.value = value
+    }
+
+    private func castAndCompare<T: Equatable>(_ lhs: Any, _ rhs: Any, type: T.Type) -> Bool {
+        guard let rhs = rhs as? T,
+              let lhs = lhs as? T else {
+            return false
+        }
+
+        return lhs != rhs
+    }
+
+    func match(_ objValue: Any) -> Bool {
+
+        switch self.value.valueType {
+        case .string:
+            return castAndCompare(self.value.value, objValue, type: String.self)
+
+        case .number:
+            return castAndCompare(self.value.value, objValue, type: NSNumber.self)
+
+        case .bool:
+            return castAndCompare(self.value.value, objValue, type: Bool.self)
+
         case .dictionary:
-            guard let rhs = objValue as? NSDictionary,
-                  let lhs = condition.value.value as? NSDictionary else {
-                return false
-            }
-            return lhs != rhs
-        
+            return castAndCompare(self.value.value, objValue, type: NSDictionary.self)
+
         case .array:
-            guard let rhs = objValue as? NSArray,
-                  let lhs = condition.value.value as? NSArray else {
-                return false
-            }
-            
-            return lhs != rhs
+            return castAndCompare(self.value.value, objValue, type: NSArray.self)
 
         case .null:
-            return !(objValue is NSNull)
-        
+            if case Optional<Any>.none = objValue  {
+                return false
+            } else if objValue is NSNull {
+                return false
+            }
+            return true
+
         default:
             return false
         }
