@@ -25,7 +25,9 @@ extension SimpleCondition: Decodable {
         self.value =  try container.decode(AnyCodable.self, forKey: .value)
 
         let operatorID = try container.decode(OperatorID.self, forKey: .op)
-        let operatorsDict = decoder.userInfo[operatorsUserInfoKey] as! [OperatorID: Operator.Type]
+        guard let operatorsDict = decoder.userInfo[operatorsUserInfoKey] as? [OperatorID: Operator.Type] else {
+            throw DecodingError.dataCorruptedError(forKey: .op, in: container, debugDescription: "Operators user info key not provided")
+        }
         guard let operatorType = operatorsDict[operatorID] else {
             throw DecodingError.dataCorruptedError(forKey: .op, in: container, debugDescription: "Operator \(operatorID.rawValue) not found")
         }
