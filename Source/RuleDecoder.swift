@@ -14,7 +14,8 @@ public class RuleDecoder {
     private let decoder = JSONDecoder()
     private let defaultOperators: [Operator.Type] = [Equal.self, NotEqual.self, LessThan.self, LessThanInclusive.self,
                                                      GreaterThan.self, GreaterThanInclusive.self, In.self, NotIn.self,
-                                                     Contains.self, NotContains.self, Regex.self]
+                                                     Contains.self, NotContains.self, Regex.self, ContainsRegex.self,
+                                                     NotContainsRegex.self]
 
     public init(_ operators: [Operator.Type] = []) throws {
         self.decoder.userInfo[operatorsUserInfoKey] = try generateOperatorsDict(operators)
