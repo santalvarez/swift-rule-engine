@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NotIn: Operator {
-    static let id = OperatorID.not_in
+    static let id = OperatorID(rawValue: "not_in")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {

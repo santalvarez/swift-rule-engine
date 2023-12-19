@@ -9,7 +9,7 @@ import Foundation
 
 
 struct LessThan: Operator {
-    static let id = OperatorID.less_than
+    static let id = OperatorID(rawValue: "less_than")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {

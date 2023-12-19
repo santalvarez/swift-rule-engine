@@ -8,7 +8,7 @@
 import Foundation
 
 struct NotContainsRegex: Operator {
-    static let id = OperatorID.not_contains_regex
+    static let id = OperatorID(rawValue: "not_contains_regex")
     private let regex: NSRegularExpression
 
     init(value: AnyCodable, params: [String : Any]?) throws {

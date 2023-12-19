@@ -9,7 +9,7 @@ import Foundation
 
 
 struct GreaterThanInclusive: Operator {
-    static let id = OperatorID.greater_than_inclusive
+    static let id = OperatorID(rawValue: "greater_than_inclusive")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {

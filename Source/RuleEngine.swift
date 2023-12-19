@@ -121,11 +121,29 @@ final public class RuleEngine {
         multiCondition.match = false
     }
 
+    private func runMultiConditionNot(_ multiCondition: inout MultiCondition, _ obj: Any) throws {
+        let result: Condition
+
+        switch multiCondition.not! {
+        case .multi(var cond):
+            try self.runMultiCondition(&cond, obj)
+            result = Condition(cond)
+        case .simple(var cond):
+            try self.runCondition(&cond, obj)
+            result = Condition(cond)
+        }
+
+        multiCondition.not = result
+        multiCondition.match = !result.getMatch()
+    }
+
     private func runMultiCondition(_ multiCondition: inout MultiCondition, _ obj: Any) throws {
         if multiCondition.all != nil {
             try self.runMultiConditionAll(&multiCondition, obj)
         } else if multiCondition.any != nil {
             try self.runMultiConditionAny(&multiCondition, obj)
+        } else if multiCondition.not != nil {
+            try self.runMultiConditionNot(&multiCondition, obj)
         }
     }
 

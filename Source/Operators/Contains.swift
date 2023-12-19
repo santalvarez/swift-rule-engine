@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Contains: Operator {
-    static let id = OperatorID.contains
+    static let id = OperatorID(rawValue: "contains")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {

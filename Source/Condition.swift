@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Condition: Decodable {
+public indirect enum Condition: Decodable {
     case simple(SimpleCondition)
     case multi(MultiCondition)
 

@@ -10,7 +10,7 @@ import Foundation
 
 
 struct Equal: Operator {
-    static let id = OperatorID.equal
+    static let id = OperatorID(rawValue: "equal")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {

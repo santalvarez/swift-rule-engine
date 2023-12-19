@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Regex: Operator {
-    static let id = OperatorID.regex
+    static let id = OperatorID(rawValue: "regex")
     let regex: NSRegularExpression
 
     init(value: AnyCodable, params: [String : Any]?) throws {

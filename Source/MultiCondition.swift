@@ -12,22 +12,7 @@ public struct MultiCondition {
     public var match: Bool = false
     public var all: [Condition]?
     public var any: [Condition]?
-
-    func getConditions() -> [Condition] {
-        if self.any != nil {
-            return self.any!
-        } else {
-            return self.all!
-        }
-    }
-
-    mutating func replaceConditions(_ conditions: [Condition]) {
-        if self.any != nil {
-            self.any = conditions
-        } else {
-            self.all = conditions
-        }
-    }
+    public var not: Condition?
 }
 
 extension MultiCondition: Decodable {
@@ -35,7 +20,8 @@ extension MultiCondition: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.any = try container.decodeIfPresent([Condition].self, forKey: .any)
         self.all = try container.decodeIfPresent([Condition].self, forKey: .all)
-        if self.any == nil && self.all == nil {
+        self.not = try container.decodeIfPresent(Condition.self, forKey: .not)
+        if self.any == nil && self.all == nil && self.not == nil {
             throw DecodingError.typeMismatch(MultiCondition.self,
                   DecodingError.Context(codingPath: decoder.codingPath,
                                         debugDescription: "Missing conditions for multi condition"))
@@ -43,6 +29,6 @@ extension MultiCondition: Decodable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case all, any
+        case all, any, not
     }
 }

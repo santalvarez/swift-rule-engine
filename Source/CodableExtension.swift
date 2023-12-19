@@ -61,36 +61,6 @@ extension KeyedDecodingContainer {
         }
         return dictionary
     }
-
-//    func decodeConditionValue(forKey key: KeyedDecodingContainer<K>.Key, forOperator op: OperatorID) throws -> AnyCodable {
-//        switch op {
-//        case .regex, .not_regex, .contains_regex, .not_contains_regex:
-//            guard let pattern = try self.decodeIfPresent(String.self, forKey: key) else {
-//                throw DecodingError.typeMismatch(String.self,
-//                      DecodingError.Context(codingPath: codingPath,
-//                                            debugDescription: "Missing pattern for regex operator"))
-//            }
-//
-//            return AnyCodable(value: try NSRegularExpression(pattern: pattern), valueType: .regex)
-//
-//        case .in_set, .not_in_set:
-//            if let set = try self.decodeIfPresent(Set<String>.self, forKey: key) {
-//                return AnyCodable(value: set, valueType: .set)
-//
-//            } else if let set = try self.decodeIfPresent(Set<Int>.self, forKey: key) {
-//                return AnyCodable(value: set, valueType: .set)
-//
-//            } else if let set = try self.decodeIfPresent(Set<Double>.self, forKey: key) {
-//                return AnyCodable(value: set, valueType: .set)
-//            } else {
-//                throw DecodingError.typeMismatch(Set<Double>.self,
-//                      DecodingError.Context(codingPath: codingPath,
-//                                            debugDescription: "Missing set for set operator"))
-//            }
-//        default:
-//            return try self.decode(AnyCodable.self, forKey: key)
-//        }
-//    }
 }
 
 extension UnkeyedDecodingContainer {

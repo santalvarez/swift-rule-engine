@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NotRegex: Operator {
-    static let id = OperatorID.not_regex
+    static let id = OperatorID(rawValue: "not_regex")
     let regex: NSRegularExpression
 
     init(value: AnyCodable, params: [String : Any]?) throws {

@@ -42,7 +42,7 @@ A simple condition consists of an operator and a value.
 
 ### Multi Condition
 
-Contains either the **any** or **all** fields. These fields contain a list of conditions that can be simple, multi or a mix of both.
+Contains either **any**, **all** or **not** fields. These fields contain conditions that can be simple, multi or a mix of both.
 
 ```json
 {
@@ -52,6 +52,13 @@ Contains either the **any** or **all** fields. These fields contain a list of co
             "path": "$.person.name",
             "value": "John"
         },
+        {
+            "not": {
+                "all": [
+                    {""" condition """}
+                ]
+            }
+        }
         {
             "any": [
                 {""" condition """}
@@ -65,11 +72,11 @@ Contains either the **any** or **all** fields. These fields contain a list of co
 
 **any(list):** One of the conditions inside have to match.
 
+**not(dict):** The result of the condition inside will be negated.
+
 
 ## Results
 
 A rule result has the same structure as a rule but with two added fields.
 
 **match(bool):** Indicates wether the condition matched.
-
-**match_detail(bool):** Contains details about the object that matched.
