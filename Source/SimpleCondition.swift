@@ -8,15 +8,22 @@
 import Foundation
 
 
-public struct SimpleCondition {
+public struct SimpleCondition: Condition {
     public var match: Bool = false
     public var op: Operator  // operator kw is reserved
     public var value: AnyCodable
     public var params: [String: Any]? = nil
     public var path: JSONPath? = nil
-}
 
-extension SimpleCondition: Decodable {
+    public mutating func evaluate(_ obj: Any) throws {
+        guard let path = self.path else {
+            self.match = op.match(obj)
+            return
+        }
+
+        let obj = try path.getValue(for: obj)
+        self.match = op.match(obj)
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
