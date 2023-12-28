@@ -57,11 +57,12 @@ public struct MultiCondition: Condition {
         self.all = try Self.decodeConditionArray(container, .all)
         self.not = try Self.decodeCondition(container, .not)
 
-        // TODO: fix this
-        if self.any == nil && self.all == nil && self.not == nil {
+        guard (any == nil && all == nil && not != nil) ||
+              (any == nil && all != nil && not == nil) ||
+              (any != nil && all == nil && not == nil) else {
             throw DecodingError.typeMismatch(MultiCondition.self,
                   DecodingError.Context(codingPath: decoder.codingPath,
-                                        debugDescription: "Missing conditions for multi condition"))
+                                        debugDescription: "Only one of any, all or not should be present"))
         }
     }
 

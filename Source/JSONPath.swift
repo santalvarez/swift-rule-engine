@@ -6,7 +6,6 @@
 //
 
 import Foundation
-// import SwiftPath
 
 enum JSONPathError: Error {
     case valueNotFound
@@ -50,23 +49,3 @@ public struct JSONPath {
 
    }
 }
-
-// public struct JSONPath {
-//     let path: JsonPath
-
-//     init(_ path: String) throws {
-//         guard let jp = JsonPath(path) else {
-//             throw JSONPathError.invalidPath
-//         }
-//         self.path = jp
-//     }
-
-//     func getValue(for obj: Any) throws -> Any {
-//         do {
-//             return try self.path.evaluate(with: obj) as Any
-//         } catch {
-//             throw JSONPathError.valueNotFound
-//         }
-//     }
-// }
-

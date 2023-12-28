@@ -15,6 +15,13 @@ final class SimpleConditionTests: XCTestCase {
         self.decoder = try! RuleDecoder()
     }
 
+    func testModeWithInvalidValue() {
+        let cond = """
+        {"value": "hello", "operator": "contains", "params": {"mode": "any"}}
+        """
+        // This should fail as value is not an array
+        XCTAssertThrowsError(try decoder.decode(SimpleCondition.self, from: cond.data(using: .utf8)!))
+    }
 
     func testModeAnyWithContainsMatch() throws {
         let cond = """
