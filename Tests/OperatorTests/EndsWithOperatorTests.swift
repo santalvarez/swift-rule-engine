@@ -11,19 +11,19 @@ import XCTest
 final class EndsWithOperatorTests: XCTestCase {
 
     func testMatch() {
-        let op = try! EndsWith(value: .init(value: "world", valueType: .string), params: nil)
+        let op = try! EndsWith(value: .string("world"), params: nil)
 
         XCTAssertTrue(op.match("hello_world"))
     }
 
     func testNoMatch() {
-        let op = try! EndsWith(value: .init(value: "world", valueType: .string), params: nil)
+        let op = try! EndsWith(value: .string("world"), params: nil)
 
         XCTAssertFalse(op.match("hello_world!"))
     }
 
     func testNoMatchTypeMismatch() {
-        let op = try! EndsWith(value: .init(value: "world", valueType: .string), params: nil)
+        let op = try! EndsWith(value: .string("world"), params: nil)
 
         XCTAssertFalse(op.match(123))
     }
