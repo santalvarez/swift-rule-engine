@@ -18,11 +18,11 @@ struct Contains: Operator {
 
     func match(_ objValue: Any) -> Bool {
         if let rhs = objValue as? NSArray {
-            return rhs.contains(self.value.value)
+            return rhs.contains(self.value.value())
         }
 
         if let rhs = objValue as? String,
-           let lhs = self.value.value as? String {
+           let lhs = self.value.value() as? String {
             return rhs.contains(lhs)
         }
 

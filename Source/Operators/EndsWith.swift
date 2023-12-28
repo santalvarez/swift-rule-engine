@@ -13,10 +13,13 @@ struct EndsWith: Operator {
     private let value: String
 
     init(value: AnyCodable, params: [String : Any]?) throws {
-        guard let str = value.value as? String else {
+        switch value {
+        case .string(let str):
+            self.value = str
+        default:
             throw OperatorError.invalidValueType
+
         }
-        self.value = str
     }
 
     func match(_ objValue: Any) -> Bool {
@@ -33,10 +36,13 @@ struct NotEndsWith: Operator {
     private let value: String
 
     init(value: AnyCodable, params: [String : Any]?) throws {
-        guard let str = value.value as? String else {
+        switch value {
+        case .string(let str):
+            self.value = str
+        default:
             throw OperatorError.invalidValueType
+
         }
-        self.value = str
     }
 
     func match(_ objValue: Any) -> Bool {
