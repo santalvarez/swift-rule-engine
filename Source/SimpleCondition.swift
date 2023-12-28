@@ -21,25 +21,28 @@ public struct SimpleCondition: Condition {
         guard let mode = self.mode else {
             if let path = self.path {
                 let obj = try path.getValue(for: obj)
-                self.match = op.first!.match(obj)
+                self.match = op[0].match(obj)
                 return
             }
-            self.match = op.first!.match(obj)
+            self.match = op[0].match(obj)
             return
         }
 
-        guard let path = self.path else {
-            self.match = op.first!.match(obj)
-            return
+        if let path = self.path {
+            let obj = try path.getValue(for: obj)
+
+            self.match = evaluateMode(obj, mode)
+        } else {
+            self.match = evaluateMode(obj, mode)
         }
+    }
 
-        let obj = try path.getValue(for: obj)
-
+    private func evaluateMode(_ obj: Any, _ mode: Mode) -> Bool {
         switch mode {
         case .any:
-            self.match = op.contains { $0.match(obj) }
+            return op.contains { $0.match(obj) }
         case .all:
-            self.match = op.allSatisfy { $0.match(obj) }
+            return op.allSatisfy { $0.match(obj) }
         }
     }
 
@@ -91,6 +94,18 @@ public struct SimpleCondition: Condition {
             return
         }
         self.path = try JSONPath(pathStr)
+    }
+
+    public init(op: [Operator], value: AnyCodable, params: [String: Any]?, path: JSONPath?) {
+        self.op = op
+        self.value = value
+        self.params = params
+        self.path = path
+        if let modeStr = self.params?["mode"] as? String {
+            self.mode = Mode(rawValue: modeStr)
+        } else {
+            self.mode = nil
+        }
     }
 
     private enum CodingKeys: String, CodingKey {
