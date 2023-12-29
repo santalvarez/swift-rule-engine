@@ -3,7 +3,7 @@
 ## Default Operators
 
 | Operator             | ID                      | Description                                                                                                     | Supported Types   |
-|----------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------|
+|----------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------|-------------------|
 | Equal                | "equal"                 | Compares if the value of the object is equal to the value of the condition.                                    | String, Int, Double, Bool, Array, Dictionary, nil |
 | Not Equal            | "not_equal"             | Compares if the value of the object is not equal to the value of the condition.                                | String, Int, Double, Bool, Array, Dictionary, nil |
 | Greater Than         | "greater_than"          | Compares if the value of the object is greater than the value of the condition.                                | String, Int, Double |
