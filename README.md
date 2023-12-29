@@ -83,18 +83,14 @@ let rule = """
                 "value": ["Messi", "Ronaldo", "Neymar"]
               },
               {
-                  "any": [
-                      {
-                          "path": "$.player.age",
-                          "operator": "less_than",
-                          "value": 35
-                      },
-                      {
-                          "path": "$.player.goals",
-                          "operator": "greater_than",
-                          "value": 600
-                      }
-                  ]
+                "path": "$.player.age",
+                "operator": "less_than",
+                "value": 35
+              },
+              {
+                "path": "$.player.clubs[0]",
+                "operator": "equal",
+                "value": "Barcelona"
               }
           ]
       }

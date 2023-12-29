@@ -105,12 +105,14 @@ import SwiftRuleEngine
 struct EqualLowercase(Operator):
     static let id = OperatorID(rawValue: "equal_lowercase")
     private let value: String
-    
+
     init(value: AnyCodable, params: [String : Any]?) throws {
-        guard let valueStr = value as? String else {
+        switch value {
+        case .string(let string):
+            self.value = string.lowercased()
+        default:
             throw OperatorError.invalidValueType
         }
-        self.value = valueStr.lowercased()
     }
 
     func match(_ objValue: Any) -> Bool {
@@ -121,6 +123,6 @@ struct EqualLowercase(Operator):
     }
 
 
-# Load operator to engine
+// Load operator to engine
 let engine = RuleEngine(rules: [...], customOperators=[EqualLowercase.Type])
 ```
