@@ -13,16 +13,44 @@ enum JSONPathError: Error {
     case expectingDictionary
 }
 
+enum JSONPart {
+    case key(String)
+    case index(Int)
+}
+
 
 public struct JSONPath {
-    let components: [String]
+    private let parts: [JSONPart]
+    private let pathRegex = try! NSRegularExpression(pattern: #"\$\.((\w+\[\d+\](\.|$)|(\w+\.)))*(\w+\[\d+\]|\w+)$"#)
 
     init(_ path: String) throws {
-        if !path.starts(with: "$.") {
+        guard path != "$" else {
+            self.parts = []
+            return
+        }
+
+        guard pathRegex.firstMatch(in: path, options: [],
+                                   range: NSRange(location: 0, length: path.count)) != nil else {
             throw JSONPathError.invalidPath
         }
 
-        self.components = path.dropFirst(2).components(separatedBy: ".")
+        var parts = [JSONPart]()
+        for component in path.split(separator: ".") {
+            guard component != "$" else {
+                continue
+            }
+            if component.hasSuffix("]") {
+                let key = component.split(separator: "[")[0]
+                guard let index = Int(component.split(separator: "[")[1].split(separator: "]")[0]) else {
+                    throw JSONPathError.invalidPath
+                }
+                parts.append(.key(String(key)))
+                parts.append(.index(index))
+            } else {
+                parts.append(.key(String(component)))
+            }
+        }
+        self.parts = parts
     }
 
     private func accessDict(_ key: String, _ dict: [String: Any]) throws -> Any {
@@ -35,37 +63,31 @@ public struct JSONPath {
         }
     }
 
+    private func accessArray(_ index: Int, _ array: [Any]) throws -> Any {
+        if index < array.count {
+            return array[index]
+        } else {
+            throw JSONPathError.valueNotFound
+        }
+    }
+
     func getValue(for obj: Any) throws -> Any {
         var currentObj: Any = obj
 
-        for component in self.components {
-            guard let dict = currentObj as? [String: Any] else {
-                throw JSONPathError.expectingDictionary
+        for p in self.parts {
+            switch p {
+            case .key(let key):
+                guard let dict = currentObj as? [String: Any] else {
+                    throw JSONPathError.expectingDictionary
+                }
+                currentObj = try self.accessDict(key, dict)
+            case .index(let index):
+                guard let array = currentObj as? [Any] else {
+                    throw JSONPathError.expectingDictionary
+                }
+                currentObj = try self.accessArray(index, array)
             }
-            currentObj = try self.accessDict(component, dict)
         }
-
         return currentObj
-
     }
 }
-
-//public struct JSONPath {
-//    let path: JsonPath
-//
-//    init(_ path: String) throws {
-//        guard let jp = JsonPath(path) else {
-//            throw JSONPathError.invalidPath
-//        }
-//        self.path = jp
-//    }
-//
-//    func getValue(for obj: Any) throws -> Any {
-//        do {
-//            return try self.path.evaluate(with: obj) as Any
-//        } catch {
-//            throw JSONPathError.valueNotFound
-//        }
-//    }
-//}
-

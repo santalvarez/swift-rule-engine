@@ -311,4 +311,69 @@ class RuleEngineTests: XCTestCase {
 
         XCTAssertNotNil(result)
     }
+
+    func testAllConditionWithNot() throws {
+        let rule: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "not": [
+                    "all": [
+                        [
+                            "path": "$.player.first_name",
+                            "value": "Lionel",
+                            "operator": "equal"
+                        ],
+                        [
+                            "path": "$.player.last_name",
+                            "value": "Messi",
+                            "operator": "equal"
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+        let obj = [
+            "player": [
+                "first_name": "Cristiano",
+                "last_name": "Ronaldo"
+            ]
+        ]
+
+        let engine = try RuleEngine(rules: [rule])
+
+        let result = try XCTUnwrap(engine.evaluate(obj))
+
+        XCTAssertTrue(result.conditions.match)
+    }
+
+    func testConditionWithPathIndex() throws {
+        let rule: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.clubs[1]",
+                        "value": "Madrid",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        let obj = [
+            "player": [
+                "first_name": "Cristiano",
+                "clubs": ["Juventus", "Madrid"]
+            ] as [String : Any]
+        ]
+
+        let engine = try RuleEngine(rules: [rule])
+
+        let result = try XCTUnwrap(engine.evaluate(obj))
+
+        XCTAssertTrue(result.conditions.match)
+    }
 }

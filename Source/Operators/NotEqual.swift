@@ -9,7 +9,7 @@ import Foundation
 
 
 struct NotEqual: Operator {
-    static let id = OperatorID.not_equal
+    static let id = OperatorID(rawValue: "not_equal")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {
@@ -27,21 +27,21 @@ struct NotEqual: Operator {
 
     func match(_ objValue: Any) -> Bool {
 
-        switch self.value.valueType {
-        case .string:
-            return castAndCompare(self.value.value, objValue, type: String.self)
+        switch self.value {
+        case .string(let lhs):
+            return castAndCompare(lhs, objValue, type: String.self)
 
-        case .number:
-            return castAndCompare(self.value.value, objValue, type: NSNumber.self)
+        case .number(let lhs):
+            return castAndCompare(lhs, objValue, type: NSNumber.self)
 
-        case .bool:
-            return castAndCompare(self.value.value, objValue, type: Bool.self)
+        case .bool(let lhs):
+            return castAndCompare(lhs, objValue, type: Bool.self)
 
-        case .dictionary:
-            return castAndCompare(self.value.value, objValue, type: NSDictionary.self)
+        case .dictionary(let lhs):
+            return castAndCompare(lhs, objValue, type: NSDictionary.self)
 
-        case .array:
-            return castAndCompare(self.value.value, objValue, type: NSArray.self)
+        case .array(let lhs):
+            return castAndCompare(lhs, objValue, type: NSArray.self)
 
         case .null:
             if case Optional<Any>.none = objValue  {

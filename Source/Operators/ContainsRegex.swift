@@ -9,18 +9,18 @@ import Foundation
 
 
 struct ContainsRegex: Operator {
-    static let id = OperatorID.contains_regex
+    static let id = OperatorID(rawValue: "contains_regex")
     private let regex: NSRegularExpression
 
     init(value: AnyCodable, params: [String : Any]?) throws {
-        guard let pattern = value.value as? String else {
-            throw OperatorError.invalidValueType
+        if case .string(let pattern) = value {
+            guard let reg = try? NSRegularExpression(pattern: pattern) else {
+                throw OperatorError.invalidValue
+            }
+            self.regex = reg
+            return
         }
-
-        guard let reg = try? NSRegularExpression(pattern: pattern) else {
-            throw OperatorError.invalidValue
-        }
-        self.regex = reg
+        throw OperatorError.invalidValueType
     }
 
     func match(_ objValue: Any) -> Bool {

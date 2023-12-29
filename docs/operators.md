@@ -102,23 +102,27 @@ To create your own operator you need to implement the `Operator` class.
 ```swift
 import SwiftRuleEngine
 
-extension OperatorID {
-    static let equal_lowercase = OperatorID(rawValue: "equal_lowercase")
-}
-
 struct EqualLowercase(Operator):
-    static let id = OperatorID.equal_lowercase
+    static let id = OperatorID(rawValue: "equal_lowercase")
+    private let value: String
+
+    init(value: AnyCodable, params: [String : Any]?) throws {
+        switch value {
+        case .string(let string):
+            self.value = string.lowercased()
+        default:
+            throw OperatorError.invalidValueType
+        }
+    }
 
     func match(_ objValue: Any) -> Bool {
-        guard self.value.valueType == .string,
-              let lhs = self.value.value as? String,
-              let rhs = objValue as? String else {
+        guard let rhs = objValue as? String else {
             return false
         }
-        return lhs.lowercased() == rhs.lowercased()
+        return lhs == rhs.lowercased()
     }
 
 
-# Load operator to engine
-let engine = RuleEngine(rules: [...], customOperators=[EqualLowercase()])
+// Load operator to engine
+let engine = RuleEngine(rules: [...], customOperators=[EqualLowercase.Type])
 ```

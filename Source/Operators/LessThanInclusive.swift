@@ -9,7 +9,7 @@ import Foundation
 
 
 struct LessThanInclusive: Operator {
-    static let id = OperatorID.less_than_inclusive
+    static let id = OperatorID(rawValue: "less_than_inclusive")
     private let value: AnyCodable
 
     init(value: AnyCodable, params: [String : Any]?) throws {
@@ -17,18 +17,16 @@ struct LessThanInclusive: Operator {
     }
 
     func match(_ objValue: Any) -> Bool {
-        switch self.value.valueType {
-        case .number:
-            guard let lhs = self.value.value as? NSNumber,
-                  let rhs = objValue as? NSNumber else {
+        switch self.value {
+        case .number(let lhs):
+            guard let rhs = objValue as? NSNumber else {
                 return false
             }
 
             return lhs.doubleValue >= rhs.doubleValue
 
-        case .string:
-            guard let lhs = self.value.value as? String,
-                  let rhs = objValue as? String else {
+        case .string(let lhs):
+            guard let rhs = objValue as? String else {
                 return false
             }
 
