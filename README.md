@@ -60,42 +60,40 @@ let result = engine.evaluate(obj)
 ```swift
 import SwiftRuleEngine
 
-let rule = """
-    {
-      "name": "advanced-rule",
-      "extra": {"author": "Santiago Alvarez"},
-      "conditions": {
-          "all": [
-              {
-                  "path": "$.player.first_name",
-                  "value": "Lionel",
-                  "operator": "equal"
-              },
-              {
-                  "path": "$.player.clubs",
-                  "operator": "contains"
-                  "value": ["Boca Juniors", "Juventus", "PSG"],
-                  "params": {"mode": "any"}
-              },
-              {
-                "path": "$.player.last_name",
-                "operator": "in",
-                "value": ["Messi", "Ronaldo", "Neymar"]
-              },
-              {
-                "path": "$.player.age",
-                "operator": "less_than",
-                "value": 35
-              },
-              {
-                "path": "$.player.clubs[0]",
-                "operator": "equal",
-                "value": "Barcelona"
-              }
-          ]
-      }
-  }
-"""
+let rule: [String: Any] = [
+    "name": "advanced-rule",
+    "extra": ["author": "Santiago Alvarez"],
+    "conditions": [
+        "all": [
+            [
+                "path": "$.player.first_name",
+                "value": "Lionel",
+                "operator": "equal"
+            ],
+            [
+                "path": "$.player.clubs",
+                "operator": "contains"
+                "value": ["Boca Juniors", "Juventus", "PSG"],
+                "params": ["mode": "any"]
+            ],
+            [
+              "path": "$.player.last_name",
+              "operator": "in",
+              "value": ["Messi", "Ronaldo", "Neymar"]
+            ],
+            [
+              "path": "$.player.age",
+              "operator": "less_than",
+              "value": 35
+            ],
+            [
+              "path": "$.player.clubs[0]",
+              "operator": "equal",
+              "value": "Barcelona"
+            ]
+        ]
+    ]
+]
 
 let obj = [
     "player": [
