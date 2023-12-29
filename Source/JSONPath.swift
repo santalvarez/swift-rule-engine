@@ -34,16 +34,23 @@ public struct JSONPath {
             throw JSONPathError.invalidPath
         }
 
-        self.parts = try path.components(separatedBy: ".").dropFirst().map { char in
-            if char.hasPrefix("[") && char.hasSuffix("]") {
-                guard let index = Int(char.dropFirst().dropLast()) else {
+        var parts = [JSONPart]()
+        for component in path.split(separator: ".") {
+            guard component != "$" else {
+                continue
+            }
+            if component.hasSuffix("]") {
+                let key = component.split(separator: "[")[0]
+                guard let index = Int(component.split(separator: "[")[1].split(separator: "]")[0]) else {
                     throw JSONPathError.invalidPath
                 }
-                return .index(index)
+                parts.append(.key(String(key)))
+                parts.append(.index(index))
             } else {
-                return .key(char)
+                parts.append(.key(String(component)))
             }
         }
+        self.parts = parts
     }
 
     private func accessDict(_ key: String, _ dict: [String: Any]) throws -> Any {
