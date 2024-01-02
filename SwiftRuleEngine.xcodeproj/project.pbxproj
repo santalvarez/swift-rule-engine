@@ -51,6 +51,13 @@
 		09B3C87629DCB65E00BF6195 /* ContainsRegexOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B3C87529DCB65E00BF6195 /* ContainsRegexOperatorTests.swift */; };
 		09B3C87829DCC52400BF6195 /* NotContainsRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B3C87729DCC52400BF6195 /* NotContainsRegex.swift */; };
 		09B3C87A29DCC5D600BF6195 /* NotContainsRegexOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B3C87929DCC5D600BF6195 /* NotContainsRegexOperatorTests.swift */; };
+		09B7298B2B44869000D80877 /* StartsWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7298A2B44869000D80877 /* StartsWith.swift */; };
+		09B7298D2B44869A00D80877 /* EndsWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7298C2B44869A00D80877 /* EndsWith.swift */; };
+		09B729962B4486EB00D80877 /* StartsWithOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B729942B4486E700D80877 /* StartsWithOperatorTests.swift */; };
+		09B729992B4487EE00D80877 /* EndsWithOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B729972B4486FE00D80877 /* EndsWithOperatorTests.swift */; };
+		09B7299A2B4487F700D80877 /* RuleEnginePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7298E2B4486C900D80877 /* RuleEnginePerformanceTests.swift */; };
+		09B7299B2B4487FA00D80877 /* RuleDecoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B729902B4486D300D80877 /* RuleDecoderTests.swift */; };
+		09B7299C2B4487FE00D80877 /* JSONPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B729922B4486DC00D80877 /* JSONPathTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +114,13 @@
 		09B3C87529DCB65E00BF6195 /* ContainsRegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainsRegexOperatorTests.swift; sourceTree = "<group>"; };
 		09B3C87729DCC52400BF6195 /* NotContainsRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotContainsRegex.swift; sourceTree = "<group>"; };
 		09B3C87929DCC5D600BF6195 /* NotContainsRegexOperatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotContainsRegexOperatorTests.swift; sourceTree = "<group>"; };
+		09B7298A2B44869000D80877 /* StartsWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartsWith.swift; sourceTree = "<group>"; };
+		09B7298C2B44869A00D80877 /* EndsWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndsWith.swift; sourceTree = "<group>"; };
+		09B7298E2B4486C900D80877 /* RuleEnginePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleEnginePerformanceTests.swift; sourceTree = "<group>"; };
+		09B729902B4486D300D80877 /* RuleDecoderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleDecoderTests.swift; sourceTree = "<group>"; };
+		09B729922B4486DC00D80877 /* JSONPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONPathTests.swift; sourceTree = "<group>"; };
+		09B729942B4486E700D80877 /* StartsWithOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartsWithOperatorTests.swift; sourceTree = "<group>"; };
+		09B729972B4486FE00D80877 /* EndsWithOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndsWithOperatorTests.swift; sourceTree = "<group>"; };
 		09EE15B82A2FF44200A4E8E1 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,6 +187,9 @@
 			isa = PBXGroup;
 			children = (
 				09ADCD4929A6650E00D6F26E /* OperatorTests */,
+				09B729922B4486DC00D80877 /* JSONPathTests.swift */,
+				09B729902B4486D300D80877 /* RuleDecoderTests.swift */,
+				09B7298E2B4486C900D80877 /* RuleEnginePerformanceTests.swift */,
 				09ADCD4729A6633000D6F26E /* RuleEngineTests.swift */,
 			);
 			path = Tests;
@@ -181,6 +198,8 @@
 		09ADCD2C29A5550000D6F26E /* Operators */ = {
 			isa = PBXGroup;
 			children = (
+				09B7298A2B44869000D80877 /* StartsWith.swift */,
+				09B7298C2B44869A00D80877 /* EndsWith.swift */,
 				095114E92953BB3B00C65AA7 /* Operator.swift */,
 				09ADCD2D29A5551100D6F26E /* Equal.swift */,
 				09ADCD2F29A5601000D6F26E /* NotEqual.swift */,
@@ -203,6 +222,8 @@
 		09ADCD4929A6650E00D6F26E /* OperatorTests */ = {
 			isa = PBXGroup;
 			children = (
+				09B729972B4486FE00D80877 /* EndsWithOperatorTests.swift */,
+				09B729942B4486E700D80877 /* StartsWithOperatorTests.swift */,
 				09ADCD4529A65C8400D6F26E /* EqualOperatorTests.swift */,
 				09ADCD4A29A66CC400D6F26E /* NotEqualOperatorTests.swift */,
 				09ADCD4C29A675F500D6F26E /* LessThanOperatorTests.swift */,
@@ -341,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				095114E82953BA5D00C65AA7 /* RuleEngine.swift in Sources */,
+				09B7298B2B44869000D80877 /* StartsWith.swift in Sources */,
 				095F6AF72AB761960041408F /* SimpleCondition.swift in Sources */,
 				095114EF2953BE2400C65AA7 /* Rule.swift in Sources */,
 				09372B4729E5DCF6004FAC5E /* NotRegex.swift in Sources */,
@@ -356,6 +378,7 @@
 				095114EA2953BB3B00C65AA7 /* Operator.swift in Sources */,
 				095114F32953F77500C65AA7 /* AnyCodable.swift in Sources */,
 				09B3C87829DCC52400BF6195 /* NotContainsRegex.swift in Sources */,
+				09B7298D2B44869A00D80877 /* EndsWith.swift in Sources */,
 				09ADCD3229A5A50B00D6F26E /* LessThan.swift in Sources */,
 				09ADCD3829A5A55E00D6F26E /* GreaterThanInclusive.swift in Sources */,
 				09ADCD3429A5A52500D6F26E /* LessThanInclusive.swift in Sources */,
@@ -375,7 +398,12 @@
 				096D386B29B182D0006008DF /* RegexOperatorTests.swift in Sources */,
 				09ADCD4829A6633000D6F26E /* RuleEngineTests.swift in Sources */,
 				09ADCD4B29A66CC400D6F26E /* NotEqualOperatorTests.swift in Sources */,
+				09B7299B2B4487FA00D80877 /* RuleDecoderTests.swift in Sources */,
+				09B7299A2B4487F700D80877 /* RuleEnginePerformanceTests.swift in Sources */,
+				09B729962B4486EB00D80877 /* StartsWithOperatorTests.swift in Sources */,
 				09ADCD5B29A6A29400D6F26E /* NotContainsOperatorTests.swift in Sources */,
+				09B7299C2B4487FE00D80877 /* JSONPathTests.swift in Sources */,
+				09B729992B4487EE00D80877 /* EndsWithOperatorTests.swift in Sources */,
 				09ADCD5329A69A8A00D6F26E /* GreaterThanInclusiveOperatorTests.swift in Sources */,
 				09B3C87A29DCC5D600BF6195 /* NotContainsRegexOperatorTests.swift in Sources */,
 				09B3C87629DCB65E00BF6195 /* ContainsRegexOperatorTests.swift in Sources */,
@@ -433,7 +461,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.3.0;
+				CURRENT_PROJECT_VERSION = 1.4.0;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -497,7 +525,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.3.0;
+				CURRENT_PROJECT_VERSION = 1.4.0;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
