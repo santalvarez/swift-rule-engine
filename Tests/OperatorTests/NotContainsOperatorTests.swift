@@ -23,6 +23,13 @@ class NotContainsOperatorTests: XCTestCase {
         XCTAssertFalse(op.match(rhs))
     }
 
+    func testNilMatch() {
+        let op = try! NotContains(value: .string("test"), params: nil)
+        let rhs: Any? = nil
+
+        XCTAssertTrue(op.match(rhs))
+    }
+
     func testIntArrayMatch() {
         let op = try! NotContains(value: .number(4), params: nil)
         let rhs: Any = [1, 2, 3]
@@ -97,7 +104,7 @@ class NotContainsOperatorTests: XCTestCase {
         let op = try! NotContains(value: .number(123123), params: nil)
         let rhs: Any = 1233
 
-        XCTAssertFalse(op.match(rhs))
+        XCTAssertTrue(op.match(rhs))
     }
 
 }

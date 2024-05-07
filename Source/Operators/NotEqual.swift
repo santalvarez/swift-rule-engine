@@ -19,7 +19,7 @@ struct NotEqual: Operator {
     private func castAndCompare<T: Equatable>(_ lhs: Any, _ rhs: Any, type: T.Type) -> Bool {
         guard let rhs = rhs as? T,
               let lhs = lhs as? T else {
-            return false
+            return true
         }
 
         return lhs != rhs

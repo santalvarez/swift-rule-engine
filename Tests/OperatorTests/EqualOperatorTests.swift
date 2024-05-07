@@ -25,6 +25,13 @@ class EqualOperatorTests: XCTestCase {
         XCTAssertFalse(op.match(rhs))
     }
 
+    func testStringAndNilNotMatch() {
+        let op = try! Equal(value: .string("test"), params: nil)
+        let rhs: Any? = nil
+
+        XCTAssertFalse(op.match(rhs))
+    }
+
     func testBoolsMatch() {
         let op = try! Equal(value: .bool(true), params: nil)
         let rhs: Any = true

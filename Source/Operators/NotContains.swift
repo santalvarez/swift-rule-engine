@@ -26,6 +26,6 @@ struct NotContains: Operator {
             return !rhs.contains(lhs)
         }
 
-        return false
+        return true
     }
 }
