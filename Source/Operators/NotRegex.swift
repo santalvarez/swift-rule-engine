@@ -25,7 +25,7 @@ struct NotRegex: Operator {
 
     func match(_ objValue: Any) -> Bool {
         guard let rhs = objValue as? String else {
-            return false
+            return true
         }
 
         let range = NSRange(location: 0, length: rhs.utf16.count)

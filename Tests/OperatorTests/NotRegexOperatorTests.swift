@@ -100,4 +100,11 @@ final class NotRegexOperatorTests: XCTestCase {
 
         XCTAssertTrue(op.match(rhs))
     }
+
+    func testMatchInvalidType() {
+        let op = try! NotRegex(value: .string("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"), params: nil)
+        let rhs: Any = true
+
+        XCTAssertTrue(op.match(rhs))
+    }
 }

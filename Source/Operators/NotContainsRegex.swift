@@ -24,7 +24,7 @@ struct NotContainsRegex: Operator {
 
     func match(_ objValue: Any) -> Bool {
         guard let rhs = objValue as? [String] else {
-            return false
+            return true
         }
 
         return !rhs.contains { string in

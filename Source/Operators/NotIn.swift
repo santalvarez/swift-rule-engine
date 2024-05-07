@@ -35,7 +35,7 @@ struct NotIn: Operator {
         } else if let lhs = self.value as? NSArray {
             return !lhs.contains(objValue)
         }
-        return false
+        return true
     }
 }
 

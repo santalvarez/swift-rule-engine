@@ -25,6 +25,20 @@ class NotInOperatorTests: XCTestCase {
         XCTAssertFalse(op.match(rhs))
     }
 
+    func testStringArrayAndNilMatch() {
+        let op = try! NotIn(value: .array(["test"]), params: nil)
+        let rhs: Any? = nil
+
+        XCTAssertTrue(op.match(rhs))
+    }
+
+    func testStringArrayAndBoolMatch() {
+        let op = try! NotIn(value: .array(["test"]), params: nil)
+        let rhs: Any = true
+
+        XCTAssertTrue(op.match(rhs))
+    }
+
     func testIntArrayMatch() {
         let op = try! NotIn(value: .array([1, 2, 3]), params: nil)
         let rhs: Any = 4
