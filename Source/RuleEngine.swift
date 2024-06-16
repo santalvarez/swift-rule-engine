@@ -60,7 +60,7 @@ final public class RuleEngine {
         return rule
     }
 
-    public func evaluate(_ obj: [String: Any]) -> Rule? {
+    public func evaluate(_ obj: Any) -> Rule? {
         for rule in self.rules {
             var rule = rule
             guard ((try? rule.conditions.evaluate(obj)) != nil) else {

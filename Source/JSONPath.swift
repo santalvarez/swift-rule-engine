@@ -53,10 +53,10 @@ public struct JSONPath {
         self.parts = parts
     }
 
-    private func accessDict(_ key: String, _ dict: [String: Any]) throws -> Any {
-        if let value = dict[key] {
+    private func accessObj(_ key: String, _ obj: any StringSubscriptable) throws -> Any {
+        if let value = obj[key] {
             return value
-        } else if dict[key] == nil {
+        } else if obj[key] == nil {
             return NSNull()
         } else {
             throw JSONPathError.valueNotFound
@@ -77,10 +77,10 @@ public struct JSONPath {
         for p in self.parts {
             switch p {
             case .key(let key):
-                guard let dict = currentObj as? [String: Any] else {
+                guard let subscriptableObj = currentObj as? any StringSubscriptable else {
                     throw JSONPathError.expectingDictionary
                 }
-                currentObj = try self.accessDict(key, dict)
+                currentObj = try self.accessObj(key, subscriptableObj)
             case .index(let index):
                 guard let array = currentObj as? [Any] else {
                     throw JSONPathError.expectingDictionary
