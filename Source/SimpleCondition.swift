@@ -10,7 +10,7 @@ import Foundation
 
 public struct SimpleCondition: Condition {
     public var match: Bool = false
-    public let op: [Operator]  // operator kw is reserved
+    public let op: [Operator]
     public let value: AnyCodable
     public let params: [String: Any]?
     public let path: JSONPath?
