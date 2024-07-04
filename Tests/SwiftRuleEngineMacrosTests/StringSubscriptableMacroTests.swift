@@ -34,7 +34,7 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension S: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<Self>] = [
+                private static let keys: [String: PartialKeyPath<S>] = [
                     "attr": \\.attr,
                     "attr2": \\.attr2
                 ]
@@ -64,7 +64,7 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension C: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<Self>] = [
+                private static let keys: [String: PartialKeyPath<C>] = [
                     "attr": \\.attr
                 ]
                 subscript(key: String) -> Any? {
@@ -148,7 +148,7 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension C: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<Self>] = [
+                private static let keys: [String: PartialKeyPath<C>] = [
                     "first_name": \\.firstName
                 ]
                 subscript(key: String) -> Any? {

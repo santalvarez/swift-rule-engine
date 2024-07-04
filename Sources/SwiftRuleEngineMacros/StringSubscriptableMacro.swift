@@ -47,7 +47,7 @@ public struct StringSubscriptableMacro: ExtensionMacro {
             throw StringSubscriptableMacroError.invalidAppliedType
         }
 
-        let keys = generateKeys ? Self.generateKeys(members: declaration.memberBlock.members) : ""
+        let keys = generateKeys ? Self.generateKeys(for: typeName.name.text, with: declaration.memberBlock.members) : ""
 
         return [try ExtensionDeclSyntax("""
         extension \(raw: typeName.name.text): StringSubscriptable {
@@ -62,7 +62,7 @@ public struct StringSubscriptableMacro: ExtensionMacro {
         """)]
     }
 
-    private static func generateKeys(members: MemberBlockItemListSyntax) -> DeclSyntax {
+    private static func generateKeys(for type: String, with members: MemberBlockItemListSyntax) -> DeclSyntax {
         var keys: [String] = []
         for m in members {
             guard let decl = m.decl.as(VariableDeclSyntax.self),
@@ -76,7 +76,7 @@ public struct StringSubscriptableMacro: ExtensionMacro {
         keys = keys.map { "\(tab)\($0)" }
 
         return """
-        private static let keys: [String: PartialKeyPath<Self>] = [
+        private static let keys: [String: PartialKeyPath<\(raw: type)>] = [
         \(raw: keys.joined(separator: ",\n"))
         ]
         """
