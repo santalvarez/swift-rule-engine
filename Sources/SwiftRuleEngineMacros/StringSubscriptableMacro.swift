@@ -31,14 +31,14 @@ public struct StringSubscriptableMacro: ExtensionMacro {
                                  conformingTo protocols: [SwiftSyntax.TypeSyntax],
                                  in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.ExtensionDeclSyntax] {
 
-        var generateKeys = false
+        var generateKeys = true
         if let args = node.arguments?.as(LabeledExprListSyntax.self) {
             for arg in args {
                 if arg.label?.text != "withKeys" { continue }
                 guard let withKeysValue = arg.expression.as(BooleanLiteralExprSyntax.self) else {
                     throw StringSubscriptableMacroError.withKeysInvalidType
                 }
-                if withKeysValue.literal.text == "true" { generateKeys = true }
+                if withKeysValue.literal.text == "false" { generateKeys = false }
             }
         }
 

@@ -19,5 +19,5 @@ public protocol StringSubscriptable {
  This conformance adds a subscript by string and optionally adds a static dictionary that maps
  snake-cased property names to their key paths for very fast dynamic lookup.
  */
-@attached(extension, names: arbitrary)
+@attached(extension, names: arbitrary, conformances: StringSubscriptable)
 public macro StringSubscriptable(withKeys: Bool = true) = #externalMacro(module: "SwiftRuleEngineMacros", type: "StringSubscriptableMacro")

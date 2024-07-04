@@ -21,7 +21,7 @@ final class MhuntMacrosTests: XCTestCase {
     func testMacroInStructWithKeys() throws {
         assertMacroExpansion(
             """
-            @StringSubscriptable(withKeys: true)
+            @StringSubscriptable
             struct S {
                 let attr: Int = 123123
                 let attr2: String = "hello"
@@ -53,7 +53,7 @@ final class MhuntMacrosTests: XCTestCase {
     func testMacroInClassWithKeys() throws {
         assertMacroExpansion(
             """
-            @StringSubscriptable(withKeys: true)
+            @StringSubscriptable
             class C {
                 let attr = 123
             }
@@ -82,7 +82,7 @@ final class MhuntMacrosTests: XCTestCase {
     func testMacroInStructWithoutKeys() throws {
         assertMacroExpansion(
             """
-            @StringSubscriptable
+            @StringSubscriptable(withKeys: false)
             struct S {
                 let attr: Int = 123123
             }
@@ -109,7 +109,7 @@ final class MhuntMacrosTests: XCTestCase {
     func testMacroInClassWithoutKeys() throws {
         assertMacroExpansion(
             """
-            @StringSubscriptable
+            @StringSubscriptable(withKeys: false)
             class C {
                 let attr = 123
             }
@@ -137,7 +137,7 @@ final class MhuntMacrosTests: XCTestCase {
     func testMacroSnakeCaseConversion() throws {
         assertMacroExpansion(
             """
-            @StringSubscriptable(withKeys: true)
+            @StringSubscriptable
             class C {
                 let firstName = "Martin"
             }
