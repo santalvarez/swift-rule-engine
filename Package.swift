@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.10
 //
 //  Package.swift
 //  SwiftRuleEngine
@@ -7,6 +7,7 @@
 //
 
 import PackageDescription
+import CompilerPluginSupport
 
 
 let package = Package(
@@ -18,9 +19,34 @@ let package = Package(
         .library(name: "SwiftRuleEngine", targets: ["SwiftRuleEngine"])
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-syntax.git", branch: "main"),
     ],
     targets: [
-        .target(name: "SwiftRuleEngine", dependencies: [], path: "Source"),
-        .testTarget(name: "SwiftRuleEngineTests", dependencies: ["SwiftRuleEngine"], path: "Tests")
+        .target(
+            name: "SwiftRuleEngine",
+            dependencies: ["SwiftRuleEngineMacros"],
+            path: "Sources/SwiftRuleEngine"
+        ),
+        .testTarget(
+            name: "SwiftRuleEngineTests",
+            dependencies: ["SwiftRuleEngine"],
+            path: "Tests/SwiftRuleEngineTests"
+        ),
+        .macro(
+            name: "SwiftRuleEngineMacros",
+            dependencies: [
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+            ],
+            path: "Sources/SwiftRuleEngineMacros"
+        ),
+        .testTarget(
+            name: "SwiftRuleEngineMacrosTests",
+            dependencies: [
+                "SwiftRuleEngineMacros",
+                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+            ],
+            path: "Tests/SwiftRuleEngineMacrosTests"
+        )
     ]
 )
