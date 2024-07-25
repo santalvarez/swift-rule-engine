@@ -19,7 +19,7 @@ let package = Package(
         .library(name: "SwiftRuleEngine", targets: ["SwiftRuleEngine"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", branch: "main"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0-prerelease-2024-06-12"),
     ],
     targets: [
         .target(
