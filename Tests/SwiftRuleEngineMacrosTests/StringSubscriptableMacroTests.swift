@@ -162,4 +162,66 @@ final class MhuntMacrosTests: XCTestCase {
             macros: testMacros
         )
     }
+
+    func testMacroPrivatePropertyOmitted() throws {
+        assertMacroExpansion(
+            """
+            @StringSubscriptable
+            class C {
+                let firstName = "Martin"
+                private let age = 25
+            }
+            """,
+            expandedSource: """
+            class C {
+                let firstName = "Martin"
+                private let age = 25
+            }
+
+            extension C: StringSubscriptable {
+                private static let keys: [String: PartialKeyPath<C>] = [
+                    "first_name": \\.firstName
+                ]
+                subscript(key: String) -> Any? {
+                    guard let kp = Self.keys[key] else {
+                        return nil
+                    }
+                    return self[keyPath: kp]
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func testMacroStaticPropertyOmitted() throws {
+        assertMacroExpansion(
+            """
+            @StringSubscriptable
+            class C {
+                let firstName = "Martin"
+                static let age = 25
+            }
+            """,
+            expandedSource: """
+            class C {
+                let firstName = "Martin"
+                static let age = 25
+            }
+
+            extension C: StringSubscriptable {
+                private static let keys: [String: PartialKeyPath<C>] = [
+                    "first_name": \\.firstName
+                ]
+                subscript(key: String) -> Any? {
+                    guard let kp = Self.keys[key] else {
+                        return nil
+                    }
+                    return self[keyPath: kp]
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
 }

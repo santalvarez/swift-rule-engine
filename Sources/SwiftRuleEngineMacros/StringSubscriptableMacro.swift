@@ -64,8 +64,10 @@ public struct StringSubscriptableMacro: ExtensionMacro {
 
     private static func generateKeys(for type: String, with members: MemberBlockItemListSyntax) -> DeclSyntax {
         var keys: [String] = []
+        let omittedModifiers = ["private", "static"]
         for m in members {
             guard let decl = m.decl.as(VariableDeclSyntax.self),
+                  !decl.modifiers.contains(where: { omittedModifiers.contains($0.name.text) }),
                   let binding = decl.bindings.first,
                   let name = binding.pattern.as(IdentifierPatternSyntax.self) else {
                 continue
