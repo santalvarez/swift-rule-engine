@@ -2,6 +2,8 @@
 A rule engine written in Swift where rules are defined in JSON format.
 
 - [Rule Syntax](docs/rules.md)
+- [Operators](docs/operators.md)
+- [Macros](docs/macros.md)
 
 ## Installation
 
@@ -95,18 +97,33 @@ let rule: [String: Any] = [
     ]
 ]
 
-let obj = [
-    "player": [
-        "first_name": "Lionel",
-        "last_name": "Messi",
-        "age": 34,
-        "goals": 700,
-        "clubs": [
-            "Barcelona",
-            "PSG",
-            "InterMiami"
+@StringSubscriptable
+struct Club {
+    let name: String
+    let country: String
+}
+
+@StringSubscriptable
+struct Player {
+    let first_name: String
+    let last_name: String
+    let age: Int
+    let goals: Int
+    let clubs: [String]
+}
+
+let obj: [String: Any] = [
+    "player": Player(
+        first_name: "Lionel",
+        last_name: "Messi",
+        age: 34,
+        goals: 700,
+        clubs: [
+            Club(name: "Barcelona", country: "Spain"),
+            Club(name: "PSG", country: "France"),
+            Club(name: "InterMiami", country: "USA")
         ]
-    ]
+    )
 ]
 
 let engine = try RuleEngine(rules: [rule])
