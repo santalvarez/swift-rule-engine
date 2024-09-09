@@ -17,6 +17,7 @@ A basic rule consists of a name and a multi condition
 | --- | --- | --- | --- |
 | name | The name of the rule | str | yes |
 | description | A description of the rule. | str | no |
+| priority | Priority of the rule. Defaults to 1. | int | no |
 | conditions | A [multi condition](#multi-condition). All rules start with a multi condition. | dict | yes |
 | extra | A dict that can be used to store extra information about the rule. | dict | no |
 

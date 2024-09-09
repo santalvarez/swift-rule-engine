@@ -376,4 +376,50 @@ class RuleEngineTests: XCTestCase {
 
         XCTAssertTrue(result.conditions.match)
     }
+
+    func testRulePriority() throws {
+        let rule1: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "priority": 100,
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Lionel",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        let rule2: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "priority": 50,
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Cristiano",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        let obj = [
+            "player": [
+                "first_name": "Cristiano",
+                "last_name": "Ronaldo"
+            ] as [String : Any]
+        ]
+
+        let engine = try RuleEngine(rules: [rule1, rule2])
+
+        let result = try XCTUnwrap(engine.evaluate(obj))
+
+        XCTAssertTrue(result.conditions.match)
+        XCTAssertEquals(result.priority, 50, "The rule with priority 50 should be matched.")
+    }
 }
