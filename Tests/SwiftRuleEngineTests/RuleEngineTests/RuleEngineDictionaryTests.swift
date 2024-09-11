@@ -381,7 +381,7 @@ class RuleEngineTests: XCTestCase {
         let rule1: [String: Any] = [
             "name": "test-rule",
             "description": "Test rule",
-            "priority": 100,
+            "priority": 10,
             "conditions": [
                 "all": [
                     [
