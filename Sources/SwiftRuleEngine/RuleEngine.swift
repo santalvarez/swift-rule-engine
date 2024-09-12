@@ -61,7 +61,8 @@ final public class RuleEngine {
     }
 
     public func evaluate(_ obj: Any) -> Rule? {
-        for rule in self.rules {
+        let sortedRules = rules.sorted { $0.priority > $1.priority }
+        for rule in sortedRules {
             var rule = rule
             guard ((try? rule.conditions.evaluate(obj)) != nil) else {
                 continue
