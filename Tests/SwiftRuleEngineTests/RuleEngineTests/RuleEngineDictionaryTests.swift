@@ -386,7 +386,7 @@ class RuleEngineTests: XCTestCase {
                 "all": [
                     [
                         "path": "$.player.first_name",
-                        "value": "Lionel",
+                        "value": "Cristiano",
                         "operator": "equal"
                     ]
                 ]
