@@ -73,4 +73,17 @@ final public class RuleEngine {
         }
         return nil
     }
+    
+    public func evaluateRule(named ruleName: String, with object: Any) -> Rule? {
+        guard var rule = self.rules.first(where: { $0.name == ruleName }) else {
+            return nil
+        }
+        guard ((try? rule.conditions.evaluate(object)) != nil) else {
+            return nil
+        }
+        if rule.conditions.match {
+            return rule
+        }
+        return nil
+    }
 }
