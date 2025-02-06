@@ -19,23 +19,28 @@ final public class RuleEngine {
     private let ruleDecoder: RuleDecoder
 
 
-    public init(rules: [String], customOperators: [Operator.Type] = []) throws {
-        self.ruleDecoder = try RuleDecoder(customOperators)
-        self.rules = rules.compactMap{ dictRule in
-            try? decodeRule(rule: dictRule)
+    public convenience init(rules: [String], customOperators: [Operator.Type] = []) throws {
+        let ruleDecoder = try RuleDecoder(customOperators)
+        let decodedRules = rules.compactMap { dictRule -> Rule? in
+            guard let data = dictRule.data(using: .utf8) else { return nil }
+            return try? ruleDecoder.decode(Rule.self, from: data)
         }
+        try self.init(rules: decodedRules, customOperators: customOperators)
     }
 
-    public init(rules: [[String: Any]], customOperators: [Operator.Type] = []) throws {
-        self.ruleDecoder = try RuleDecoder(customOperators)
-        self.rules = rules.compactMap{ dictRule in
-            try? decodeRule(rule: dictRule)
+    public convenience init(rules: [[String: Any]], customOperators: [Operator.Type] = []) throws {
+        let ruleDecoder = try RuleDecoder(customOperators)
+        let decodedRules = rules.compactMap { dictRule -> Rule? in
+            guard let data = try? JSONSerialization.data(withJSONObject: dictRule, options: []) else { return nil }
+            return try? ruleDecoder.decode(Rule.self, from: data)
         }
+        try self.init(rules: decodedRules, customOperators: customOperators)
     }
 
     public init(rules: [Rule], customOperators: [Operator.Type] = []) throws {
         self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules
+        self.rules.sort { $0.priority > $1.priority }
     }
 
     private func decodeRule(rule: [String: Any]) throws -> Rule {
@@ -61,8 +66,7 @@ final public class RuleEngine {
     }
 
     public func evaluate(_ obj: Any) -> Rule? {
-        let sortedRules = rules.sorted { $0.priority > $1.priority }
-        for rule in sortedRules {
+        for rule in rules {
             var rule = rule
             guard ((try? rule.conditions.evaluate(obj)) != nil) else {
                 continue
