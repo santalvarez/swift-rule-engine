@@ -19,6 +19,12 @@ final public class RuleEngine {
     private let ruleDecoder: RuleDecoder
 
 
+    //Used when we will add additional rules later
+    public convenience init(customOperators: [Operator.Type] = []) throws {
+        let rules: [Rule] = []
+        try self.init(rules: rules, customOperators: customOperators)
+    }
+        
     public convenience init(rules: [String], customOperators: [Operator.Type] = []) throws {
         let ruleDecoder = try RuleDecoder(customOperators)
         let decodedRules = rules.compactMap { dictRule -> Rule? in
@@ -41,6 +47,15 @@ final public class RuleEngine {
         self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules
         self.rules.sort { $0.priority > $1.priority }
+    }
+    
+    public func AppendRulesFromJSON(_ jsonString: String) throws {
+        if let data = jsonString.data(using: .utf8) {
+            if let newRules: [Rule] = try? ruleDecoder.decode([Rule].self, from: data) {
+                self.rules.append(contentsOf: newRules)
+                self.rules.sort { $0.priority > $1.priority }
+            }
+        }
     }
 
     private func decodeRule(rule: [String: Any]) throws -> Rule {
