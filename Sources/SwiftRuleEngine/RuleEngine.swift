@@ -77,4 +77,19 @@ final public class RuleEngine {
         }
         return nil
     }
+
+    public func evaluateAllRules(_ obj: Any) -> [Rule] {
+            var returnMatches: [Rule] = []
+
+            for rule in rules {
+                var rule = rule
+                guard ((try? rule.conditions.evaluate(obj)) != nil) else {
+                    continue
+                }
+                if rule.conditions.match {
+                    returnMatches.append(rule)
+                }
+            }
+            return returnMatches
+        }
 }
