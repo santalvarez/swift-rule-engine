@@ -49,12 +49,10 @@ final public class RuleEngine {
         self.rules.sort { $0.priority > $1.priority }
     }
     
-    public func AppendRulesFromJSON(_ jsonString: String) throws {
-        if let data = jsonString.data(using: .utf8) {
-            if let newRules: [Rule] = try? ruleDecoder.decode([Rule].self, from: data) {
-                self.rules.append(contentsOf: newRules)
-                self.rules.sort { $0.priority > $1.priority }
-            }
+    public func AppendRulesFromJSON(_ jsonString: Data) throws {
+        if let newRules: [Rule] = try? ruleDecoder.decode([Rule].self, from: jsonString) {
+            self.rules.append(contentsOf: newRules)
+            self.rules.sort { $0.priority > $1.priority }
         }
     }
 
