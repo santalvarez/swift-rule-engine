@@ -17,14 +17,14 @@ enum RuleEngineError: Error {
 final public class RuleEngine {
     private var rules: [Rule] = []
     private let ruleDecoder: RuleDecoder
-
-
+    
+    
     //Used when we will add additional rules later
     public convenience init(customOperators: [Operator.Type] = []) throws {
         let rules: [Rule] = []
         try self.init(rules: rules, customOperators: customOperators)
     }
-        
+    
     public convenience init(rules: [String], customOperators: [Operator.Type] = []) throws {
         let ruleDecoder = try RuleDecoder(customOperators)
         let decodedRules = rules.compactMap { dictRule -> Rule? in
@@ -33,7 +33,7 @@ final public class RuleEngine {
         }
         try self.init(rules: decodedRules, customOperators: customOperators)
     }
-
+    
     public convenience init(rules: [[String: Any]], customOperators: [Operator.Type] = []) throws {
         let ruleDecoder = try RuleDecoder(customOperators)
         let decodedRules = rules.compactMap { dictRule -> Rule? in
@@ -42,7 +42,7 @@ final public class RuleEngine {
         }
         try self.init(rules: decodedRules, customOperators: customOperators)
     }
-
+    
     public init(rules: [Rule], customOperators: [Operator.Type] = []) throws {
         self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules
@@ -55,29 +55,29 @@ final public class RuleEngine {
             self.rules.sort { $0.priority > $1.priority }
         }
     }
-
+    
     private func decodeRule(rule: [String: Any]) throws -> Rule {
         guard let ruleData = try? JSONSerialization.data(withJSONObject: rule, options: []) else {
             throw RuleEngineError.invalidRule("Error converting dict to data")
         }
-
+        
         guard let rule = try? ruleDecoder.decode(Rule.self, from: ruleData) else {
             throw RuleEngineError.invalidRule("Error decoding rule")
         }
         return rule
     }
-
+    
     private func decodeRule(rule: String) throws -> Rule {
         guard let ruleData = rule.data(using: .utf8) else {
             throw RuleEngineError.invalidRule("Rule not in utf8 format")
         }
-
+        
         guard let rule = try? ruleDecoder.decode(Rule.self, from: ruleData) else {
             throw RuleEngineError.invalidRule("Error decoding rule")
         }
         return rule
     }
-
+    
     public func evaluate(_ obj: Any) -> Rule? {
         for rule in rules {
             var rule = rule
@@ -90,19 +90,19 @@ final public class RuleEngine {
         }
         return nil
     }
-
+    
     public func evaluateAllRules(_ obj: Any) -> [Rule] {
-            var returnMatches: [Rule] = []
-
-            for rule in rules {
-                var rule = rule
-                guard ((try? rule.conditions.evaluate(obj)) != nil) else {
-                    continue
-                }
-                if rule.conditions.match {
-                    returnMatches.append(rule)
-                }
+        var returnMatches: [Rule] = []
+        
+        for rule in rules {
+            var rule = rule
+            guard ((try? rule.conditions.evaluate(obj)) != nil) else {
+                continue
             }
-            return returnMatches
+            if rule.conditions.match {
+                returnMatches.append(rule)
+            }
         }
+        return returnMatches
+    }
 }
