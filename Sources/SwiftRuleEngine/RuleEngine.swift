@@ -50,10 +50,10 @@ final public class RuleEngine {
     }
     
     public func AppendRulesFromJSON(_ jsonString: Data) throws {
-        if let newRules: [Rule] = try? ruleDecoder.decode([Rule].self, from: jsonString) {
-            self.rules.append(contentsOf: newRules)
-            self.rules.sort { $0.priority > $1.priority }
-        }
+        var newRules: [Rule] = try! ruleDecoder.decode([Rule].self, from: jsonString)
+        
+        self.rules.append(contentsOf: newRules)
+        self.rules.sort { $0.priority > $1.priority }
     }
     
     private func decodeRule(rule: [String: Any]) throws -> Rule {
