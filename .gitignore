@@ -93,3 +93,4 @@ iOSInjectionProject/
 .DS_Store
 .swiftpm
 .vscode
+bazel-*

@@ -420,6 +420,6 @@ class RuleEngineTests: XCTestCase {
         let result = try XCTUnwrap(engine.evaluate(obj))
 
         XCTAssertTrue(result.conditions.match)
-        XCTAssertEquals(result.priority, 50, "The rule with priority 50 should be matched.")
+        XCTAssertEqual(result.priority, 50, "The rule with priority 50 should be matched.")
     }
 }
