@@ -18,6 +18,7 @@ final public class RuleEngine {
     private var rules: [Rule] = []
     private let ruleDecoder: RuleDecoder
 
+    private var ruleIndexByName: [String:Int] = [:]
 
     public convenience init(rules: [String], customOperators: [Operator.Type] = []) throws {
         let ruleDecoder = try RuleDecoder(customOperators)
@@ -41,6 +42,10 @@ final public class RuleEngine {
         self.ruleDecoder = try RuleDecoder(customOperators)
         self.rules = rules
         self.rules.sort { $0.priority > $1.priority }
+
+        for (index, rule) in self.rules.enumerated() {
+            self.ruleIndexByName[rule.name] = index
+        }
     }
 
     private func decodeRule(rule: [String: Any]) throws -> Rule {
@@ -76,5 +81,21 @@ final public class RuleEngine {
             }
         }
         return nil
+    }
+
+    public func evaluateRule(_ obj: Any, ruleName: String) -> Rule? {
+        // Retrieve the index for the requested rule name
+        guard let index = ruleIndexByName[ruleName], index < rules.count else {
+            return nil
+        }
+
+        var rule = rules[index]
+
+        // Try evaluating the conditions against the provided object
+        guard ((try? rule.conditions.evaluate(obj)) != nil) else {
+            return nil
+        }
+
+        return rule.conditions.match ? rule : nil
     }
 }
