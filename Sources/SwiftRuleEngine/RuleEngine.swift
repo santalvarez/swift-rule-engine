@@ -11,91 +11,83 @@ import Foundation
 enum RuleEngineError: Error {
     case operatorNotFound
     case duplicateOperator
+    case duplicateRuleName
     case invalidRule(String)
 }
 
-final public class RuleEngine {
-    private var rules: [Rule] = []
-    private let ruleDecoder: RuleDecoder
+public enum RuleLoadingStrategy {
+  /// If any rule fails to load or there are duplicate rules, throw immediately.
+  case strict
+  /// Silently drop any rules that fail to load or there are duplicate rules.
+  /// If there are duplicate rules, the first one is kept.
+  case skip
+}
 
-    private var ruleIndexByName: [String:Int] = [:]
+public final class RuleEngine {
+  private var rules: [Rule]
+  private let ruleDecoder: RuleDecoder
 
-    public convenience init(rules: [String], customOperators: [Operator.Type] = []) throws {
-        let ruleDecoder = try RuleDecoder(customOperators)
-        let decodedRules = rules.compactMap { dictRule -> Rule? in
-            guard let data = dictRule.data(using: .utf8) else { return nil }
-            return try? ruleDecoder.decode(Rule.self, from: data)
-        }
-        try self.init(rules: decodedRules, customOperators: customOperators)
+  /// Initialize from an array of JSON strings
+  public convenience init(rules jsonStrings: [String],
+                          strategy: RuleLoadingStrategy = .skip,
+                          customOperators: [Operator.Type] = []) throws {
+    // build a decoder
+    let decoder = try RuleDecoder(customOperators)
+
+    // decode each JSON string to a Rule based on strategy
+    let decoded = try jsonStrings.compactMap { jsonString in
+      do {
+        return try decoder.decodeRule(fromJSON: jsonString)
+      } catch {
+        if strategy == .strict { throw error }
+        return nil // skipInvalid: silently drop failed rules
+      }
     }
 
-    public convenience init(rules: [[String: Any]], customOperators: [Operator.Type] = []) throws {
-        let ruleDecoder = try RuleDecoder(customOperators)
-        let decodedRules = rules.compactMap { dictRule -> Rule? in
-            guard let data = try? JSONSerialization.data(withJSONObject: dictRule, options: []) else { return nil }
-            return try? ruleDecoder.decode(Rule.self, from: data)
-        }
-        try self.init(rules: decodedRules, customOperators: customOperators)
+    // call the designated init
+    try self.init(rules: decoded, customOperators: customOperators, strategy: strategy)
+  }
+
+  /// Initialize from an array of dictionaries
+  public convenience init(rules dictArray: [[String:Any]],
+                          strategy: RuleLoadingStrategy = .skip,
+                          customOperators: [Operator.Type] = []) throws {
+    let decoder = try RuleDecoder(customOperators)
+
+    // decode each dictionary to a Rule based on strategy
+    let decoded = try dictArray.compactMap { dict in
+      do {
+        return try decoder.decodeRule(fromDict: dict)
+      } catch {
+        if strategy == .strict { throw error }
+        return nil // skipInvalid: silently drop failed rules
+      }
     }
 
-    public init(rules: [Rule], customOperators: [Operator.Type] = []) throws {
-        self.ruleDecoder = try RuleDecoder(customOperators)
-        self.rules = rules
-        self.rules.sort { $0.priority > $1.priority }
+    try self.init(rules: decoded, customOperators: customOperators, strategy: strategy)
+  }
 
-        for (index, rule) in self.rules.enumerated() {
-            self.ruleIndexByName[rule.name] = index
-        }
+  public init(rules: [Rule], customOperators: [Operator.Type] = [],
+              strategy: RuleLoadingStrategy = .skip) throws {
+    self.ruleDecoder = try RuleDecoder(customOperators)
+
+    // Handle duplicate rules based on strategy
+    if strategy == .strict && Dictionary(grouping: rules, by: { $0.name }).contains(where: { $1.count > 1 }) {
+      throw RuleEngineError.duplicateRuleName
     }
 
-    private func decodeRule(rule: [String: Any]) throws -> Rule {
-        guard let ruleData = try? JSONSerialization.data(withJSONObject: rule, options: []) else {
-            throw RuleEngineError.invalidRule("Error converting dict to data")
-        }
+    self.rules = Array(Dictionary(grouping: rules, by: { $0.name }).values.map { $0.first! })
+      .sorted { $0.priority > $1.priority }
+  }
 
-        guard let rule = try? ruleDecoder.decode(Rule.self, from: ruleData) else {
-            throw RuleEngineError.invalidRule("Error decoding rule")
-        }
+  public func evaluate(_ obj: Any) -> Rule? {
+    for var rule in rules {
+      // try to evaluate, ignore if it throws
+      guard (try? rule.conditions.evaluate(obj)) != nil else { continue }
+      if rule.conditions.match {
         return rule
+      }
     }
-
-    private func decodeRule(rule: String) throws -> Rule {
-        guard let ruleData = rule.data(using: .utf8) else {
-            throw RuleEngineError.invalidRule("Rule not in utf8 format")
-        }
-
-        guard let rule = try? ruleDecoder.decode(Rule.self, from: ruleData) else {
-            throw RuleEngineError.invalidRule("Error decoding rule")
-        }
-        return rule
-    }
-
-    public func evaluate(_ obj: Any) -> Rule? {
-        for rule in rules {
-            var rule = rule
-            guard ((try? rule.conditions.evaluate(obj)) != nil) else {
-                continue
-            }
-            if rule.conditions.match {
-                return rule
-            }
-        }
-        return nil
-    }
-
-    public func evaluateRule(_ obj: Any, ruleName: String) -> Rule? {
-        // Retrieve the index for the requested rule name
-        guard let index = ruleIndexByName[ruleName], index < rules.count else {
-            return nil
-        }
-
-        var rule = rules[index]
-
-        // Try evaluating the conditions against the provided object
-        guard ((try? rule.conditions.evaluate(obj)) != nil) else {
-            return nil
-        }
-
-        return rule.conditions.match ? rule : nil
-    }
+    return nil
+  }
 }

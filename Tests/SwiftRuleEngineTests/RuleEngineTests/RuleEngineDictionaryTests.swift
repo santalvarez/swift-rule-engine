@@ -11,6 +11,39 @@ import XCTest
 
 class RuleEngineTests: XCTestCase {
 
+    func testDuplicateRuleError() throws {
+        let rule1: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Lionel",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        let rule2: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Lionel",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        XCTAssertThrowsError(try RuleEngine(rules: [rule1, rule2], strategy: .strict))
+        XCTAssertNoThrow(try RuleEngine(rules: [rule1, rule2], strategy: .skip))
+    }
+
     func testAllDoubleEqualCondition() throws {
         let rule: [String: Any] = [
             "name": "test-rule",
@@ -394,7 +427,7 @@ class RuleEngineTests: XCTestCase {
         ]
 
         let rule2: [String: Any] = [
-            "name": "test-rule",
+            "name": "test-rule-2",
             "description": "Test rule",
             "priority": 50,
             "conditions": [
@@ -421,72 +454,5 @@ class RuleEngineTests: XCTestCase {
 
         XCTAssertTrue(result.conditions.match)
         XCTAssertEqual(result.priority, 50, "The rule with priority 50 should be matched.")
-    }
-
-    func testEvaluateRuleByNameSuccess() throws {
-        let rule: [String: Any] = [
-            "name": "match-rule",
-            "description": "Rule that should match",
-            "conditions": [
-                "all": [
-                    [
-                        "path": "$.value",
-                        "value": 5,
-                        "operator": "equal"
-                    ]
-                ]
-            ]
-        ]
-
-        let obj: [String: Any] = ["value": 5]
-        let engine = try RuleEngine(rules: [rule])
-
-        let result = try XCTUnwrap(engine.evaluateRule(obj, ruleName: "match-rule"))
-        XCTAssertTrue(result.conditions.match)
-        XCTAssertEqual(result.name, "match-rule")
-    }
-
-    func testEvaluateRuleByNameNoMatch() throws {
-        let rule: [String: Any] = [
-            "name": "no-match-rule",
-            "description": "Rule that should NOT match",
-            "conditions": [
-                "all": [
-                    [
-                        "path": "$.value",
-                        "value": 10,
-                        "operator": "equal"
-                    ]
-                ]
-            ]
-        ]
-
-        let obj: [String: Any] = ["value": 5]
-        let engine = try RuleEngine(rules: [rule])
-
-        let result = engine.evaluateRule(obj, ruleName: "no-match-rule")
-        XCTAssertNil(result)
-    }
-
-    func testEvaluateRuleByNameNotFound() throws {
-        let rule: [String: Any] = [
-            "name": "some-rule",
-            "description": "Irrelevant rule",
-            "conditions": [
-                "all": [
-                    [
-                        "path": "$.value",
-                        "value": 1,
-                        "operator": "equal"
-                    ]
-                ]
-            ]
-        ]
-
-        let obj: [String: Any] = ["value": 1]
-        let engine = try RuleEngine(rules: [rule])
-
-        let result = engine.evaluateRule(obj, ruleName: "unknown-rule")
-        XCTAssertNil(result)
     }
 }
