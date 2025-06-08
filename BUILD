@@ -1,6 +1,7 @@
-package(default_visibility = ["//visibility:public"])
-
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library", "swift_test")
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+package(default_visibility = ["//visibility:public"])
 
 # Main library target
 swift_library(
@@ -41,3 +42,9 @@ swift_test(
     module_name = "SwiftRuleEngineMacrosTests",
 )
 
+# Expose the deps.bzl file for other projects to use
+bzl_library(
+    name = "deps",
+    srcs = ["deps.bzl"],
+    visibility = ["//visibility:public"],
+)
