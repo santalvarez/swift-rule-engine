@@ -11,6 +11,39 @@ import XCTest
 
 class RuleEngineTests: XCTestCase {
 
+    func testDuplicateRuleError() throws {
+        let rule1: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Lionel",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        let rule2: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Lionel",
+                        "operator": "equal"
+                    ]
+                ]
+            ]
+        ]
+
+        XCTAssertThrowsError(try RuleEngine(rules: [rule1, rule2], strategy: .strict))
+        XCTAssertNoThrow(try RuleEngine(rules: [rule1, rule2], strategy: .skip))
+    }
+
     func testAllDoubleEqualCondition() throws {
         let rule: [String: Any] = [
             "name": "test-rule",
@@ -394,7 +427,7 @@ class RuleEngineTests: XCTestCase {
         ]
 
         let rule2: [String: Any] = [
-            "name": "test-rule",
+            "name": "test-rule-2",
             "description": "Test rule",
             "priority": 50,
             "conditions": [
@@ -420,6 +453,6 @@ class RuleEngineTests: XCTestCase {
         let result = try XCTUnwrap(engine.evaluate(obj))
 
         XCTAssertTrue(result.conditions.match)
-        XCTAssertEquals(result.priority, 50, "The rule with priority 50 should be matched.")
+        XCTAssertEqual(result.priority, 50, "The rule with priority 50 should be matched.")
     }
 }
