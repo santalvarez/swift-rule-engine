@@ -1,4 +1,4 @@
-load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library", "swift_test")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library", "swift_test", "swift_compiler_plugin")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -7,12 +7,12 @@ package(default_visibility = ["//visibility:public"])
 swift_library(
     name = "SwiftRuleEngine",
     srcs = glob(["Sources/SwiftRuleEngine/**/*.swift"]),
-    deps = [":SwiftRuleEngineMacros"],
     module_name = "SwiftRuleEngine",
+    plugins = [":SwiftRuleEngineMacros"],
 )
 
 # Macros target
-swift_library(
+swift_compiler_plugin(
     name = "SwiftRuleEngineMacros",
     srcs = glob(["Sources/SwiftRuleEngineMacros/**/*.swift"]),
     deps = [
