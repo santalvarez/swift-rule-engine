@@ -52,7 +52,7 @@ public struct StringSubscriptableMacro: ExtensionMacro {
         return [try ExtensionDeclSyntax("""
         extension \(raw: typeName.name.text): StringSubscriptable {
             \(keys)
-            subscript(key: String) -> Any? {
+            public subscript(key: String) -> Any? {
                 guard let kp = Self.keys[key] else {
                     return nil
                 }

@@ -38,7 +38,7 @@ final class MhuntMacrosTests: XCTestCase {
                     "attr": \\.attr,
                     "attr2": \\.attr2
                 ]
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }
@@ -67,7 +67,7 @@ final class MhuntMacrosTests: XCTestCase {
                 private static let keys: [String: PartialKeyPath<C>] = [
                     "attr": \\.attr
                 ]
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }
@@ -94,7 +94,7 @@ final class MhuntMacrosTests: XCTestCase {
 
             extension S: StringSubscriptable {
 
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }
@@ -121,7 +121,7 @@ final class MhuntMacrosTests: XCTestCase {
 
             extension C: StringSubscriptable {
 
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }
@@ -151,7 +151,7 @@ final class MhuntMacrosTests: XCTestCase {
                 private static let keys: [String: PartialKeyPath<C>] = [
                     "first_name": \\.firstName
                 ]
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }
@@ -182,7 +182,7 @@ final class MhuntMacrosTests: XCTestCase {
                 private static let keys: [String: PartialKeyPath<C>] = [
                     "first_name": \\.firstName
                 ]
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }
@@ -213,7 +213,7 @@ final class MhuntMacrosTests: XCTestCase {
                 private static let keys: [String: PartialKeyPath<C>] = [
                     "first_name": \\.firstName
                 ]
-                subscript(key: String) -> Any? {
+                public subscript(key: String) -> Any? {
                     guard let kp = Self.keys[key] else {
                         return nil
                     }

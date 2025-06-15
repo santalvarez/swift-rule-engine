@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "6389A04E-8174-4B04-8B72-1174AD3024B1",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SwiftRuleEngineMacrosTests",
+        "name" : "SwiftRuleEngineMacrosTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SwiftRuleEngineTests",
+        "name" : "SwiftRuleEngineTests"
+      }
+    }
+  ],
+  "version" : 1
+}
