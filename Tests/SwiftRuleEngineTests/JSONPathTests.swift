@@ -47,4 +47,31 @@ final class JSONPathTests: XCTestCase {
         XCTAssertThrowsError(try JSONPath("$.key[-1]"))
     }
 
+    func testJSONPathPerformance() throws {
+        let obj = [
+            "player": [
+                "id": "123",
+                "name": "Martin",
+                "goals": 205,
+                "last_name": "Palermo",
+                "country": [
+                    "name": "Argentina",
+                    "code": "AR",
+                    "coordinates": [
+                        "latitude": -34.603722,
+                        "longitude": -58.381559
+                    ]
+                ],
+                "team": "Boca Juniors"
+            ] as [String: Any]
+        ]
+
+        let path = try JSONPath("$.player.country.coordinates.latitude")
+
+        self.measure {
+            for _ in 0..<1_000_000 {
+                _ = try? path.getValue(for: obj)
+            }
+        }
+    }
 }

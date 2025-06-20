@@ -81,11 +81,15 @@ public final class RuleEngine {
   }
 
   public func evaluate(_ obj: Any) -> Rule? {
-    for var rule in rules {
-      // try to evaluate, ignore if it throws
-      guard (try? rule.conditions.evaluate(obj)) != nil else { continue }
-      if rule.conditions.match {
-        return rule
+    for rule in rules {
+      // Use the non-mutating evaluation method to avoid copying rules
+      do {
+        if try rule.conditions.evaluateAndMatch(obj) {
+          return rule
+        }
+      } catch {
+        // Continue to next rule if evaluation fails
+        continue
       }
     }
     return nil

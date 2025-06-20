@@ -46,6 +46,23 @@ public struct SimpleCondition: Condition {
         }
     }
 
+    public func evaluateAndMatch(_ obj: Any) throws -> Bool {
+        guard let mode = self.mode else {
+            if let path = self.path {
+                let obj = try path.getValue(for: obj)
+                return op[0].match(obj)
+            }
+            return op[0].match(obj)
+        }
+
+        if let path = self.path {
+            let obj = try path.getValue(for: obj)
+            return evaluateMode(obj, mode)
+        } else {
+            return evaluateMode(obj, mode)
+        }
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

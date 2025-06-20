@@ -1,4 +1,4 @@
-// swift-tools-version:5.10
+// swift-tools-version:6.1
 //
 //  Package.swift
 //  SwiftRuleEngine
@@ -19,7 +19,7 @@ let package = Package(
         .library(name: "SwiftRuleEngine", targets: ["SwiftRuleEngine"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0-prerelease-2024-06-12"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.1"),
     ],
     targets: [
         .target(
@@ -48,5 +48,6 @@ let package = Package(
             ],
             path: "Tests/SwiftRuleEngineMacrosTests"
         )
-    ]
+    ],
+    swiftLanguageModes: [.v5]
 )

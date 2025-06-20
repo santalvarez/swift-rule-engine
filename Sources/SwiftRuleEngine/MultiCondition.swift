@@ -50,6 +50,39 @@ public struct MultiCondition: Condition {
         self.match = !self.not!.match
     }
 
+    public func evaluateAndMatch(_ obj: Any) throws -> Bool {
+        if self.all != nil {
+            return try self.evaluateAndMatchAll(obj)
+        } else if self.any != nil {
+            return try self.evaluateAndMatchAny(obj)
+        } else if self.not != nil {
+            return try self.evaluateAndMatchNot(obj)
+        }
+        return false
+    }
+
+    private func evaluateAndMatchAny(_ obj: Any) throws -> Bool {
+        for condition in self.any! {
+            if try condition.evaluateAndMatch(obj) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private func evaluateAndMatchAll(_ obj: Any) throws -> Bool {
+        for condition in self.all! {
+            if !(try condition.evaluateAndMatch(obj)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private func evaluateAndMatchNot(_ obj: Any) throws -> Bool {
+        return !(try self.not!.evaluateAndMatch(obj))
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

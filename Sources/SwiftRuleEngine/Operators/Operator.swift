@@ -17,8 +17,8 @@ public protocol Operator {
 }
 
 
-public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable {
-    public var rawValue: String
+public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable, Sendable {
+    public let rawValue: String
 
     public init(rawValue: String) {
         self.rawValue = rawValue
