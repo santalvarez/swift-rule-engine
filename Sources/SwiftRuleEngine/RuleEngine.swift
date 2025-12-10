@@ -84,7 +84,7 @@ public final class RuleEngine {
     for rule in rules {
       // Use the non-mutating evaluation method to avoid copying rules
       do {
-        if try rule.conditions.evaluateAndMatch(obj) {
+        if try rule.conditions.evaluate(obj) {
           return rule
         }
       } catch {

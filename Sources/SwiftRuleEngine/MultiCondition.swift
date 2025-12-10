@@ -9,78 +9,41 @@ import Foundation
 
 
 public struct MultiCondition: Condition {
-    public var match: Bool = false
     public var all: [Condition]?
     public var any: [Condition]?
     public var not: Condition?
 
-    public mutating func evaluate(_ obj: Any) throws {
+    public func evaluate(_ obj: Any) throws -> Bool{
         if self.all != nil {
-            try self.evaluateAll(obj)
+            return try self.evaluateAll(obj)
         } else if self.any != nil {
-            try self.evaluateAny(obj)
+            return try self.evaluateAny(obj)
         } else if self.not != nil {
-            try self.evaluateNot(obj)
-        }
-    }
-
-    private mutating func evaluateAny(_ obj: Any) throws {
-        for i in self.any!.indices {
-            try self.any![i].evaluate(obj)
-            if self.any![i].match {
-                self.match = true
-                return
-            }
-        }
-    }
-
-    private mutating func evaluateAll(_ obj: Any) throws {
-        for i in self.all!.indices {
-            try self.all![i].evaluate(obj)
-            if !self.all![i].match {
-                self.match = false
-                return
-            }
-        }
-        self.match = true
-    }
-
-    private mutating func evaluateNot(_ obj: Any) throws {
-        try self.not!.evaluate(obj)
-        self.match = !self.not!.match
-    }
-
-    public func evaluateAndMatch(_ obj: Any) throws -> Bool {
-        if self.all != nil {
-            return try self.evaluateAndMatchAll(obj)
-        } else if self.any != nil {
-            return try self.evaluateAndMatchAny(obj)
-        } else if self.not != nil {
-            return try self.evaluateAndMatchNot(obj)
+            return try self.evaluateNot(obj)
         }
         return false
     }
 
-    private func evaluateAndMatchAny(_ obj: Any) throws -> Bool {
-        for condition in self.any! {
-            if try condition.evaluateAndMatch(obj) {
+    private func evaluateAny(_ obj: Any) throws -> Bool {
+        for i in self.any!.indices {
+            if try self.any![i].evaluate(obj) {
                 return true
             }
         }
         return false
     }
 
-    private func evaluateAndMatchAll(_ obj: Any) throws -> Bool {
-        for condition in self.all! {
-            if !(try condition.evaluateAndMatch(obj)) {
+    private func evaluateAll(_ obj: Any) throws -> Bool {
+        for i in self.all!.indices {
+            if !(try self.all![i].evaluate(obj)) {
                 return false
             }
         }
         return true
     }
 
-    private func evaluateAndMatchNot(_ obj: Any) throws -> Bool {
-        return !(try self.not!.evaluateAndMatch(obj))
+    private func evaluateNot(_ obj: Any) throws -> Bool {
+        return !(try self.not!.evaluate(obj))
     }
 
     public init(from decoder: Decoder) throws {

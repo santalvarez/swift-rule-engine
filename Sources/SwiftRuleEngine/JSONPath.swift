@@ -21,7 +21,7 @@ enum JSONPart {
 
 public struct JSONPath {
     private let parts: [JSONPart]
-    private let pathRegex = try! NSRegularExpression(pattern: #"\$\.((\w+\[\d+\](\.|$)|(\w+\.)))*(\w+\[\d+\]|\w+)$"#)
+    private static let pathRegex = try! NSRegularExpression(pattern: #"\$\.((\w+\[\d+\](\.|$)|(\w+\.)))*(\w+\[\d+\]|\w+)$"#)
 
     init(_ path: String) throws {
         guard path != "$" else {
@@ -29,7 +29,7 @@ public struct JSONPath {
             return
         }
 
-        guard pathRegex.firstMatch(in: path, options: [],
+        guard Self.pathRegex.firstMatch(in: path, options: [],
                                    range: NSRange(location: 0, length: path.count)) != nil else {
             throw JSONPathError.invalidPath
         }

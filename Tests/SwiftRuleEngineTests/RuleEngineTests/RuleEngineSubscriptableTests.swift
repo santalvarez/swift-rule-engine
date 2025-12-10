@@ -47,9 +47,7 @@ class RuleEngineSubscriptableTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testBasicRuleNotMatch() throws {
