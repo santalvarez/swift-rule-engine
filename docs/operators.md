@@ -2,6 +2,9 @@
 
 ## Default Operators
 
+Operator IDs are matched case-insensitively and accept both `snake_case` and `camelCase`
+(underscores and dashes are ignored when matching).
+
 | Operator             | ID                      | Description                                                                                                     | Supported Types   |
 |----------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------|-------------------|
 | Equal                | "equal"                 | Compares if the value of the object is equal to the value of the condition.                                    | String, Int, Double, Bool, Array, Dictionary, nil |
