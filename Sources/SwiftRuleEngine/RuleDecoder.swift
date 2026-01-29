@@ -9,6 +9,8 @@ import Foundation
 
 
 let operatorsUserInfoKey = CodingUserInfoKey(rawValue: "operators")!
+let decoratorsUserInfoKey = CodingUserInfoKey(rawValue: "decorators")!
+
 
 public class RuleDecoder {
     private let decoder = JSONDecoder()
@@ -17,19 +19,34 @@ public class RuleDecoder {
                                                      Contains.self, NotContains.self, Regex.self, NotRegex.self,
                                                      ContainsRegex.self, NotContainsRegex.self, StartsWith.self,
                                                      NotStartsWith.self, EndsWith.self, NotEndsWith.self]
+    private let defaultDecorators: [OperatorDecorator.Type] = [
+        EveryFactDecorator.self, SomeFactDecorator.self, EveryValueDecorator.self, SomeValueDecorator.self
+    ]
 
     public init(_ operators: [Operator.Type] = []) throws {
         self.decoder.userInfo[operatorsUserInfoKey] = try generateOperatorsDict(operators)
+        self.decoder.userInfo[decoratorsUserInfoKey] = try generateDecoratorsDict()
     }
 
-    private func generateOperatorsDict(_ customOperators: [Operator.Type]) throws -> [OperatorID:Operator.Type]{
+    private func generateDecoratorsDict() throws -> [String: OperatorDecorator.Type] {
+        return try defaultDecorators.reduce(into: [:]) { result, decorator in
+            let key = DecoratorID.normalize(decorator.id.rawValue)
+            guard result[key] == nil else {
+                throw RuleEngineError.duplicateDecorator
+            }
+            result[key] = decorator
+        }
+    }
+
+    private func generateOperatorsDict(_ customOperators: [Operator.Type]) throws -> [String:Operator.Type]{
         let operators = defaultOperators + customOperators
 
         return try operators.reduce(into: [:]) { result, op in
-            guard result[op.id] == nil else {
+            let key = OperatorID.normalize(op.id.rawValue)
+            guard result[key] == nil else {
                 throw RuleEngineError.duplicateOperator
             }
-            result[op.id] = op
+            result[key] = op
         }
     }
 
