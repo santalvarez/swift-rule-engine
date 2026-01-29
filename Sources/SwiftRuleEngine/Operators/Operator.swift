@@ -23,6 +23,12 @@ public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable, Send
     public init(rawValue: String) {
         self.rawValue = rawValue
     }
+
+    static func normalize(_ raw: String) -> String {
+        raw.lowercased()
+           .replacingOccurrences(of: "_", with: "")
+           .replacingOccurrences(of: "-", with: "")
+    }
 }
 
 

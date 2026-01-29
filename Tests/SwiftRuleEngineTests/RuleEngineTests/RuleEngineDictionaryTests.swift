@@ -187,6 +187,38 @@ class RuleEngineTests: XCTestCase {
         try XCTUnwrap(engine.evaluate(obj))
     }
 
+    func testCamelCaseOperators() throws {
+        let rule: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.age",
+                        "value": 34,
+                        "operator": "greaterThanInclusive"
+                    ],
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Ronaldo",
+                        "operator": "notEqual"
+                    ]
+                ]
+            ]
+        ]
+
+        let obj = [
+            "player": [
+                "first_name": "Lionel",
+                "age": 34
+            ] as [String : Any]
+        ]
+
+        let engine = try RuleEngine(rules: [rule])
+
+        try XCTUnwrap(engine.evaluate(obj))
+    }
+
 
     func testNestedAllConditionWithAny() throws {
         let rule: [String: Any] = [
