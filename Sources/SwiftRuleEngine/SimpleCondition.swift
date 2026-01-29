@@ -9,17 +9,23 @@ import Foundation
 
 
 public struct SimpleCondition: Condition {
-    public let op: [Operator]
+    public let op: Operator
     public let value: AnyCodable
     public let params: [String: Any]?
     public let path: JSONPath?
 
-    public func evaluate(_ obj: Any) throws -> Bool {
-        if let path = self.path {
-            let obj = try path.getValue(for: obj)
-            return op[0].match(obj)
+    public func evaluate(_ obj: Any, cache: inout JSONPathCache) throws -> Bool {
+        guard let path = self.path else {
+            return op.match(obj)
         }
-        return op[0].match(obj)
+
+        if let cached = cache.values[path] {
+            return op.match(cached)
+        }
+
+        let v = try path.getValue(for: obj)
+        cache.values[path] = v
+        return op.match(v)
     }
 
     public init(from decoder: Decoder) throws {
@@ -28,20 +34,57 @@ public struct SimpleCondition: Condition {
         self.params = try? container.decode([String: Any].self, forKey: .params)
         self.value =  try container.decode(AnyCodable.self, forKey: .value)
 
-        let operatorID = try container.decode(OperatorID.self, forKey: .op)
-        guard let operatorsDict = decoder.userInfo[operatorsUserInfoKey] as? [OperatorID: Operator.Type] else {
-            throw DecodingError.dataCorruptedError(forKey: .op, in: container, debugDescription: "Operators user info key not provided")
-        }
-        guard let operatorType = operatorsDict[operatorID] else {
-            throw DecodingError.dataCorruptedError(forKey: .op, in: container, debugDescription: "Operator \(operatorID.rawValue) not found")
+        let operatorRaw = try container.decode(String.self, forKey: .op)
+
+        // Parse decorator chain: "everyFact:everyValue:lessThan" -> ["everyFact", "everyValue", "lessThan"]
+        let components = operatorRaw.split(separator: ":").map(String.init)
+
+        guard !components.isEmpty else {
+            throw DecodingError.dataCorruptedError(forKey: .op, in: container,
+                                                   debugDescription: "Empty operator string")
         }
 
+        // Last component is the actual operator
+        let operatorName = components.last!
+        let decoratorNames = components.dropLast()
+
+        // Get dictionaries from userInfo
+        guard let operatorsDict = decoder.userInfo[operatorsUserInfoKey] as? [String: Operator.Type] else {
+            throw DecodingError.dataCorruptedError(forKey: .op, in: container,
+                debugDescription: "Operators user info key not provided")
+        }
+
+        let decoratorsDict = decoder.userInfo[decoratorsUserInfoKey] as? [String: OperatorDecorator.Type] ?? [:]
+
+        // Create base operator
+        let operatorKey = OperatorID.normalize(operatorName)
+        guard let operatorType = operatorsDict[operatorKey] else {
+            throw DecodingError.dataCorruptedError(forKey: .op, in: container,
+                                                   debugDescription: "Operator \(operatorRaw) not found")
+        }
+
+        var currentOperator: Operator
         do {
-            self.op = [try operatorType.init(value: self.value, params: self.params)]
+            currentOperator = try operatorType.init(value: self.value, params: self.params)
         } catch {
-            throw DecodingError.dataCorruptedError(forKey: .op, in: container, debugDescription: "Error initializing operator \(operatorID.rawValue)")
+            throw DecodingError.dataCorruptedError(forKey: .op, in: container,
+                                                   debugDescription: "Error initializing operator \(operatorName)")
         }
 
+        // Apply decorators in REVERSE order (innermost first)
+        // "everyFact:everyValue:lessThan" means:
+        //   everyFact(everyValue(lessThan))
+        // So we apply everyValue first, then everyFact
+        for decoratorName in decoratorNames.reversed() {
+            let decoratorKey = DecoratorID.normalize(decoratorName)
+            guard let decoratorType = decoratorsDict[decoratorKey] else {
+                throw DecodingError.dataCorruptedError(forKey: .op, in: container,
+                                                       debugDescription: "Decorator \(decoratorName) not found")
+            }
+            currentOperator = decoratorType.decorate(currentOperator, operatorType: operatorType, value: self.value, params: self.params)
+        }
+
+        self.op = currentOperator
         guard let pathStr = try container.decodeIfPresent(String.self, forKey: .path) else {
             self.path = nil
             return
@@ -49,7 +92,7 @@ public struct SimpleCondition: Condition {
         self.path = try JSONPath(pathStr)
     }
 
-    public init(op: [Operator], value: AnyCodable, params: [String: Any]?, path: JSONPath?) {
+    public init(op: Operator, value: AnyCodable, params: [String: Any]?, path: JSONPath?) {
         self.op = op
         self.value = value
         self.params = params
