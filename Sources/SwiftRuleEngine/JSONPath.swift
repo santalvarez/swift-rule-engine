@@ -13,15 +13,15 @@ enum JSONPathError: Error {
     case expectingDictionary
 }
 
-enum JSONPart {
+enum JSONPart: Hashable {
     case key(String)
     case index(Int)
 }
 
+private let pathRegex = try! NSRegularExpression(pattern: #"\$\.((\w+\[\d+\](\.|$)|(\w+\.)))*(\w+\[\d+\]|\w+)$"#)
 
-public struct JSONPath {
+public struct JSONPath: Hashable {
     private let parts: [JSONPart]
-    private static let pathRegex = try! NSRegularExpression(pattern: #"\$\.((\w+\[\d+\](\.|$)|(\w+\.)))*(\w+\[\d+\]|\w+)$"#)
 
     init(_ path: String) throws {
         guard path != "$" else {
@@ -29,7 +29,7 @@ public struct JSONPath {
             return
         }
 
-        guard Self.pathRegex.firstMatch(in: path, options: [],
+        guard pathRegex.firstMatch(in: path, options: [],
                                    range: NSRange(location: 0, length: path.count)) != nil else {
             throw JSONPathError.invalidPath
         }
@@ -53,16 +53,12 @@ public struct JSONPath {
         self.parts = parts
     }
 
+    @inline(__always)
     private func accessObj(_ key: String, _ obj: any StringSubscriptable) throws -> Any {
-        if let value = obj[key] {
-            return value
-        } else if obj[key] == nil {
-            return NSNull()
-        } else {
-            throw JSONPathError.valueNotFound
-        }
+        return obj[key] ?? NSNull()
     }
 
+    @inline(__always)
     private func accessArray(_ index: Int, _ array: [Any]) throws -> Any {
         if index < array.count {
             return array[index]
@@ -90,4 +86,8 @@ public struct JSONPath {
         }
         return currentObj
     }
+}
+
+public struct JSONPathCache {
+    var values: [JSONPath: Any] = [:]
 }

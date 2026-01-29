@@ -13,37 +13,21 @@ public struct MultiCondition: Condition {
     public var any: [Condition]?
     public var not: Condition?
 
-    public func evaluate(_ obj: Any) throws -> Bool{
-        if self.all != nil {
-            return try self.evaluateAll(obj)
-        } else if self.any != nil {
-            return try self.evaluateAny(obj)
-        } else if self.not != nil {
-            return try self.evaluateNot(obj)
+    public func evaluate(_ obj: Any, cache: inout JSONPathCache) throws -> Bool {
+        if let all = self.all {
+            for c in all {
+                if !(try c.evaluate(obj, cache: &cache)) { return false }
+            }
+            return true
+        } else if let any = self.any {
+            for c in any {
+                if try c.evaluate(obj, cache: &cache) { return true }
+            }
+            return false
+        } else if let not = self.not {
+            return !(try not.evaluate(obj, cache: &cache))
         }
         return false
-    }
-
-    private func evaluateAny(_ obj: Any) throws -> Bool {
-        for i in self.any!.indices {
-            if try self.any![i].evaluate(obj) {
-                return true
-            }
-        }
-        return false
-    }
-
-    private func evaluateAll(_ obj: Any) throws -> Bool {
-        for i in self.all!.indices {
-            if !(try self.all![i].evaluate(obj)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    private func evaluateNot(_ obj: Any) throws -> Bool {
-        return !(try self.not!.evaluate(obj))
     }
 
     public init(from decoder: Decoder) throws {
