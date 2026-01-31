@@ -24,8 +24,8 @@ public class RuleDecoder {
     ]
 
     public init(_ operators: [Operator.Type] = []) throws {
-        self.decoder.userInfo[operatorsUserInfoKey] = try generateOperatorsDict(operators)
-        self.decoder.userInfo[decoratorsUserInfoKey] = try generateDecoratorsDict()
+        self.decoder.userInfo[operatorsUserInfoKey] = try generateOperatorsDict(operators) as Any
+        self.decoder.userInfo[decoratorsUserInfoKey] = try generateDecoratorsDict() as Any
     }
 
     private func generateDecoratorsDict() throws -> [String: OperatorDecorator.Type] {

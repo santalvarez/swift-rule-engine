@@ -623,4 +623,27 @@ class OperatorDecoratorTests: XCTestCase {
 
         XCTAssertNotNil(result)
     }
+
+    func testSomeFactInDecorator() throws {
+        let rule: [String: Any] = [
+            "name": "test-rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.tags",
+                        "operator": "someFact:in",
+                        "value": ["premium", "verified", "active"]
+                    ] as [String: Any]
+                ]
+            ]
+        ]
+
+        let fact: [String: Any] = [
+            "tags": ["new", "active"]
+        ]
+
+        let engine = try RuleEngine(rules: [rule])
+        let result = engine.evaluate(fact)
+        XCTAssertNotNil(result)
+    }
 }
