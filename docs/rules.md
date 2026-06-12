@@ -44,62 +44,6 @@ Table describing the keys:
 | value | The value that will be used to compare with the object. | any | yes |
 | params | A dict that can provide the operator more information about how to process the object. | dict | no |
 
-
-#### Mode Param
-You can use the param "mode" to avoid repeating the same operator for different types of values. The mode param can be either "any" or "all" and behaves just like the multi condition.
-
-Here is an example of two rules that do the same thing but one uses the mode param and the other doesn't.
-
-```json
-{
-    "name": "rule",
-    "conditions": {
-        "all": [
-            {
-                "path" : "$.person.last_name",
-                "operator": "equal",
-                "value": "Doe"
-            },
-            {
-                "any": [
-                    {
-                        "path" : "$.person.name",
-                        "operator": "equal",
-                        "value": "John"
-                    },
-                    {
-                        "path" : "$.person.name",
-                        "operator": "equal",
-                        "value": "Jane"
-                    }
-                ]
-            }
-        ]
-    }
-}
-
-{
-    "name": "rule-with-mode",
-    "conditions": {
-        "all": [
-            {
-                "path" : "$.person.last_name",
-                "operator": "equal",
-                "value": "Doe"
-            },
-            {
-                "path" : "$.person.name",
-                "operator": "equal",
-                "value": ["John", "Jane"],
-                "params": {"mode": "any"}
-            }
-        ]
-    }
-}
-```
-As you can see the second rule is much more compact and easier to write. When using the mode param the value must be a **list of values** as the operator will be loaded with each value in the list.
-
-
 ### Multi Condition
 
 Contains either **any**, **all** or **not** fields. These fields contain conditions that can be simple, multi or a mix of both.

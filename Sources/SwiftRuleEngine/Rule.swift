@@ -14,7 +14,7 @@ public struct Rule: Decodable {
     public let extra: [String: Any]?
     public var priority: Int
     public var conditions: MultiCondition
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
@@ -27,5 +27,5 @@ public struct Rule: Decodable {
     public enum CodingKeys: String, CodingKey {
         case name, description, extra, priority, conditions
     }
-    
+
 }

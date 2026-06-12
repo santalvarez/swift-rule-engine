@@ -73,9 +73,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testAllInCondition() throws {
@@ -102,9 +100,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
 
@@ -146,9 +142,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testNestedAllCondition() throws {
@@ -190,9 +184,39 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
+        try XCTUnwrap(engine.evaluate(obj))
+    }
 
-        XCTAssertTrue(result.conditions.match)
+    func testCamelCaseOperators() throws {
+        let rule: [String: Any] = [
+            "name": "test-rule",
+            "description": "Test rule",
+            "conditions": [
+                "all": [
+                    [
+                        "path": "$.player.age",
+                        "value": 34,
+                        "operator": "greaterThanInclusive"
+                    ],
+                    [
+                        "path": "$.player.first_name",
+                        "value": "Ronaldo",
+                        "operator": "notEqual"
+                    ]
+                ]
+            ]
+        ]
+
+        let obj = [
+            "player": [
+                "first_name": "Lionel",
+                "age": 34
+            ] as [String : Any]
+        ]
+
+        let engine = try RuleEngine(rules: [rule])
+
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
 
@@ -244,9 +268,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testLoadStringRules() throws {
@@ -306,9 +328,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try! RuleEngine(rules: [rule])
 
-        let result = engine.evaluate(obj)
-
-        XCTAssertTrue(result!.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
 
@@ -340,9 +360,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try! RuleEngine(rules: [rule])
 
-        let result = engine.evaluate(obj)
-
-        XCTAssertNotNil(result)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testAllConditionWithNot() throws {
@@ -376,9 +394,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testConditionWithPathIndex() throws {
@@ -405,9 +421,7 @@ class RuleEngineTests: XCTestCase {
 
         let engine = try RuleEngine(rules: [rule])
 
-        let result = try XCTUnwrap(engine.evaluate(obj))
-
-        XCTAssertTrue(result.conditions.match)
+        try XCTUnwrap(engine.evaluate(obj))
     }
 
     func testRulePriority() throws {
@@ -452,7 +466,6 @@ class RuleEngineTests: XCTestCase {
 
         let result = try XCTUnwrap(engine.evaluate(obj))
 
-        XCTAssertTrue(result.conditions.match)
         XCTAssertEqual(result.priority, 50, "The rule with priority 50 should be matched.")
     }
 }

@@ -9,45 +9,25 @@ import Foundation
 
 
 public struct MultiCondition: Condition {
-    public var match: Bool = false
     public var all: [Condition]?
     public var any: [Condition]?
     public var not: Condition?
 
-    public mutating func evaluate(_ obj: Any) throws {
-        if self.all != nil {
-            try self.evaluateAll(obj)
-        } else if self.any != nil {
-            try self.evaluateAny(obj)
-        } else if self.not != nil {
-            try self.evaluateNot(obj)
-        }
-    }
-
-    private mutating func evaluateAny(_ obj: Any) throws {
-        for i in self.any!.indices {
-            try self.any![i].evaluate(obj)
-            if self.any![i].match {
-                self.match = true
-                return
+    public func evaluate(_ obj: Any, cache: inout JSONPathCache) throws -> Bool {
+        if let all = self.all {
+            for c in all {
+                if !(try c.evaluate(obj, cache: &cache)) { return false }
             }
-        }
-    }
-
-    private mutating func evaluateAll(_ obj: Any) throws {
-        for i in self.all!.indices {
-            try self.all![i].evaluate(obj)
-            if !self.all![i].match {
-                self.match = false
-                return
+            return true
+        } else if let any = self.any {
+            for c in any {
+                if try c.evaluate(obj, cache: &cache) { return true }
             }
+            return false
+        } else if let not = self.not {
+            return !(try not.evaluate(obj, cache: &cache))
         }
-        self.match = true
-    }
-
-    private mutating func evaluateNot(_ obj: Any) throws {
-        try self.not!.evaluate(obj)
-        self.match = !self.not!.match
+        return false
     }
 
     public init(from decoder: Decoder) throws {

@@ -17,11 +17,17 @@ public protocol Operator {
 }
 
 
-public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable {
-    public var rawValue: String
+public struct OperatorID: RawRepresentable, Hashable, Equatable, Decodable, Sendable {
+    public let rawValue: String
 
     public init(rawValue: String) {
         self.rawValue = rawValue
+    }
+
+    static func normalize(_ raw: String) -> String {
+        raw.lowercased()
+           .replacingOccurrences(of: "_", with: "")
+           .replacingOccurrences(of: "-", with: "")
     }
 }
 

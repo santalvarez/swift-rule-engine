@@ -8,7 +8,5 @@
 import Foundation
 
 public protocol Condition: Decodable {
-    var match: Bool { get set }
-
-    mutating func evaluate(_ obj: Any) throws
+    func evaluate(_ obj: Any, cache: inout JSONPathCache) throws -> Bool
 }
