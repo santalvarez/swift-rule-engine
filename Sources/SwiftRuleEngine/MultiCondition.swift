@@ -54,15 +54,8 @@ public struct MultiCondition: Condition {
         var conditionArray: [Condition] = []
         var conditionArrayContainer = try container.nestedUnkeyedContainer(forKey: key)
         while !conditionArrayContainer.isAtEnd {
-            if let condition = try? conditionArrayContainer.decode(MultiCondition.self) {
-                conditionArray.append(condition)
-            } else if let condition = try? conditionArrayContainer.decode(SimpleCondition.self) {
-                conditionArray.append(condition)
-            } else {
-                throw DecodingError.typeMismatch(Condition.self,
-                      DecodingError.Context(codingPath: container.codingPath,
-                                            debugDescription: "Missing conditions for multi condition"))
-            }
+            let condition = try conditionArrayContainer.decode(AnyCondition.self)
+            conditionArray.append(condition.condition)
         }
         return conditionArray
     }
@@ -72,19 +65,24 @@ public struct MultiCondition: Condition {
             return nil
         }
 
-        if let condition = try? container.decode(MultiCondition.self, forKey: key) {
-            return condition
-        } else if let condition = try? container.decode(SimpleCondition.self, forKey: key) {
-            return condition
-        } else {
-            throw DecodingError.typeMismatch(Condition.self,
-                  DecodingError.Context(codingPath: container.codingPath,
-                                        debugDescription: "Missing conditions for multi condition"))
-        }
+        return try container.decode(AnyCondition.self, forKey: key).condition
     }
 
     private enum CodingKeys: String, CodingKey {
         case all, any, not
+    }
+
+    private struct AnyCondition: Decodable {
+        let condition: Condition
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            if container.contains(.all) || container.contains(.any) || container.contains(.not) {
+                self.condition = try MultiCondition(from: decoder)
+            } else {
+                self.condition = try SimpleCondition(from: decoder)
+            }
+        }
     }
 }
 
