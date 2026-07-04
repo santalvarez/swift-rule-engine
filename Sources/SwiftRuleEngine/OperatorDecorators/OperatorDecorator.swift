@@ -8,16 +8,16 @@
 import Foundation
 
 
+public typealias OperatorFactory = (AnyCodable) throws -> Operator
+
 public protocol OperatorDecorator {
     static var id: DecoratorID { get }
 
-    /// Wraps an operator and returns a new operator with modified behavior
+    /// Builds and wraps the inner operator chain with modified behavior.
     /// - Parameters:
-    ///   - op: The operator instance to decorate
-    ///   - operatorType: The original base operator type (needed for creating new instances)
+    ///   - makeOperator: A factory that builds the inner operator chain for a rule value
     ///   - value: The value from the condition
-    ///   - params: Optional parameters from the condition
-    static func decorate(_ op: Operator, operatorType: Operator.Type, value: AnyCodable, params: [String: Any]?) -> Operator
+    static func decorate(_ makeOperator: OperatorFactory, value: AnyCodable) throws -> Operator
 }
 
 public struct DecoratorID: RawRepresentable, Hashable, Equatable, Sendable {
@@ -38,11 +38,9 @@ public struct DecoratorID: RawRepresentable, Hashable, Equatable, Sendable {
 struct DecoratedOperator: Operator {
     static var id: OperatorID { OperatorID(rawValue: "decorated") }
 
-    private let wrapped: Operator
     private let matchFunction: (Any) -> Bool
 
-    init(wrapped: Operator, matchFunction: @escaping (Any) -> Bool) {
-        self.wrapped = wrapped
+    init(matchFunction: @escaping (Any) -> Bool) {
         self.matchFunction = matchFunction
     }
 
@@ -59,8 +57,10 @@ struct DecoratedOperator: Operator {
 struct EveryFactDecorator: OperatorDecorator {
     static let id = DecoratorID(rawValue: "everyFact")
 
-    static func decorate(_ op: Operator, operatorType: Operator.Type, value: AnyCodable, params: [String: Any]?) -> Operator {
-        DecoratedOperator(wrapped: op) { objValue in
+    static func decorate(_ makeOperator: OperatorFactory, value: AnyCodable) throws -> Operator {
+        let op = try makeOperator(value)
+
+        return DecoratedOperator { objValue in
             // Cast through NSArray first because Swift arrays are not covariant
             // ([Int] cannot be directly cast to [Any], but NSArray bridges properly)
             guard let array = objValue as? NSArray else {
@@ -75,8 +75,10 @@ struct EveryFactDecorator: OperatorDecorator {
 struct SomeFactDecorator: OperatorDecorator {
     static let id = DecoratorID(rawValue: "someFact")
 
-    static func decorate(_ op: Operator, operatorType: Operator.Type, value: AnyCodable, params: [String: Any]?) -> Operator {
-        DecoratedOperator(wrapped: op) { objValue in
+    static func decorate(_ makeOperator: OperatorFactory, value: AnyCodable) throws -> Operator {
+        let op = try makeOperator(value)
+
+        return DecoratedOperator { objValue in
             // Cast through NSArray first because Swift arrays are not covariant
             guard let array = objValue as? NSArray else {
                 return false
@@ -90,19 +92,19 @@ struct SomeFactDecorator: OperatorDecorator {
 struct EveryValueDecorator: OperatorDecorator {
     static let id = DecoratorID(rawValue: "everyValue")
 
-    static func decorate(_ op: Operator, operatorType: Operator.Type, value: AnyCodable, params: [String: Any]?) -> Operator {
-        // Need to create multiple operators, one for each value element
+    static func decorate(_ makeOperator: OperatorFactory, value: AnyCodable) throws -> Operator {
         guard case .array(let valueArray) = value else {
-            // If value isn't an array, just return original operator
-            return op
+            // Non-array values behave like the undecorated operator.
+            return try makeOperator(value)
         }
 
-        // Create operators for each value in the array using the original operator type
-        let operators: [Operator] = valueArray.compactMap { element in
-            try? operatorType.init(value: AnyCodable(element), params: params)
+        // Build the inner operator chain once per value element so validating
+        // operators receive a single value, not the full value array.
+        let operators: [Operator] = try valueArray.map { element in
+            try makeOperator(AnyCodable(element))
         }
 
-        return DecoratedOperator(wrapped: op) { objValue in
+        return DecoratedOperator { objValue in
             operators.allSatisfy { $0.match(objValue) }
         }
     }
@@ -112,17 +114,19 @@ struct EveryValueDecorator: OperatorDecorator {
 struct SomeValueDecorator: OperatorDecorator {
     static let id = DecoratorID(rawValue: "someValue")
 
-    static func decorate(_ op: Operator, operatorType: Operator.Type, value: AnyCodable, params: [String: Any]?) -> Operator {
+    static func decorate(_ makeOperator: OperatorFactory, value: AnyCodable) throws -> Operator {
         guard case .array(let valueArray) = value else {
-            return op
+            // Non-array values behave like the undecorated operator.
+            return try makeOperator(value)
         }
 
-        // Create operators for each value in the array using the original operator type
-        let operators: [Operator] = valueArray.compactMap { element in
-            try? operatorType.init(value: AnyCodable(element), params: params)
+        // Build the inner operator chain once per value element so validating
+        // operators receive a single value, not the full value array.
+        let operators: [Operator] = try valueArray.map { element in
+            try makeOperator(AnyCodable(element))
         }
 
-        return DecoratedOperator(wrapped: op) { objValue in
+        return DecoratedOperator { objValue in
             operators.contains { $0.match(objValue) }
         }
     }

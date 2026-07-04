@@ -56,35 +56,31 @@ public struct SimpleCondition: Condition {
 
         let decoratorsDict = decoder.userInfo[decoratorsUserInfoKey] as? [String: OperatorDecorator.Type] ?? [:]
 
-        // Create base operator
         let operatorKey = OperatorID.normalize(operatorName)
         guard let operatorType = operatorsDict[operatorKey] else {
             throw DecodingError.dataCorruptedError(forKey: .op, in: container,
                                                    debugDescription: "Operator \(operatorRaw) not found")
         }
 
-        var currentOperator: Operator
-        do {
-            currentOperator = try operatorType.init(value: self.value, params: self.params)
-        } catch {
-            throw DecodingError.dataCorruptedError(forKey: .op, in: container,
-                                                   debugDescription: "Error initializing operator \(operatorName)")
-        }
-
-        // Apply decorators in REVERSE order (innermost first)
-        // "everyFact:everyValue:lessThan" means:
-        //   everyFact(everyValue(lessThan))
-        // So we apply everyValue first, then everyFact
-        for decoratorName in decoratorNames.reversed() {
+        let decoratorTypes = try decoratorNames.map { decoratorName in
             let decoratorKey = DecoratorID.normalize(decoratorName)
             guard let decoratorType = decoratorsDict[decoratorKey] else {
                 throw DecodingError.dataCorruptedError(forKey: .op, in: container,
                                                        debugDescription: "Decorator \(decoratorName) not found")
             }
-            currentOperator = decoratorType.decorate(currentOperator, operatorType: operatorType, value: self.value, params: self.params)
+            return decoratorType
         }
 
-        self.op = currentOperator
+        do {
+            self.op = try Self.buildOperator(operatorType: operatorType,
+                                             value: self.value,
+                                             params: self.params,
+                                             decorators: decoratorTypes[...])
+        } catch {
+            throw DecodingError.dataCorruptedError(forKey: .op, in: container,
+                                                   debugDescription: "Error initializing operator \(operatorRaw): \(error)")
+        }
+
         guard let pathStr = try container.decodeIfPresent(String.self, forKey: .path) else {
             self.path = nil
             return
@@ -101,5 +97,21 @@ public struct SimpleCondition: Condition {
 
     private enum CodingKeys: String, CodingKey {
         case op = "operator", value, params, path
+    }
+
+    private static func buildOperator(operatorType: Operator.Type,
+                                      value: AnyCodable,
+                                      params: [String: Any]?,
+                                      decorators: ArraySlice<OperatorDecorator.Type>) throws -> Operator {
+        guard let decoratorType = decorators.first else {
+            return try operatorType.init(value: value, params: params)
+        }
+
+        return try decoratorType.decorate({ innerValue in
+            try buildOperator(operatorType: operatorType,
+                              value: innerValue,
+                              params: params,
+                              decorators: decorators.dropFirst())
+        }, value: value)
     }
 }
