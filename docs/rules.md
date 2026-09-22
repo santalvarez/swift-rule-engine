@@ -17,9 +17,17 @@ A basic rule consists of a name and a multi condition
 | --- | --- | --- | --- |
 | name | The name of the rule | str | yes |
 | description | A description of the rule. | str | no |
-| priority | Priority of the rule. Defaults to 1. | int | no |
+| priority | Priority of the rule. Higher-priority rules are evaluated first. Rules with equal priorities are evaluated in the order supplied. Defaults to 1. | int | no |
 | conditions | A [multi condition](#multi-condition). All rules start with a multi condition. | dict | yes |
 | extra | A dict that can be used to store extra information about the rule. | dict | no |
+
+## Rule Evaluation Order
+
+Rules are evaluated from highest to lowest priority. When multiple rules have the same priority, they are evaluated in the order they were supplied to the engine.
+
+Rules without an explicit `priority` use the default priority of `1`. Therefore, if no rules specify a priority, they are evaluated in the supplied order.
+
+When using the `.skip` loading strategy, only the first rule with a given name is retained. Later rules with the same name are discarded. The `.strict` strategy throws an error when duplicate rule names are found.
 
 ## Condition Types
 
