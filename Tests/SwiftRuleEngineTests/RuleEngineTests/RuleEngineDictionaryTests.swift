@@ -468,4 +468,75 @@ class RuleEngineTests: XCTestCase {
 
         XCTAssertEqual(result.priority, 50, "The rule with priority 50 should be matched.")
     }
+
+    func testRulesWithoutPriorityPreserveSuppliedOrder() throws {
+        let firstRule: [String: Any] = [
+            "name": "first-rule",
+            "conditions": [
+                "all": [[
+                    "path": "$.player.first_name",
+                    "value": "Cristiano",
+                    "operator": "equal"
+                ]]
+            ]
+        ]
+
+        let secondRule: [String: Any] = [
+            "name": "second-rule",
+            "conditions": [
+                "all": [[
+                    "path": "$.player.first_name",
+                    "value": "Cristiano",
+                    "operator": "equal"
+                ]]
+            ]
+        ]
+
+        let obj = [
+            "player": [
+                "first_name": "Cristiano"
+            ]
+        ]
+
+        let engine = try RuleEngine(rules: [firstRule, secondRule])
+        let result = try XCTUnwrap(engine.evaluate(obj))
+
+        XCTAssertEqual(result.name, "first-rule")
+        XCTAssertEqual(result.priority, 1)
+    }
+    func testRulesWithEqualPriorityPreserveSuppliedOrder() throws {
+        let firstRule: [String: Any] = [
+            "name": "first-rule",
+            "priority": 10,
+            "conditions": [
+                "all": [[
+                    "path": "$.eligible",
+                    "value": true,
+                    "operator": "equal"
+                ]]
+            ]
+        ]
+
+        let secondRule: [String: Any] = [
+            "name": "second-rule",
+            "priority": 10,
+            "conditions": [
+                "all": [[
+                    "path": "$.eligible",
+                    "value": true,
+                    "operator": "equal"
+                ]]
+            ]
+        ]
+
+        let engine = try RuleEngine(
+            rules: [firstRule, secondRule]
+        )
+
+        let result = try XCTUnwrap(
+            engine.evaluate(["eligible": true])
+        )
+
+        XCTAssertEqual(result.name, "first-rule")
+    }
 }

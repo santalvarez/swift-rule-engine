@@ -72,12 +72,26 @@ public final class RuleEngine {
                 strategy: RuleLoadingStrategy = .skip) throws {
         self.ruleDecoder = try RuleDecoder(customOperators)
 
-        // Handle duplicate rules based on strategy
         if strategy == .strict && Dictionary(grouping: rules, by: { $0.name }).contains(where: { $1.count > 1 }) {
             throw RuleEngineError.duplicateRuleName
         }
 
-        self.rules = Array(Dictionary(grouping: rules, by: { $0.name }).values.map { $0.first! }).sorted { $0.priority > $1.priority }
+        var seenRuleNames = Set<String>()
+
+        let uniqueRules = rules.filter { rule in
+            seenRuleNames.insert(rule.name).inserted
+        }
+
+        self.rules = uniqueRules
+            .enumerated()
+            .sorted { lhs, rhs in
+                if lhs.element.priority != rhs.element.priority {
+                    return lhs.element.priority > rhs.element.priority
+                }
+
+                return lhs.offset < rhs.offset
+            }
+            .map(\.element)
     }
 
     public func evaluate(_ obj: Any) -> Rule? {
