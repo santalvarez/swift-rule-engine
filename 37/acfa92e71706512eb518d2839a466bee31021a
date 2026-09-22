@@ -1,0 +1,18 @@
+Sources/SwiftRuleEngine/RuleEngine.swift
+  h_fc0e6b144ea30f 79-94
+Tests/SwiftRuleEngineTests/RuleEngineTests/RuleEngineDictionaryTests.swift
+  h_fc0e6b144ea30f 471-541
+docs/rules.md
+  h_fc0e6b144ea30f 20,24-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "37acfa92e71706512eb518d2839a466bee31021a",
+  "prompts": {},
+  "humans": {
+    "h_fc0e6b144ea30f": {
+      "author": "santalvarez_meli <santiago.salvarez@mercadolibre.com>"
+    }
+  }
+}
