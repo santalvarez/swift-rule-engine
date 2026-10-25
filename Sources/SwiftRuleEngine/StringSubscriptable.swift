@@ -16,8 +16,8 @@ public protocol StringSubscriptable {
 
 /**
  This macro adds an extension to a **Class** or **Struct** that conforms to the **StringSubscriptable**.
- This conformance adds a subscript by string and optionally adds a static dictionary that maps
- snake-cased property names to their key paths for very fast dynamic lookup.
+ The conformance uses a generated switch to map snake-cased property names to their values.
+ For custom mappings, conform to `StringSubscriptable` directly and implement its subscript.
  */
 @attached(extension, names: arbitrary, conformances: StringSubscriptable)
-public macro StringSubscriptable(withKeys: Bool = true) = #externalMacro(module: "SwiftRuleEngineMacros", type: "StringSubscriptableMacro")
+public macro StringSubscriptable() = #externalMacro(module: "SwiftRuleEngineMacros", type: "StringSubscriptableMacro")

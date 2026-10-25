@@ -4,7 +4,8 @@
 
 This macro is used to add a subscript to a `class` or `struct` that allows it to
 be accessed like a dictionary. The subscript receives a string key and returns
-an optional value. The key is used to access a property of the type using a `KeyPath`.
+an optional value. A generated switch maps snake-cased keys directly
+to the type's properties.
 
 It can be used as follows:
 ```swift
@@ -19,18 +20,16 @@ struct S {
 And when the program is compiled, it will add the following extension to the applied type:
 ```swift
 extension S: StringSubscriptable {
-    private static let keys: [String: PartialKeyPath<Self>] = [
-        "first_name": \.firstName,
-    ]
-    subscript(key: String) -> Any? {
-        guard let kp = Self.keys[key] else {
+    public subscript(key: String) -> Any? {
+        switch key {
+        case "first_name":
+            return self.firstName as Any
+        default:
             return nil
-         }
-         return self[keyPath: kp]
+        }
     }
 }
 ```
 
-It should be noted that the `withKeys` macro argument is true by default adds a static private dictionary
-mapping snake-cased keys to their `KeyPath`. In case users want to define their own string to `KeyPath`
-mapping they can set `withKeys` to false.
+For custom mappings, conform to `StringSubscriptable` directly and implement
+the subscript yourself.
