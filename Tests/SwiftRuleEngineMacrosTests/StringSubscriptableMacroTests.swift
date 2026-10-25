@@ -18,7 +18,7 @@ let testMacros: [String: Macro.Type] = [
 ]
 
 final class MhuntMacrosTests: XCTestCase {
-    func testMacroInStructWithKeys() throws {
+    func testMacroInStructWithGeneratedSwitch() throws {
         assertMacroExpansion(
             """
             @StringSubscriptable
@@ -34,15 +34,15 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension S: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<S>] = [
-                    "attr": \\.attr,
-                    "attr2": \\.attr2
-                ]
                 public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
+                    switch key {
+                    case "attr":
+                        return self.attr as Any
+                    case "attr2":
+                        return self.attr2 as Any
+                    default:
                         return nil
                     }
-                    return self[keyPath: kp]
                 }
             }
             """,
@@ -50,7 +50,7 @@ final class MhuntMacrosTests: XCTestCase {
         )
     }
 
-    func testMacroInClassWithKeys() throws {
+    func testMacroInClassWithGeneratedSwitch() throws {
         assertMacroExpansion(
             """
             @StringSubscriptable
@@ -64,75 +64,19 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension C: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<C>] = [
-                    "attr": \\.attr
-                ]
                 public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
+                    switch key {
+                    case "attr":
+                        return self.attr as Any
+                    default:
                         return nil
                     }
-                    return self[keyPath: kp]
                 }
             }
             """,
             macros: testMacros
         )
     }
-
-    func testMacroInStructWithoutKeys() throws {
-        assertMacroExpansion(
-            """
-            @StringSubscriptable(withKeys: false)
-            struct S {
-                let attr: Int = 123123
-            }
-            """,
-            expandedSource: """
-            struct S {
-                let attr: Int = 123123
-            }
-
-            extension S: StringSubscriptable {
-
-                public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
-                        return nil
-                    }
-                    return self[keyPath: kp]
-                }
-            }
-            """,
-            macros: testMacros
-        )
-    }
-
-    func testMacroInClassWithoutKeys() throws {
-        assertMacroExpansion(
-            """
-            @StringSubscriptable(withKeys: false)
-            class C {
-                let attr = 123
-            }
-            """,
-            expandedSource: """
-            class C {
-                let attr = 123
-            }
-
-            extension C: StringSubscriptable {
-
-                public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
-                        return nil
-                    }
-                    return self[keyPath: kp]
-                }
-            }
-            """,
-            macros: testMacros
-        )
-    }
-
 
     func testMacroSnakeCaseConversion() throws {
         assertMacroExpansion(
@@ -148,14 +92,45 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension C: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<C>] = [
-                    "first_name": \\.firstName
-                ]
                 public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
+                    switch key {
+                    case "first_name":
+                        return self.firstName as Any
+                    default:
                         return nil
                     }
-                    return self[keyPath: kp]
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func testMacroAcronymConversion() throws {
+        assertMacroExpansion(
+            """
+            @StringSubscriptable
+            struct S {
+                let URLValue = "https://example.com"
+                let teamID = "TEAM"
+            }
+            """,
+            expandedSource: """
+            struct S {
+                let URLValue = "https://example.com"
+                let teamID = "TEAM"
+            }
+
+            extension S: StringSubscriptable {
+                public subscript(key: String) -> Any? {
+                    switch key {
+                    case "url_value":
+                        return self.URLValue as Any
+                    case "team_id":
+                        return self.teamID as Any
+                    default:
+                        return nil
+                    }
                 }
             }
             """,
@@ -179,14 +154,13 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension C: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<C>] = [
-                    "first_name": \\.firstName
-                ]
                 public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
+                    switch key {
+                    case "first_name":
+                        return self.firstName as Any
+                    default:
                         return nil
                     }
-                    return self[keyPath: kp]
                 }
             }
             """,
@@ -210,14 +184,13 @@ final class MhuntMacrosTests: XCTestCase {
             }
 
             extension C: StringSubscriptable {
-                private static let keys: [String: PartialKeyPath<C>] = [
-                    "first_name": \\.firstName
-                ]
                 public subscript(key: String) -> Any? {
-                    guard let kp = Self.keys[key] else {
+                    switch key {
+                    case "first_name":
+                        return self.firstName as Any
+                    default:
                         return nil
                     }
-                    return self[keyPath: kp]
                 }
             }
             """,
